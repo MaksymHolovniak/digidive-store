@@ -1,0 +1,22 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SignInPage from "./pages/SignInPage";
+import HomePage from "./pages/HomePage";
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme.ts";
+
+const App = () => {
+  return (
+    <>
+      <ChakraProvider value={theme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />}></Route>
+            <Route path="/sign-in" element={<SignInPage />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </ChakraProvider>
+    </>
+  );
+};
+
+export default App;
