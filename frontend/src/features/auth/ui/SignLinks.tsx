@@ -3,7 +3,11 @@ import google from "../../../assets/google.svg";
 import facebook from "../../../assets/facebook.svg";
 import github from "../../../assets/github.svg";
 
-const SignLinks = () => {
+type SignLinksProps = {
+  showText?: boolean;
+}
+
+const SignLinks = ({showText = true}: SignLinksProps) => {
   return (
     <>
       <Box position="relative" w="100%" mt="22px">
@@ -12,9 +16,11 @@ const SignLinks = () => {
           or
         </AbsoluteCenter>
       </Box>
+      {showText &&
       <Text mt="22px" alignSelf="flex-start">
         Log in using
       </Text>
+      }
       <Flex justify="space-around" w="208px" mt="16px">
         <Link _hover={{ bg: "#F8F9FA" }} p="8px">
           <Image src={google} />

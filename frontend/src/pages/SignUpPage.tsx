@@ -1,13 +1,13 @@
-import { Checkbox, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
-import signInBg from "../assets/sign-in-bg.jpg";
+import { Flex, Heading, Image, Text } from "@chakra-ui/react";
+import signUpBg from "../assets/sign-up-bg.jpg";
 import logo from "../assets/logo.svg";
-import SignForm from "@/features/auth/ui/SignInForm";
 import AppButton from "@/shared/ui/AppButton";
 import SignSubText from "@/features/auth/ui/SignSubText";
 import SignLinks from "@/features/auth/ui/SignLinks";
+import SignUpForm from "@/features/auth/ui/SignUpForm";
 import AppLink from "@/shared/ui/AppLink";
 
-const SignInPage = () => {
+const SignUpPage = () => {
   return (
     <Flex
       bg="linear-gradient(104deg, #5A19BB 0%, #3323AA 27.33%, #C3308B 96.89%)"
@@ -25,7 +25,7 @@ const SignInPage = () => {
         overflow="hidden"
       >
         <Flex
-          bg={`url(${signInBg}) center no-repeat`}
+          bg={`url(${signUpBg}) center no-repeat`}
           bgSize="cover"
           maxW="440px"
           w="100%"
@@ -40,35 +40,25 @@ const SignInPage = () => {
         <Flex align="center" direction="column" maxW="440px" w="100%" p="16px 60px" bg="#fff">
           <Image src={logo} />
           <Heading mt="40px" fontSize="26px">
-            Log In
+            Create an account
           </Heading>
-          <SignForm />
-          <Flex justify="space-between" mt="10px" w="100%">
-            <Checkbox.Root colorPalette="purple">
-              <Checkbox.HiddenInput />
-              <Checkbox.Control />
-              <Checkbox.Label>Remember me</Checkbox.Label>
-            </Checkbox.Root>
-            <Link textDecor="underline" color="#9169F7" fontWeight="600" fontSize="14px">
-              Forgot password
-            </Link>
-          </Flex>
+          <SignUpForm />
           <AppButton fontSize="16px" fontWeight="600" mt="19px" h="42px">
-            Log in
+            Create account
           </AppButton>
           <SignSubText />
-          <SignLinks />
+          <SignLinks showText={false} />
           <Text mt="16px">
-            New to DigiDive?{" "}
+            Already have an account?{" "}
             <AppLink
-              to="/sign-up"
+              to="/sign-in"
               color="#9169F7"
               textDecor="underline"
               fontWeight="600"
               fontSize="16px"
               _hover={{ textDecoration: "none", opacity: 0.8 }}
             >
-              Create an account
+              Log in
             </AppLink>
           </Text>
         </Flex>
@@ -77,4 +67,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;

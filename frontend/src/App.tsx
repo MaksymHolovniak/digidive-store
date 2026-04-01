@@ -3,6 +3,7 @@ import SignInPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme.ts";
+import SignUpPage from "./pages/SignUpPage.tsx";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/sign-in" element={<SignInPage />}></Route>
+            <Route path="/sign-up" element={<SignUpPage />}></Route>
           </Routes>
         </BrowserRouter>
       </ChakraProvider>
