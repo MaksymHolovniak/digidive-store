@@ -1,13 +1,13 @@
 import { Flex, Link, Image, AbsoluteCenter, Box, Separator, Text } from "@chakra-ui/react";
-import google from "../../../assets/google.svg";
-import facebook from "../../../assets/facebook.svg";
-import github from "../../../assets/github.svg";
+import google from "../../assets/google.svg";
+import facebook from "../../assets/facebook.svg";
+import github from "../../assets/github.svg";
 
 type SignLinksProps = {
   showText?: boolean;
-}
+};
 
-const SignLinks = ({showText = true}: SignLinksProps) => {
+const SignLinks = ({ showText = true }: SignLinksProps) => {
   return (
     <>
       <Box position="relative" w="100%" mt="22px">
@@ -16,11 +16,11 @@ const SignLinks = ({showText = true}: SignLinksProps) => {
           or
         </AbsoluteCenter>
       </Box>
-      {showText &&
-      <Text mt="22px" alignSelf="flex-start">
-        Log in using
-      </Text>
-      }
+      {showText && (
+        <Text mt="22px" alignSelf="flex-start">
+          Log in using
+        </Text>
+      )}
       <Flex justify="space-around" w="208px" mt="16px">
         <Link _hover={{ bg: "#F8F9FA" }} p="8px">
           <Image src={google} />

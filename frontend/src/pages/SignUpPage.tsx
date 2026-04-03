@@ -1,11 +1,11 @@
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import signUpBg from "../assets/sign-up-bg.jpg";
-import logo from "../assets/logo.svg";
-import AppButton from "@/shared/ui/AppButton";
-import SignSubText from "@/features/auth/ui/SignSubText";
-import SignLinks from "@/features/auth/ui/SignLinks";
-import SignUpForm from "@/features/auth/ui/SignUpForm";
-import AppLink from "@/shared/ui/AppLink";
+import logo from "../assets/logo-auth.svg";
+import SignSubText from "@/components/auth/SignSubText";
+import SignLinks from "@/components/auth/SignLinks";
+import SignUpForm from "@/components/auth/SignUpForm";
+import AppLink from "@/components/ui/AppLink";
+import AppButton from "@/components/ui/AppButton";
 
 const SignUpPage = () => {
   return (
@@ -38,7 +38,7 @@ const SignUpPage = () => {
         </Flex>
 
         <Flex align="center" direction="column" maxW="440px" w="100%" p="16px 60px" bg="#fff">
-          <Image src={logo} />
+          <Image src={logo} alt="DigiDive logo" />
           <Heading mt="40px" fontSize="26px">
             Create an account
           </Heading>

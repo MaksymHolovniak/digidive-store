@@ -1,0 +1,49 @@
+
+[
+  {
+    "id": 1,
+    "title": "Smart Home Security Solutions",
+    "image": "smart-security"
+  },
+  {
+    "id": 2,
+    "title": "Smart Office Solution",
+    "image": "smart-office"
+  },
+  {
+    "id": 3,
+    "title": "Lighting and Lighting Technology",
+    "image": "lighting-technology"
+  },
+  {
+    "id": 4,
+    "title": "Smart Audio - Video",
+    "image": "audio-video"
+  },
+  {
+    "id": 5,
+    "title": "Smart Pool Automation",
+    "image": "pool-automation"
+  },
+  {
+    "id": 6,
+    "title": "Smart Home Devices",
+    "image": "home-devices"
+  },
+  {
+    "id": 7,
+    "title": "Smart Home Systems",
+    "image": "home-systems"
+  },
+  {
+    "id": 8,
+    "title": "Building Automation System",
+    "image": "building-automation"
+  },
+  {
+    "id": 9,
+    "title": "Fire Protection Systems",
+    "image": "fire-protection"
+  }
+]
+

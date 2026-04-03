@@ -1,11 +1,11 @@
 import { Checkbox, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import signInBg from "../assets/sign-in-bg.jpg";
-import logo from "../assets/logo.svg";
-import SignForm from "@/features/auth/ui/SignInForm";
-import AppButton from "@/shared/ui/AppButton";
-import SignSubText from "@/features/auth/ui/SignSubText";
-import SignLinks from "@/features/auth/ui/SignLinks";
-import AppLink from "@/shared/ui/AppLink";
+import logo from "../assets/logo-auth.svg";
+import SignForm from "@/components/auth/SignInForm";
+import SignSubText from "@/components/auth/SignSubText";
+import SignLinks from "@/components/auth/SignLinks";
+import AppButton from "@/components/ui/AppButton";
+import AppLink from "@/components/ui/AppLink";
 
 const SignInPage = () => {
   return (
@@ -38,7 +38,7 @@ const SignInPage = () => {
         </Flex>
 
         <Flex align="center" direction="column" maxW="440px" w="100%" p="16px 60px" bg="#fff">
-          <Image src={logo} />
+          <Image src={logo} alt="DigiDive logo" />
           <Heading mt="40px" fontSize="26px">
             Log In
           </Heading>
