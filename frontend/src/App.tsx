@@ -5,21 +5,23 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme.ts";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import ProductsPage from "./pages/ProductsPage.tsx";
+import MainLayout from "./components/layouts/MainLayout.tsx";
 
 const App = () => {
   return (
-    <>
-      <ChakraProvider value={theme}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />}></Route>
-            <Route path="/products" element={<ProductsPage />}></Route>
-            <Route path="/sign-in" element={<SignInPage />}></Route>
-            <Route path="/sign-up" element={<SignUpPage />}></Route>
-          </Routes>
-        </BrowserRouter>
-      </ChakraProvider>
-    </>
+    <ChakraProvider value={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductsPage />} />
+          </Route>
+
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ChakraProvider>
   );
 };
 
