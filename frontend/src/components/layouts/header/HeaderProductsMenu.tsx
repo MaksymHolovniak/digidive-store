@@ -53,7 +53,6 @@ const HeaderProductsMenu = () => {
         bg="#191D24"
         color="rgba(249, 249, 249, 1)"
         _hover={{
-          bg: "#191D24",
           color: "#9169F7",
           textDecoration: "underline",
         }}
@@ -72,7 +71,7 @@ const HeaderProductsMenu = () => {
         position="absolute"
         top="62px"
         maxW="1370px"
-        w='100%'
+        w="100%"
         transform="translateX(-50%)"
         left="50%"
         borderRadius="0px 0px 16px 16px"

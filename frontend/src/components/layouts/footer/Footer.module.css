@@ -1,0 +1,8 @@
+.footerIcon svg {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footerIcon svg:hover {
+  color: #9969ff;
+}
