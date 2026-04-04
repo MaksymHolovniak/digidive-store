@@ -1,13 +1,19 @@
-import { Flex, Link, Image, AbsoluteCenter, Box, Separator, Text } from "@chakra-ui/react";
+import { Flex, Image, AbsoluteCenter, Box, Separator, Text, Button } from "@chakra-ui/react";
 import google from "../../assets/google.svg";
 import facebook from "../../assets/facebook.svg";
 import github from "../../assets/github.svg";
 
 type SignLinksProps = {
-  showText?: boolean;
+  variant?: "default" | "minimal";
 };
 
-const SignLinks = ({ showText = true }: SignLinksProps) => {
+const links = [
+  { src: google, alt: "Google" },
+  { src: facebook, alt: "Facebook" },
+  { src: github, alt: "GitHub" },
+];
+
+const SignLinks = ({ variant = "default" }: SignLinksProps) => {
   return (
     <>
       <Box position="relative" w="100%" mt="22px">
@@ -16,21 +22,17 @@ const SignLinks = ({ showText = true }: SignLinksProps) => {
           or
         </AbsoluteCenter>
       </Box>
-      {showText && (
+      {variant === "default" && (
         <Text mt="22px" alignSelf="flex-start">
           Log in using
         </Text>
       )}
       <Flex justify="space-around" w="208px" mt="16px">
-        <Link _hover={{ bg: "#F8F9FA" }} p="8px">
-          <Image src={google} />
-        </Link>
-        <Link _hover={{ bg: "#F8F9FA" }} p="8px">
-          <Image src={facebook} />
-        </Link>
-        <Link _hover={{ bg: "#F8F9FA" }} p="8px">
-          <Image src={github} />
-        </Link>
+        {links.map((item) => (
+          <Button key={item.alt} variant="ghost" p="8px">
+            <Image src={item.src} alt={item.alt} />
+          </Button>
+        ))}
       </Flex>
     </>
   );

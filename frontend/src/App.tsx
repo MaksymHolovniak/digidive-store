@@ -6,6 +6,7 @@ import theme from "./theme.ts";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import ProductsPage from "./pages/ProductsPage.tsx";
 import MainLayout from "./components/layouts/MainLayout.tsx";
+import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 const App = () => {
   return (
@@ -16,9 +17,9 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
           </Route>
-
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
