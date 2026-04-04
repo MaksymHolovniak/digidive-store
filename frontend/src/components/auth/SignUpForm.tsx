@@ -50,7 +50,7 @@ const SignUpForm = () => {
         h="42px"
         w="100%"
         _hover={{
-          top: "2px",
+          transform: "translateY(2px)",
         }}
       >
         Create account

@@ -47,7 +47,7 @@ const SignInForm = () => {
         h="42px"
         w="100%"
         _hover={{
-          top: "2px",
+          transform: "translateY(2px)",
         }}
       >
         Log in
