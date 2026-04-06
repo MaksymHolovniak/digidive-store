@@ -2,6 +2,7 @@ import AppButton from "@/components/ui/AppButton";
 import { AccordionRoot, Button, Flex } from "@chakra-ui/react";
 import BrandsFilter from "./BrandsFilter";
 import SearchFilter from "./SearchFilter";
+import PriceFilter from "./PriceFilter";
 
 const Filters = () => {
   return (
@@ -12,6 +13,7 @@ const Filters = () => {
       <AccordionRoot multiple mb="28px">
         <SearchFilter />
         <BrandsFilter />
+        <PriceFilter />
       </AccordionRoot>
 
       <AppButton
