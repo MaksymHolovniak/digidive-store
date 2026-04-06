@@ -1,5 +1,6 @@
 import Filters from "@/components/products/filters/Filters";
 import ProductsHeroVideo from "@/components/products/ProductsHeroVideo";
+import ProductsSorting from "@/components/products/sorting/ProductsSorting";
 import AppBreadcrumbs from "@/components/ui/AppBreadCrumbs";
 import AppContainer from "@/components/ui/AppContainer";
 import { Box, Flex } from "@chakra-ui/react";
@@ -17,6 +18,9 @@ const ProductsPage = () => {
           />
           <Flex justifyContent="space-between">
             <Filters />
+            <Flex direction="column" gap="35px">
+              <ProductsSorting />
+            </Flex>
           </Flex>
         </Flex>
       </AppContainer>
