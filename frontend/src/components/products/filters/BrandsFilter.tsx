@@ -1,10 +1,11 @@
-import { Accordion, Box, Checkbox, Flex, Span, useAccordionItemContext } from "@chakra-ui/react";
-import { LuPlus, LuMinus } from "react-icons/lu";
+import { Accordion, Checkbox, Flex, Span } from "@chakra-ui/react";
+import AccordionItemIndicator from "./AccordionItemIndicator";
+
 
 const BrandsFilter = () => {
   return (
     <Accordion.Item value="featured-brands">
-      <Accordion.ItemTrigger p="18px 16px 18px 4px" fontWeight="600">
+      <Accordion.ItemTrigger p="18px 16px 18px 4px" fontWeight="600" cursor="pointer">
         <Span flex="1">Featured Brands</Span>
         <AccordionItemIndicator />
       </Accordion.ItemTrigger>
@@ -21,11 +22,6 @@ const BrandsFilter = () => {
       </Accordion.ItemContent>
     </Accordion.Item>
   );
-};
-
-const AccordionItemIndicator = () => {
-  const { expanded } = useAccordionItemContext();
-  return <Box>{expanded ? <LuMinus /> : <LuPlus />}</Box>;
 };
 
 export default BrandsFilter;
