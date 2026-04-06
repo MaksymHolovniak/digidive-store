@@ -1,3 +1,4 @@
+import Filters from "@/components/products/filters/Filters";
 import ProductsHeroVideo from "@/components/products/ProductsHeroVideo";
 import AppBreadcrumbs from "@/components/ui/AppBreadCrumbs";
 import AppContainer from "@/components/ui/AppContainer";
@@ -14,6 +15,9 @@ const ProductsPage = () => {
             secondPagePath="/product"
             thirdPage="Security Cameras"
           />
+          <Flex justifyContent="space-between">
+            <Filters />
+          </Flex>
         </Flex>
       </AppContainer>
     </Box>
