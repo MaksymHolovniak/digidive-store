@@ -3,10 +3,12 @@ import { AccordionRoot, Button, Flex } from "@chakra-ui/react";
 import BrandsFilter from "./BrandsFilter";
 import SearchFilter from "./SearchFilter";
 import PriceFilter from "./PriceFilter";
+import FiltersHeader from "./FiltersHeader";
 
 const Filters = () => {
   return (
     <Flex w="100%" maxW="254px" direction="column">
+      <FiltersHeader />
       <Button color="#9169F7" alignSelf="flex-end" fontSize="16px" bg="#FFF" p="0">
         Clear All
       </Button>

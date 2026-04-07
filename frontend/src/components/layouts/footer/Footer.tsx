@@ -13,9 +13,9 @@ const Footer = () => {
           <Flex gap="294px" justify="space-between">
             <FooterHero />
             <Flex gap="80px" paddingTop="12px">
-              <Flex direction="column" gap="49px">
+              <Flex direction="column" gap="50px">
                 <FooterProducts />
-                <Heading as="h3" fontSize="18px" fontWeight="600" textTransform="uppercase">
+                <Heading as='h3' fontSize="18px" fontWeight="600" textTransform="uppercase">
                   Smart Home Services
                 </Heading>
               </Flex>

@@ -9,7 +9,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 const ProductsPage = () => {
   return (
-    <Box pt="20px" pb="140px">
+    <Box pt="20px" pb="96px">
       <ProductsHeroVideo />
       <AppContainer>
         <Flex direction="column" gap="50px">

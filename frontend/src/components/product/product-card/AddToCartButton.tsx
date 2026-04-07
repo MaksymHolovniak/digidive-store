@@ -4,22 +4,19 @@ import { useState } from "react";
 import AddedToCart from "../../../assets/added-to-cart.svg";
 import { LuPlus } from "react-icons/lu";
 
-const AddToCartButton = () => {
+const AddToCartButton = ({ ...props }) => {
   const [clicked, setClicked] = useState(false);
 
   const handleAddToCart = () => {
     setClicked(true);
-  };
-  const baseProps = {
-    w: "100%",
-    fontSize: "18px",
   };
 
   return (
     <Box w="100%">
       {clicked ? (
         <AppButton
-          {...baseProps}
+          {...props}
+          fontSize="18px"
           bg="#FFF"
           border={"2px solid #7EB96A"}
           color="#1D1D1D"
@@ -29,7 +26,7 @@ const AddToCartButton = () => {
           <Image src={AddedToCart} alt="Check Icon" />
         </AppButton>
       ) : (
-        <AppButton {...baseProps} onClick={handleAddToCart}>
+        <AppButton fontSize="18px" {...props} onClick={handleAddToCart}>
           Add to Cart
           <LuPlus size={20} />
         </AppButton>

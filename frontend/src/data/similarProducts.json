@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Wyze",
+    "price": 39.99,
+    "sale": 24.99,
+    "description": "Wyze Cam Pan v3, 180° tilt security camera, fully IP65 weather resistant"
+  },
+  {
+    "id": 2,
+    "name": "Arlo",
+    "price": 757.99,
+    "sale": 399.99,
+    "description": "Rettru XD-Pro Security Camera Indoor Wireless, WiFi with Night Vision"
+  },
+  {
+    "id": 3,
+    "name": "Xiaomi",
+    "price": 119.99,
+    "sale": 22,
+    "description": "Arlo Ultra 2 4K UHD Wire-Free Security Camera System – 3 Cameras"
+  },
+  {
+    "id": 4,
+    "name": "Wyze",
+    "price": 79.99,
+    "sale": 49.99,
+    "description": "Wyze Cam Pan v3, 180° tilt security camera, fully IP65 weather resistant"
+  },
+  {
+    "id": 5,
+    "name": "Arlo",
+    "price": 59.99,
+    "sale": 0,
+    "description": "Rettru XD-Pro Security Camera Indoor Wireless, WiFi with Night Vision"
+  }
+]

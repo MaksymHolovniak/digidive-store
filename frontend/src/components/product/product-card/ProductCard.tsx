@@ -24,7 +24,7 @@ const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) =
       align="center"
       w="100%"
       maxW="230px"
-      pb={"24px"}
+      pb="24px"
       gap="24px"
       transition="0.3s"
       onClick={handleNavigate}
@@ -64,7 +64,7 @@ const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) =
           )}
         </Flex>
         <Box onClick={(e) => e.stopPropagation()}>
-          <AddToCartButton />
+          <AddToCartButton w="100%" />
         </Box>
       </Flex>
     </Flex>
