@@ -4,11 +4,12 @@ import HeaderSwitchLang from "./HeaderSwitchLang";
 import HeaderActions from "./HeaderActions";
 import HeaderNavMenu from "./HeaderNavMenu";
 import HeaderSearch from "./HeaderSearch";
+import AppContainer from "@/components/ui/AppContainer";
 
 const Header = () => {
   return (
     <Box bg="#191D24" position="relative" as="header" width="100%" p="15px 0">
-      <Box margin="0 auto" maxWidth="1552px" p="0 24px" w="100%">
+      <AppContainer>
         <Flex color="#F9F9F9" position="relative" gap="33px" align="center" justify="space-between">
           <HeaderLogo />
           <HeaderNavMenu />
@@ -16,7 +17,7 @@ const Header = () => {
           <HeaderSwitchLang />
           <HeaderActions />
         </Flex>
-      </Box>
+      </AppContainer>
     </Box>
   );
 };

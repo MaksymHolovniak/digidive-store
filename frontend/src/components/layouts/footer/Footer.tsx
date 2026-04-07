@@ -3,12 +3,13 @@ import FooterHero from "./FooterHero";
 import FooterProducts from "./FooterProducts";
 import FooterContacts from "./FooterContacts";
 import FooterBar from "./FooterBar";
+import AppContainer from "@/components/ui/AppContainer";
 
 const Footer = () => {
   return (
     <Box>
       <Box bg="#1D1D1D" color="#FFF" as="footer" width="100%" p="45px 0 60px">
-        <Box margin="0 auto" maxWidth="1552px" p="0 24px" w="100%">
+        <AppContainer>
           <Flex gap="294px" justify="space-between">
             <FooterHero />
             <Flex gap="80px" paddingTop="12px">
@@ -21,7 +22,7 @@ const Footer = () => {
               <FooterContacts />
             </Flex>
           </Flex>
-        </Box>
+        </AppContainer>
       </Box>
       <FooterBar />
     </Box>
