@@ -18,7 +18,7 @@ const ProductsPage = () => {
           />
           <Flex justifyContent="space-between">
             <Filters />
-            <Flex direction="column" gap="35px">
+            <Flex direction="column" gap="35px" maxW="1170px" w="100%">
               <ProductsSorting />
             </Flex>
           </Flex>

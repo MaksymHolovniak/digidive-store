@@ -3,7 +3,7 @@ import Grid2Columns from "../../../assets/grid-2-columns.svg?react";
 import Grid3Columns from "../../../assets/grid-3-columns.svg?react";
 import { useState } from "react";
 
-const SortPlacement = () => {
+const ProductsSortPlacement = () => {
   const [view, setView] = useState<"grid-2" | "grid-3">("grid-2");
 
   const options = [
@@ -32,4 +32,4 @@ const SortPlacement = () => {
   );
 };
 
-export default SortPlacement;
+export default ProductsSortPlacement;
