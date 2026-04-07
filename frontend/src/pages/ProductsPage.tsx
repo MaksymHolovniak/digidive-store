@@ -1,6 +1,7 @@
 import Filters from "@/components/products/filters/Filters";
 import ProductsHeroVideo from "@/components/products/ProductsHeroVideo";
 import ProductsList from "@/components/products/ProductsList";
+import ProductsPagination from "@/components/products/ProductsPagination";
 import ProductsSorting from "@/components/products/sorting/ProductsSorting";
 import AppBreadcrumbs from "@/components/ui/AppBreadCrumbs";
 import AppContainer from "@/components/ui/AppContainer";
@@ -22,6 +23,7 @@ const ProductsPage = () => {
             <Flex direction="column" gap="50px" maxW="1170px" w="100%">
               <ProductsSorting />
               <ProductsList />
+              <ProductsPagination />
             </Flex>
           </Flex>
         </Flex>
