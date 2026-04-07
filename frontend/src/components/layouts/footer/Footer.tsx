@@ -7,8 +7,8 @@ import AppContainer from "@/components/ui/AppContainer";
 
 const Footer = () => {
   return (
-    <Box>
-      <Box bg="#1D1D1D" color="#FFF" as="footer" width="100%" p="45px 0 60px">
+    <Box as='footer'>
+      <Box bg="#1D1D1D" color="#FFF" width="100%" p="45px 0 60px">
         <AppContainer>
           <Flex gap="294px" justify="space-between">
             <FooterHero />

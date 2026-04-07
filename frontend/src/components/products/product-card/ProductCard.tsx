@@ -1,15 +1,23 @@
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import testProductItem from "../../../assets/test-product-item.jpg";
 import AddToCartButton from "./AddToCartButton";
+import { useNavigate } from "react-router-dom";
 
 type ProductCardProps = {
+  id: number;
   name: string;
   price: number;
   sale?: number;
   description: string;
 };
 
-const ProductCard = ({ name, description, price, sale }: ProductCardProps) => {
+const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/products/${id}`);
+  };
+
   return (
     <Flex
       direction="column"
@@ -19,6 +27,7 @@ const ProductCard = ({ name, description, price, sale }: ProductCardProps) => {
       pb={"24px"}
       gap="24px"
       transition="0.3s"
+      onClick={handleNavigate}
       _hover={{
         transform: "translateY(-4px)",
         cursor: "pointer",
@@ -54,7 +63,9 @@ const ProductCard = ({ name, description, price, sale }: ProductCardProps) => {
             <>${price}</>
           )}
         </Flex>
-        <AddToCartButton />
+        <Box onClick={(e) => e.stopPropagation()}>
+          <AddToCartButton />
+        </Box>
       </Flex>
     </Flex>
   );
