@@ -1,23 +1,40 @@
 import { Box, Heading, Span, Text } from "@chakra-ui/react";
-import homeBg from "../assets/home-bg.jpg";
+import homeHeroBg from "../assets/home-bg.jpg";
 import AppButton from "@/components/ui/AppButton";
 import { LuChevronRight } from "react-icons/lu";
+import AppContainer from "@/components/ui/AppContainer";
 
 const HomePage = () => {
   return (
     <Box>
-      <Box bg={`url(${homeBg}) center no-repeat cover`} color="#fff">
-        <Text fontWeight="600">Exclusive Spring Deals on Robot Vacuums</Text>
-        <Heading fontSize="64px" paddingBottom="20px" lineHeight="106%">
-          <Span>Get Lucky</Span>with Cleaning Home with Care
-        </Heading>
-        <Text fontSize="20px">
-          Don't miss out! Use promo code: <Span color="#EC5851">LUCKY2024</Span>
-        </Text>
-        <AppButton>
-          Discover Special Prices
-          <LuChevronRight />
-        </AppButton>
+      <Box
+        bgImage={`url(${homeHeroBg})`}
+        backgroundPosition="center"
+        bgRepeat="no-repeat"
+        bgSize="cover"
+        color="white"
+        py="210px"
+      >
+        <AppContainer>
+          <Text fontWeight="600" mb="32px">
+            Advanced Robot Vacuums for Everyday Comfort
+          </Text>
+          <Heading fontSize="64px" lineHeight="106%" mb="20px" maxW="700px">
+            <Span
+              background="linear-gradient(131deg, #5fd8ff 0%, #9969ff 64.41%, #704fe5 100%)"
+              backgroundClip="text"
+            >
+              Effortless Cleaning{" "}
+            </Span>
+            for a Smarter Home Experience
+          </Heading>
+          <Text fontSize="20px" mb="32px">
+            Top Picks <Span color="#EC5851">Available Now</Span>
+          </Text>
+          <AppButton fontSize="16px" w="250px" h="50px">
+            Explore Smart Cleaning <LuChevronRight />
+          </AppButton>
+        </AppContainer>
       </Box>
     </Box>
   );
