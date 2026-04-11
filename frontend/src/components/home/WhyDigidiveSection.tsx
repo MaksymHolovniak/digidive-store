@@ -25,7 +25,7 @@ const WhyDigidiveSection = () => {
   return (
     <Box as="section">
       <AppContainer>
-        <Flex direction="column" gap="16px" py="100px">
+        <Flex direction="column" gap="16px">
           <Heading as="h2" fontSize="42px" lineHeight="110%" textAlign="center">
             Why DigiDive?
           </Heading>

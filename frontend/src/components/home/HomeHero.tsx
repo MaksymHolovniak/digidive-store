@@ -9,7 +9,7 @@ const HomeHero = () => {
     <Box
       as="section"
       bgImage={`url(${homeHeroBg})`}
-      backgroundPosition="center"
+      bgPos='center'
       bgRepeat="no-repeat"
       bgSize="cover"
       color="white"
