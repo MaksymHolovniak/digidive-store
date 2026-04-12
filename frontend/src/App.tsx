@@ -8,23 +8,25 @@ import ProductsPage from "./pages/ProductsPage";
 import MainLayout from "./components/layouts/MainLayout";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductPage from "./pages/ProductPage";
+import CartPage from "./pages/CartPage";
 
 const App = () => {
   return (
-    <ChakraProvider value={theme}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ChakraProvider value={theme}>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
+            <Route path="/cart" element={<CartPage />} />
           </Route>
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </BrowserRouter>
-    </ChakraProvider>
+      </ChakraProvider>
+    </BrowserRouter>
   );
 };
 
