@@ -1,12 +1,12 @@
 import { Flex, IconButton, Text } from "@chakra-ui/react";
 import { LuPlus, LuMinus } from "react-icons/lu";
 
-type ProductQuantityProps = {
+type QuantitySelectorProps = {
   count: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const ProductQuantity = ({ count, setCount }: ProductQuantityProps) => {
+const QuantitySelector = ({ count, setCount }: QuantitySelectorProps) => {
   const handleDecrease = () => {
     setCount((prev) => Math.max(1, prev - 1));
   };
@@ -28,7 +28,7 @@ const ProductQuantity = ({ count, setCount }: ProductQuantityProps) => {
       >
         <LuMinus />
       </IconButton>
-      <Text fontSize="18px" fontWeight="500">
+      <Text fontSize="18px" fontWeight="500" w="25px" textAlign="center">
         {count}
       </Text>
       <IconButton
@@ -45,4 +45,4 @@ const ProductQuantity = ({ count, setCount }: ProductQuantityProps) => {
   );
 };
 
-export default ProductQuantity;
+export default QuantitySelector;

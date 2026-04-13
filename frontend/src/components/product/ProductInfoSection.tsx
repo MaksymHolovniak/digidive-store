@@ -2,13 +2,13 @@ import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import testProductItem from "../../assets/test-product-item.jpg";
 import AddToCartButton from "@/components/product/product-card/AddToCartButton";
 import { useState } from "react";
-import ProductQuantity from "./ProductQuantity";
+import QuantitySelector from "../ui/QuantitySelector";
 
 const ProductInfoSection = () => {
   const [count, setCount] = useState(1);
 
   return (
-    <Flex justify="center" gap="50px" mb="100px" as='section'>
+    <Flex justify="center" gap="50px" mb="100px" as="section">
       <Image src={testProductItem} alt="Wyze Cam v3" w="500px" />
       <Flex gap="30px" direction="column" pt="20px">
         <Heading as="h1" fontSize="26px" lineHeight="110%" maxW="500px">
@@ -21,7 +21,7 @@ const ProductInfoSection = () => {
           color night vision up to 25x darker environments, and boasts silent motor operation. It
           supports local microSD storage (up to 512GB) and features two-way audio.
         </Text>
-        <ProductQuantity count={count} setCount={setCount} />
+        <QuantitySelector count={count} setCount={setCount} />
         <AddToCartButton w="250px" h="52px" />
       </Flex>
     </Flex>
