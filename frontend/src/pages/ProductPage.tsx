@@ -3,8 +3,13 @@ import AppContainer from "@/components/ui/AppContainer";
 import { Box } from "@chakra-ui/react";
 import ProductInfoSection from "@/components/product/ProductInfoSection";
 import SimilarProductsSection from "@/components/product/SimilarProductsSection";
+import { useEffect } from "react";
 
 const ProductPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Box pt="65px" pb="96px">
       <AppContainer>

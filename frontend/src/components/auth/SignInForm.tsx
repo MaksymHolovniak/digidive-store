@@ -1,5 +1,6 @@
-import { Box, Checkbox, Field, Flex, Input, Link } from "@chakra-ui/react";
+import { Box, Checkbox, Field, Flex, Link } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
+import AppInput from "../ui/AppInput";
 
 const SignInForm = () => {
   return (
@@ -9,28 +10,18 @@ const SignInForm = () => {
           Email
           <Field.RequiredIndicator />
         </Field.Label>
-        <Input
-          fontSize="16px"
-          placeholder="Enter your email"
-          borderColor="#E4D9FD"
-          css={{ "--focus-color": "#9169F7" }}
-        />
+        <AppInput placeholder="Enter your email" />
       </Field.Root>
       <Field.Root mt="16px" required>
         <Field.Label fontSize="16px" fontWeight="600">
           Password
           <Field.RequiredIndicator />
         </Field.Label>
-        <Input
-          fontSize="16px"
-          placeholder="Enter your password"
-          borderColor="#E4D9FD"
-          css={{ "--focus-color": "#7449df" }}
-        />
+        <AppInput type="password" placeholder="Enter your password" />
       </Field.Root>
 
       <Flex justify="space-between" mt="10px" w="100%">
-        <Checkbox.Root colorPalette="purple">
+        <Checkbox.Root colorPalette="purple" mt="10px">
           <Checkbox.HiddenInput />
           <Checkbox.Control />
           <Checkbox.Label>Remember me</Checkbox.Label>

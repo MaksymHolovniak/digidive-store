@@ -1,5 +1,6 @@
-import { Box, Field, Input } from "@chakra-ui/react";
+import { Box, Field } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
+import AppInput from "../ui/AppInput";
 
 const SignUpForm = () => {
   return (
@@ -9,39 +10,21 @@ const SignUpForm = () => {
           Email
           <Field.RequiredIndicator />
         </Field.Label>
-        <Input
-          fontSize="16px"
-          placeholder="Enter your email"
-          borderColor="#E4D9FD"
-          css={{ "--focus-color": "#9169F7" }}
-          type="email"
-        />
+        <AppInput placeholder="Enter your email" type="email" />
       </Field.Root>
       <Field.Root mt="16px" required>
         <Field.Label fontSize="16px" fontWeight="600">
           Password
           <Field.RequiredIndicator />
         </Field.Label>
-        <Input
-          fontSize="16px"
-          placeholder="Enter your password"
-          borderColor="#E4D9FD"
-          css={{ "--focus-color": "#7449df" }}
-          type="password"
-        />
+        <AppInput placeholder="Enter your password" type="password" />
       </Field.Root>
       <Field.Root mt="16px" required>
         <Field.Label fontSize="16px" fontWeight="600">
           Confirm password
           <Field.RequiredIndicator />
         </Field.Label>
-        <Input
-          fontSize="16px"
-          placeholder="Confirm your password"
-          borderColor="#E4D9FD"
-          css={{ "--focus-color": "#7449df" }}
-          type="password"
-        />
+        <AppInput placeholder="Confirm your password" type="password" />
       </Field.Root>
       <AppButton
         fontSize="16px"

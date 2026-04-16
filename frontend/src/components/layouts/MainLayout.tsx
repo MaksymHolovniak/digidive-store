@@ -5,13 +5,13 @@ import Footer from "./footer/Footer";
 
 const MainLayout = () => {
   return (
-    <Box>
+    <>
       <Header />
       <Box as="main">
         <Outlet />
       </Box>
       <Footer />
-    </Box>
+    </>
   );
 };
 

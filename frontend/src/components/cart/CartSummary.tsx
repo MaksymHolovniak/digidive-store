@@ -1,7 +1,12 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
+import { useNavigate } from "react-router-dom";
 
 const CartSummary = () => {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => navigate("/checkout");
+
   return (
     <Box maxW="400px" w="100%" bgColor="#F8F9FA" p="30px" position="sticky" top="20px">
       <Text fontSize="16px" color="#9169F7" textTransform="uppercase" lineHeight="130%" mb="16px">
@@ -27,7 +32,7 @@ const CartSummary = () => {
         </Flex>
       </Flex>
       <Flex justify="center">
-        <AppButton w="200px" h="52px" fontSize="20px">
+        <AppButton w="200px" h="52px" fontSize="20px" onClick={handleOnClick}>
           Checkout
         </AppButton>
       </Flex>
