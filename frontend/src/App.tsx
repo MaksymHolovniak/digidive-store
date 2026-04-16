@@ -1,15 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignInPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme.ts";
-import SignUpPage from "./pages/SignUpPage";
-import ProductsPage from "./pages/ProductsPage";
 import MainLayout from "./components/layouts/MainLayout";
-import NotFoundPage from "./pages/NotFoundPage";
-import ProductPage from "./pages/ProductPage";
-import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
+import { lazy } from "react";
+
+const ProductsPage = lazy(() => import("./pages/ProductsPage"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const SignInPage = lazy(() => import("./pages/SignInPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 const App = () => {
   return (
