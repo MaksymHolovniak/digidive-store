@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import HeaderLogo from "./HeaderLogo";
+import LogoLink from "../../ui/LogoLink";
 import HeaderActions from "./HeaderActions";
 import HeaderNavMenu from "./HeaderNavMenu";
 import HeaderSearch from "./HeaderSearch";
@@ -10,7 +10,7 @@ const Header = () => {
     <Box bg="#191D24" position="relative" as="header" width="100%" p="15px 0">
       <AppContainer>
         <Flex color="#F9F9F9" position="relative" gap="33px" align="center" justify="space-between">
-          <HeaderLogo />
+          <LogoLink />
           <HeaderNavMenu />
           <HeaderSearch />
           <HeaderActions />

@@ -1,15 +1,15 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
-import logo from "../../../assets/logo.svg";
+import { Flex, Text } from "@chakra-ui/react";
 import InstagramIcon from "../../../assets/instagram.svg?react";
 import YoutubeIcon from "../../../assets/youtube.svg?react";
 import LinkedinIcon from "../../../assets/linkedin.svg?react";
 import TwitterIcon from "../../../assets/twitter.svg?react";
 import s from './Footer.module.css'
+import LogoLink from "@/components/ui/LogoLink";
 
 const FooterHero = () => {
   return (
     <Flex direction="column" gap="32px">
-      <Image src={logo} alt="DigiDive logo" w="200px" h="60px" />
+      <LogoLink />
       <Text
         fontSize="40px"
         fontWeight="600"

@@ -4,7 +4,7 @@ import AppLink from "@/components/ui/AppLink";
 
 const HeaderNavMenu = () => {
   return (
-    <Flex as="nav" gap="120px" align="center">
+    <Flex as="nav" gap="50px" align="center">
       <AppLink
         to="/"
         color="rgba(249, 249, 249, 1)"
