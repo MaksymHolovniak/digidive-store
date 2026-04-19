@@ -3,9 +3,15 @@ import testProductItem from "../../assets/test-product-item.jpg";
 import AddToCartButton from "@/components/product/product-card/AddToCartButton";
 import { useState } from "react";
 import QuantitySelector from "../ui/QuantitySelector";
+import FavoriteButton from "../ui/FavoriteButton";
 
 const ProductInfoSection = () => {
+  const [isFavorite, setIsFavorite] = useState(false);
   const [count, setCount] = useState(1);
+
+  const handleToggleFavorite = () => {
+    setIsFavorite((prev) => !prev);
+  };
 
   return (
     <Flex justify="center" gap="50px" mb="100px" as="section">
@@ -23,6 +29,17 @@ const ProductInfoSection = () => {
         </Text>
         <QuantitySelector count={count} setCount={setCount} />
         <AddToCartButton w="250px" h="52px" />
+        <Flex
+          as='button'
+          gap="8px"
+          align="center"
+          onClick={handleToggleFavorite}
+          _hover={{ color: "#9969FF" }}
+          transition="color 0.3s"
+        >
+          <FavoriteButton isActive={isFavorite} />
+          <Text>Add to Favorites</Text>
+        </Flex>
       </Flex>
     </Flex>
   );

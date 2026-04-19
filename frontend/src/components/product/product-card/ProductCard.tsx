@@ -2,6 +2,8 @@ import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import testProductItem from "../../../assets/test-product-item.jpg";
 import AddToCartButton from "./AddToCartButton";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import FavoriteButton from "@/components/ui/FavoriteButton";
 
 type ProductCardProps = {
   id: number;
@@ -13,6 +15,7 @@ type ProductCardProps = {
 
 const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) => {
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleNavigate = () => {
     navigate(`/products/${id}`);
@@ -63,9 +66,17 @@ const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) =
             <>${price}</>
           )}
         </Flex>
-        <Box onClick={(e) => e.stopPropagation()}>
+        <Flex onClick={(e) => e.stopPropagation()} align="center" gap="24px">
           <AddToCartButton w="100%" />
-        </Box>
+          <Box
+            as="button"
+            _hover={{ color: "#9969FF" }}
+            transition="color 0.3s"
+            onClick={() => setIsFavorite((prev) => !prev)}
+          >
+            <FavoriteButton isActive={isFavorite} />
+          </Box>
+        </Flex>
       </Flex>
     </Flex>
   );
