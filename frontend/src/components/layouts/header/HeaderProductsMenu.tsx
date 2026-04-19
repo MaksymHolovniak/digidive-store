@@ -48,7 +48,7 @@ const HeaderProductsMenu = () => {
     <Menu.Root open={isOpen}>
       <Button
         p="0"
-        fontSize="16px"
+        fontSize="18px"
         fontWeight="400"
         bg="#191D24"
         color="rgba(249, 249, 249, 1)"
@@ -56,8 +56,7 @@ const HeaderProductsMenu = () => {
           color: "#9169F7",
           textDecoration: "underline",
         }}
-        _active={{ bg: "#191D24" }}
-        _focus={{ bg: "#191D24", boxShadow: "none" }}
+  
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
         gap="0px"

@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import HeaderLogo from "./HeaderLogo";
-import HeaderSwitchLang from "./HeaderSwitchLang";
 import HeaderActions from "./HeaderActions";
 import HeaderNavMenu from "./HeaderNavMenu";
 import HeaderSearch from "./HeaderSearch";
@@ -14,7 +13,6 @@ const Header = () => {
           <HeaderLogo />
           <HeaderNavMenu />
           <HeaderSearch />
-          <HeaderSwitchLang />
           <HeaderActions />
         </Flex>
       </AppContainer>

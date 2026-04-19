@@ -1,23 +1,24 @@
-import { Flex, Menu } from "@chakra-ui/react";
-import NavButton from "./NavButton";
+import { Flex } from "@chakra-ui/react";
 import HeaderProductsMenu from "./HeaderProductsMenu";
+import AppLink from "@/components/ui/AppLink";
 
 const HeaderNavMenu = () => {
-    return (
-      <Flex as='nav' gap='40px'>
-        <HeaderProductsMenu />
-        <Menu.Root>
-          <Menu.Trigger asChild>
-            <NavButton>Smart Home Services</NavButton>
-          </Menu.Trigger>
-        </Menu.Root>
-        <Menu.Root>
-          <Menu.Trigger asChild>
-            <NavButton>Support</NavButton>
-          </Menu.Trigger>
-        </Menu.Root>
-      </Flex>
-    );
-}
- 
+  return (
+    <Flex as="nav" gap="120px" align="center">
+      <AppLink
+        to="/"
+        color="rgba(249, 249, 249, 1)"
+        fontSize="18px"
+        _hover={{
+          color: "#9169F7",
+          textDecoration: "underline",
+        }}
+      >
+        Home
+      </AppLink>
+      <HeaderProductsMenu />
+    </Flex>
+  );
+};
+
 export default HeaderNavMenu;
