@@ -8,6 +8,11 @@ datasource db {
   provider = "mysql"
 }
 
+enum Role {
+  user
+  admin
+}
+
 
 model User {
   id        Int      @id @default(autoincrement())
@@ -17,5 +22,5 @@ model User {
   email     String   @unique
   password  String
 
-  role       String          @default("client")
+  role    Role  @default(user)
 }
