@@ -37,9 +37,7 @@ model User {
 
 model Product {
   id Int @id @default(autoincrement())
-  isActive Boolean @default(true)
   name String @unique
-  slug String @unique
   imagePath String @map("image_path")
   description String @db.Text
   price Decimal @db.Decimal(10,2)
