@@ -6,9 +6,10 @@ import { ConfigModule } from '@nestjs/config'
 import { UserModule } from './user/user.module';
 import { PaginationModule } from './pagination/pagination.module';
 import { ProductModule } from './product/product.module';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
-	imports: [ConfigModule.forRoot(), AuthModule, UserModule, PaginationModule, ProductModule],
+	imports: [ConfigModule.forRoot(), AuthModule, UserModule, PaginationModule, ProductModule, BrandModule],
 	controllers: [AppController],
 	providers: [AppService]
 })

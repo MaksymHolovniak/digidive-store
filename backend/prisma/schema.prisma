@@ -47,11 +47,22 @@ model Product {
 
   categoryId Int @map("category_id")
   category Category @relation(fields: [categoryId], references: [id])
+
+  brandId Int @map("brand_id")
+  brand Brand @relation(fields: [brandId], references: [id])
+
   favorites Favorite[]
   cart Cart[]
   orderItems OrderItem[]
 
   @@index([categoryId])
+}
+
+model Brand {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  products Product[]
 }
 
 model Category {
