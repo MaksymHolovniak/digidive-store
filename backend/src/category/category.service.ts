@@ -74,7 +74,6 @@ export class CategoryService {
 		})
 
 		if (!category) {
-			// Якщо категорію не знайдено, але файл надійшов - видаляємо його
 			if (imagePath) await this.deleteLocalFile(imagePath)
 			throw new NotFoundException('Category not found')
 		}
@@ -87,7 +86,7 @@ export class CategoryService {
 
 		if (isSubcategory && imagePath) {
 			await this.deleteLocalFile(imagePath)
-			imagePath = undefined // Зануляємо змінну, щоб не потрапила в БД
+			imagePath = undefined
 		}
 
 		if (

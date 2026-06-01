@@ -1,14 +1,13 @@
 import { Prisma } from '../../generated/prisma/client'
 
-export const returnCategoryObject: Prisma.CategorySelect = {
+export const categoryReturnObject: Prisma.CategorySelect = {
 	id: true,
     name: true,
-    imagePath: true,
-	parentId: true,
-	children: {
+	parent: {
 		select: {
 			id: true,
 			name: true
 		}
 	}
 }
+

@@ -1,10 +1,30 @@
-import { Prisma } from "../../generated/prisma/client";
+import { Prisma } from '../../generated/prisma/client'
+import { brandReturnObject } from '../brand/return-brand.object'
+import { categoryReturnObject } from '../category/return-category.object'
 
 export const productReturnObject: Prisma.ProductSelect = {
-    id: true,
-    name: true,
-    imagePath: true,
-    description: true,
-    price: true,
-    stock: true
+	id: true,
+	name: true,
+	imagePath: true,
+	description: true,
+	price: true,
+	stock: true,
+	category: {
+		select: categoryReturnObject
+	},
+	brand: {
+		select: brandReturnObject
+	}
+}
+
+export const productGetReturnObject: Prisma.ProductSelect = {
+	id: true,
+	name: true,
+	imagePath: true,
+	description: true,
+	price: true,
+	stock: true,
+	brand: {
+		select: brandReturnObject
+	}
 }

@@ -4,7 +4,6 @@ import { PaginationDto } from '../../pagination/pagination.dto'
 export enum EnumProductSort {
 	CHEAPER = 'cheaper',
 	EXPENSIVE = 'expensive',
-	BETTER = 'better',
 	Alphabetical = 'alphabetical'
 }
 

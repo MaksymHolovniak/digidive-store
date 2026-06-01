@@ -1,24 +1,78 @@
-import { IsDecimal, IsInt, IsString, MaxLength, Min, MinLength } from "class-validator";
+import { IsInt, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from "class-validator";
 import { Prisma } from "../../../generated/prisma/client";
 import { Decimal } from "@prisma/client/runtime/index-browser";
+import { Transform } from "class-transformer";
 
-export class ProductDto implements Prisma.ProductUpdateInput {
+export class CreateProductDto implements Prisma.ProductUpdateInput {
 	@IsString()
 	name: string
 
 	@IsString()
-	imagePath: string
-
-	@IsString()
 	@MinLength(70)
-	@MaxLength(100)
+	@MaxLength(1000)
 	description: string
 
-	@MinLength(0)
-	@IsDecimal()
+	@Transform(({ value }) => Number(value))
+	@IsNumber({ maxDecimalPlaces: 2 })
+	@Min(0)
 	price: Decimal
 
+	@Transform(({ value }) => Number(value))
 	@IsInt()
 	@Min(0)
 	stock: number
+
+	@Transform(({ value }) => Number(value))
+	@IsInt()
+	brandId: number
+
+	@Transform(({ value }) => Number(value))
+	@IsInt()
+	categoryId: number
+}
+
+export class UpdateProductDto implements Prisma.ProductUpdateInput {
+	@IsOptional()
+	@IsString()
+	name?: string
+
+	@IsOptional()
+	@IsString()
+	@MinLength(70)
+	@MaxLength(1000)
+	description?: string
+
+	@IsOptional()
+	@Transform(({ value }) => {
+		if (value === undefined || value === '') return undefined
+		return Number(value)
+	})
+	@IsNumber({ maxDecimalPlaces: 2 })
+	@Min(0)
+	price?: Decimal
+
+	@IsOptional()
+	@Transform(({ value }) => {
+		if (value === undefined || value === '') return undefined
+		return Number(value)
+	})
+	@IsInt()
+	@Min(0)
+	stock?: number
+
+	@IsOptional()
+	@Transform(({ value }) => {
+		if (value === undefined || value === '') return undefined
+		return Number(value)
+	})
+	@IsInt()
+	brandId?: number
+
+	@IsOptional()
+	@Transform(({ value }) => {
+		if (value === undefined || value === '') return undefined
+		return Number(value)
+	})
+	@IsInt()
+	categoryId?: number
 }
