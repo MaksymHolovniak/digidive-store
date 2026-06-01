@@ -23,7 +23,7 @@ import { join } from 'path'
 		PaginationModule,
 		ProductModule,
 		BrandModule,
-		CategoryModule
+		CategoryModule,
 	],
 	controllers: [AppController],
 	providers: [AppService]

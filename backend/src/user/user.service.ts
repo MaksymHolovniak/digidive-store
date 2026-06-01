@@ -16,7 +16,24 @@ export class UserService {
 		const user = await this.prisma.user.findUnique({
 			where: { id },
 			select: {
-				...userReturnObject
+				...userReturnObject,
+				favorites: {
+					select: {
+						product: {
+							select: {
+								id: true,
+								name: true,
+								imagePath: true,
+								price: true,
+								brand: {
+									select: {
+										name: true
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		})
 
@@ -39,7 +56,7 @@ export class UserService {
 			where: { id }
 		})
 
-        if (!user) throw new NotFoundException('User not found')
+		if (!user) throw new NotFoundException('User not found')
 
 		return this.prisma.user.update({
 			where: {
@@ -50,5 +67,38 @@ export class UserService {
 				password: dto.password ? await hash(dto.password) : user.password
 			}
 		})
+	}
+
+	async toggleFavorite(productId: number, userId: number) {
+		const user = await this.byId(userId)
+
+		if (!user) throw new NotFoundException('User not found')
+
+		const favorite = await this.prisma.favorite.findFirst({
+			where: {
+				userId,
+				productId
+			}
+		})
+
+		if (favorite) {
+			await this.prisma.favorite.delete({
+				where: {
+					id: favorite.id
+				}
+			})
+		} else {
+			await this.prisma.favorite.create({
+				data: {
+					userId,
+					productId
+				}
+			})
+		}
+
+		return {
+			message: 'Success',
+			statusCode: 1
+		}
 	}
 }
