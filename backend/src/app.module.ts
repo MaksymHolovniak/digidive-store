@@ -10,6 +10,7 @@ import { BrandModule } from './brand/brand.module'
 import { CategoryModule } from './category/category.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { CartModule } from './cart/cart.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { join } from 'path'
 		ProductModule,
 		BrandModule,
 		CategoryModule,
+		CartModule,
 	],
 	controllers: [AppController],
 	providers: [AppService]
