@@ -67,8 +67,18 @@ model Brand {
 
 model Category {
   id Int @id @default(autoincrement())
-  name String @unique
+  name String 
+  imagePath String? @map("image_path")
+
+  parentId Int? @map("parent_id")
+
+  parent Category? @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+
   products Product[]
+
+  @@index([parentId])
+  @@unique([name, parentId])
 }
 
 model Favorite {
