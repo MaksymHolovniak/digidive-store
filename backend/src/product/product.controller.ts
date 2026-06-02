@@ -44,7 +44,7 @@ export class ProductController {
 
 	@UsePipes(new ValidationPipe({ transform: true }))
 	@HttpCode(201)
-	@Auth()
+	@Auth('admin')
 	@Post()
 	@UseInterceptors(
 		FileInterceptor('image', {
@@ -66,7 +66,7 @@ export class ProductController {
 	}
 
 	@UsePipes(new ValidationPipe({ transform: true }))
-	@Auth()
+	@Auth('admin')
 	@Patch(':id')
 	@UseInterceptors(
 		FileInterceptor('image', {
@@ -88,7 +88,7 @@ export class ProductController {
 		return this.productService.updateProduct(+id, dto, imagePath)
 	}
 
-	@Auth()
+	@Auth('admin')
 	@Delete(':id')
 	async deleteProduct(@Param('id') id: string) {
 		return this.productService.deleteProduct(+id)

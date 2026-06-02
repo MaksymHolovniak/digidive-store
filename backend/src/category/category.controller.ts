@@ -26,7 +26,7 @@ export class CategoryController {
 		return this.categoryService.getAll()
 	}
 
-	@Auth()
+	@Auth('admin')
 	@Post()
 	@UsePipes(new ValidationPipe())
 	@UseInterceptors(
@@ -49,7 +49,7 @@ export class CategoryController {
 		return this.categoryService.createCategory(dto, imagePath)
 	}
 
-	@Auth()
+	@Auth('admin')
 	@Patch(':id')
 	@UseInterceptors(
 		FileInterceptor('image', {
