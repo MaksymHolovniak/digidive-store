@@ -1,7 +1,15 @@
-import { IsInt, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from "class-validator";
-import { Prisma } from "../../../generated/prisma/client";
-import { Decimal } from "@prisma/client/runtime/index-browser";
-import { Transform } from "class-transformer";
+import {
+	IsInt,
+	IsNumber,
+	IsOptional,
+	IsString,
+	MaxLength,
+	Min,
+	MinLength
+} from 'class-validator'
+import { Prisma } from '../../../generated/prisma/client'
+import { Decimal } from '@prisma/client/runtime/index-browser'
+import { Transform } from 'class-transformer'
 
 export class CreateProductDto implements Prisma.ProductUpdateInput {
 	@IsString()
@@ -21,6 +29,12 @@ export class CreateProductDto implements Prisma.ProductUpdateInput {
 	@IsInt()
 	@Min(0)
 	stock: number
+
+	@IsOptional()
+	@Transform(({ value }) => Number(value))
+	@IsNumber()
+	@Min(0)
+	warrantyMonths?: number
 
 	@Transform(({ value }) => Number(value))
 	@IsInt()
@@ -59,6 +73,15 @@ export class UpdateProductDto implements Prisma.ProductUpdateInput {
 	@IsInt()
 	@Min(0)
 	stock?: number
+
+	@IsOptional()
+	@Transform(({ value }) => {
+		if (value === undefined || value === '') return undefined
+		return Number(value)
+	})
+	@IsNumber()
+	@Min(0)
+	warrantyMonths?: number
 
 	@IsOptional()
 	@Transform(({ value }) => {

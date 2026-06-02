@@ -163,6 +163,7 @@ export class ProductService {
 				imagePath: imagePath || '',
 				price: dto.price,
 				stock: dto.stock,
+				warrantyMonths: dto.warrantyMonths ? +dto.warrantyMonths : 0,
 				brandId: dto.brandId,
 				categoryId: dto.categoryId
 			},
@@ -187,6 +188,7 @@ export class ProductService {
 				imagePath: imagePath || undefined,
 				price: dto.price,
 				stock: dto.stock,
+				warrantyMonths: dto.warrantyMonths ? +dto.warrantyMonths : undefined,
 				brandId: dto.brandId,
 				categoryId: dto.categoryId
 			}

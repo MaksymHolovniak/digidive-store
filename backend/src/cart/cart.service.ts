@@ -15,7 +15,8 @@ export class CartService {
 						name: true,
 						imagePath: true,
 						price: true,
-						stock: true
+						stock: true,
+						warrantyMonths: true
 					}
 				}
 			},
@@ -32,7 +33,7 @@ export class CartService {
 		})
 
 		itemsTotal = Number(itemsTotal.toFixed(1))
-		
+
 		const DELIVERY_FEE = 5
 		const FREE_DELIVERY_THRESHOLD = 150
 
@@ -40,9 +41,9 @@ export class CartService {
 			items.length > 0 && itemsTotal < FREE_DELIVERY_THRESHOLD
 				? DELIVERY_FEE
 				: 0
-		
+
 		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(1))
-		
+
 		return {
 			items,
 			itemsTotal,

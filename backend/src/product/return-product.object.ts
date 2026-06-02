@@ -9,6 +9,7 @@ export const productReturnObject: Prisma.ProductSelect = {
 	description: true,
 	price: true,
 	stock: true,
+	warrantyMonths: true,
 	category: {
 		select: categoryReturnObject
 	},
