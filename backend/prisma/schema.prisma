@@ -114,7 +114,10 @@ model Order {
   userId Int @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
   totalPrice Decimal @db.Decimal(10,2) @map("total_price")
+  deliveryFee Decimal @db.Decimal(10,2) @default(0) @map("delivery_fee")
+
   user User @relation(fields: [userId], references: [id])
   status OrderStatus @default(PENDING)
 

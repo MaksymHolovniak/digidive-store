@@ -23,11 +23,11 @@ export class OrderService {
 		if (!user) throw new NotFoundException('User not found')
 		if (user.cart.length === 0) throw new NotFoundException('Cart is empty')
 
-		let totalPrice = 0
+		let itemsTotal = 0
 
 		const orderItems = user.cart.map(item => {
 			const itemTotal = item.product.price.toNumber() * item.quantity
-			totalPrice += itemTotal
+			itemsTotal += itemTotal
 
 			return {
 				productId: item.productId,
@@ -35,6 +35,15 @@ export class OrderService {
 				price: item.product.price
 			}
 		})
+
+		itemsTotal = Number(itemsTotal.toFixed(1))
+
+		const DELIVERY_FEE = 5
+		const FREE_DELIVERY_THRESHOLD = 150
+
+		const deliveryFee = itemsTotal < FREE_DELIVERY_THRESHOLD ? DELIVERY_FEE : 0
+
+		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(1))
 
 		const order = await this.prisma.order.create({
 			data: {
@@ -47,6 +56,7 @@ export class OrderService {
 				city: dto.city,
 				phone: dto.phone,
 				totalPrice,
+				deliveryFee,
 				items: {
 					create: orderItems
 				}
@@ -103,20 +113,20 @@ export class OrderService {
 		if (!order) throw new NotFoundException('Order not found')
 
 		return order
-    }
-    
-    async updateStatus(id: number, dto: UpdateOrderStatudDto) {
-        const order = await this.prisma.order.findUnique({
-            where: { id }
-        })
+	}
 
-        if (!order) throw new NotFoundException('Order not found')
-        
-        return this.prisma.order.update({
-            where: { id },
-            data: {
-                status: dto.status
-            }
-        })
-    }
+	async updateStatus(id: number, dto: UpdateOrderStatudDto) {
+		const order = await this.prisma.order.findUnique({
+			where: { id }
+		})
+
+		if (!order) throw new NotFoundException('Order not found')
+
+		return this.prisma.order.update({
+			where: { id },
+			data: {
+				status: dto.status
+			}
+		})
+	}
 }
