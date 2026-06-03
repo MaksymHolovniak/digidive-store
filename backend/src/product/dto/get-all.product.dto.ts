@@ -1,6 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator'
 import { PaginationDto } from '../../pagination/pagination.dto'
-import { Transform } from 'class-transformer'
 
 export enum EnumProductSort {
 	CHEAPER = 'cheaper',
@@ -20,8 +19,4 @@ export class GetAllProductDto extends PaginationDto {
 	@IsOptional()
 	@IsString()
 	brand?: string
-
-	@IsOptional()
-	@Transform(({ value }) => Number(value))
-	categoryId?: number
 }

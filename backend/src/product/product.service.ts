@@ -30,8 +30,8 @@ export class ProductService {
 		}
 	}
 
-	async getAll(dto: GetAllProductDto = {}) {
-		const { sort, searchTerm, brand, categoryId } = dto
+	async getAll(categoryId: number, dto: GetAllProductDto = {}) {
+		const { sort, searchTerm, brand } = dto
 
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 

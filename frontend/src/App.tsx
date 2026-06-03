@@ -23,7 +23,7 @@ const App = () => {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:categoryId" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
 
             <Route element={<ProtectedRoute />}>

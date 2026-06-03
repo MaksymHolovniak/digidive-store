@@ -3,9 +3,10 @@ import s from "./Header.module.css";
 import freeShippingBanner from "./../../../assets/free-shipping-banner.jpg";
 import { useState } from "react";
 import { useGetCategoriesQuery } from "@/store/api/category.api";
-
+import { useNavigate } from "react-router-dom";
 
 const HeaderProductsMenu = () => {
+  const navigate = useNavigate();
   const [isOpen, changeOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
@@ -23,6 +24,11 @@ const HeaderProductsMenu = () => {
 
   const handleItemSelected = (itemName: number) => {
     setSelectedItem(itemName);
+  };
+
+  const handleNavigation = (id: number) => {
+    navigate(`/products/${id}`);
+    handleClose();
   };
 
   const selectedCategory = categories.find((c) => c.id === selectedItem);
@@ -77,7 +83,9 @@ const HeaderProductsMenu = () => {
                   key={category.id}
                   _focus={{ bg: "#FFF" }}
                   _hover={{ bg: "#E4D9FD", borderRadius: "8px" }}
+                  cursor='pointer'
                   onMouseEnter={() => handleItemSelected(category.id)}
+                  onClick={() => handleNavigation(category.id)}
                 >
                   {category.name}
                 </Menu.Item>
@@ -90,9 +98,11 @@ const HeaderProductsMenu = () => {
                   direction="column"
                   textAlign="center"
                   p="20px"
+                  h="326px"
                   bg="#F8F9FA"
                   borderRadius="16px"
-                  h="326px"
+                  cursor="pointer"
+                  onClick={() => handleNavigation(selectedCategory.id)}
                 >
                   <Image
                     src={
@@ -123,19 +133,20 @@ const HeaderProductsMenu = () => {
                   columnGap="40px"
                   rowGap="8px"
                   align="flex-start"
-                  pt='24px'
+                  pt="24px"
                 >
                   {selectedCategory.children?.map((subCategory) => (
                     <Box
                       key={subCategory.id}
+                      maxW="350px"
                       fontSize="16px"
                       color="#1D1D1D"
-                      cursor="pointer"
-                      maxW='350px'
                       _hover={{
                         color: "#9169F7",
                         textDecoration: "underline",
                       }}
+                      cursor="pointer"
+                      onClick={() => handleNavigation(subCategory.id)}
                     >
                       {subCategory.name}
                     </Box>

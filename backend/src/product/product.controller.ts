@@ -26,10 +26,10 @@ import { extname, join } from 'path'
 export class ProductController {
 	constructor(private readonly productService: ProductService) {}
 
-	@UsePipes(new ValidationPipe({ transform: true }))
-	@Get()
-	async getAll(@Query() queryDto: GetAllProductDto) {
-		return this.productService.getAll(queryDto)
+	@UsePipes(new ValidationPipe())
+	@Get(':categoryId')
+	async getAll(@Param('categoryId') categoryId: string,  @Query() queryDto: GetAllProductDto) {
+		return this.productService.getAll(+categoryId, queryDto)
 	}
 
 	@Get(':id')
