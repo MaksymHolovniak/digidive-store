@@ -1,10 +1,12 @@
 import { Heading, Image, Stack } from "@chakra-ui/react";
-import smartSecurityImg from "../../../assets/headerCategoriesImages/smart-security.jpg";
 
 const FiltersHeader = () => {
   return (
     <Stack gap="12px" p="20px" mb="20px">
-      <Image src={smartSecurityImg} alt="Security Cameras" />
+      <Image
+        src={`http://localhost:4200/uploads/categories/1780496749552-386892379.jpg`}
+        alt="Security Cameras"
+      />
       <Heading
         fontWeight="600"
         textAlign="center"

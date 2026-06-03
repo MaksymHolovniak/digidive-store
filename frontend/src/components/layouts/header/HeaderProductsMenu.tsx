@@ -1,33 +1,16 @@
 import { Box, Button, Flex, Image, Menu } from "@chakra-ui/react";
 import s from "./Header.module.css";
-import categories from "../../../data/categories.json";
 import freeShippingBanner from "./../../../assets/free-shipping-banner.jpg";
 import { useState } from "react";
-import smartSecurityImg from "./../../../assets/headerCategoriesImages/smart-security.jpg";
-import smartOfficeImg from "./../../../assets/headerCategoriesImages/smart-office.jpg";
-import lightingImg from "./../../../assets/headerCategoriesImages/lighting-techology.jpg";
-import audioVideoImg from "./../../../assets/headerCategoriesImages/audio-video.jpg";
-import poolAutomationImg from "./../../../assets/headerCategoriesImages/pool-automation.jpg";
-import homeDevicesImg from "./../../../assets/headerCategoriesImages/home-devices.jpg";
-import homeSystemsImg from "./../../../assets/headerCategoriesImages/home-systems.jpg";
-import buildingAutomationImg from "./../../../assets/headerCategoriesImages/building-automation.jpg";
-import fireProtectionImg from "./../../../assets/headerCategoriesImages/fire-protection.jpg";
+import { useGetCategoriesQuery } from "@/store/api/category.api";
 
-const imageMap = {
-  "smart-security": smartSecurityImg,
-  "smart-office": smartOfficeImg,
-  "lighting-technology": lightingImg,
-  "audio-video": audioVideoImg,
-  "pool-automation": poolAutomationImg,
-  "home-devices": homeDevicesImg,
-  "home-systems": homeSystemsImg,
-  "building-automation": buildingAutomationImg,
-  "fire-protection": fireProtectionImg,
-};
 
 const HeaderProductsMenu = () => {
   const [isOpen, changeOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
+
+  const { data: categories = [] } = useGetCategoriesQuery();
+  const BASE_URL = "http://localhost:4200";
 
   const handleOpen = () => {
     changeOpen(true);
@@ -56,7 +39,6 @@ const HeaderProductsMenu = () => {
           color: "#9169F7",
           textDecoration: "underline",
         }}
-  
         onMouseEnter={handleOpen}
         onMouseLeave={handleClose}
         gap="0px"
@@ -88,7 +70,7 @@ const HeaderProductsMenu = () => {
             <Box>
               {categories.map((category) => (
                 <Menu.Item
-                  value={category.title}
+                  value={category.name}
                   w="288px"
                   fontSize="16px"
                   p="8px 12px"
@@ -97,37 +79,68 @@ const HeaderProductsMenu = () => {
                   _hover={{ bg: "#E4D9FD", borderRadius: "8px" }}
                   onMouseEnter={() => handleItemSelected(category.id)}
                 >
-                  {category.title}
+                  {category.name}
                 </Menu.Item>
               ))}
             </Box>
             {selectedCategory ? (
-              <Flex
-                gap="24px"
-                direction="column"
-                textAlign="center"
-                p="20px"
-                bg="#F8F9FA"
-                borderRadius="16px"
-                h="326px"
-              >
-                <Image
-                  src={imageMap[selectedCategory.image as keyof typeof imageMap]}
-                  w="200px"
-                  h="202px"
-                  alt="categoryImage"
-                />
-                <Box
-                  fontSize="20px"
-                  fontWeight="600"
-                  background="linear-gradient(104deg, #5FD8FF -7%, #9969FF 42.06%, #FF4B4B 91.11%)"
-                  backgroundClip="text"
-                  maxW="200px"
-                  as={"p"}
-                  letterSpacing="-0.6px"
+              <Flex gap="48px" w="100%">
+                <Flex
+                  gap="24px"
+                  direction="column"
+                  textAlign="center"
+                  p="20px"
+                  bg="#F8F9FA"
+                  borderRadius="16px"
+                  h="326px"
                 >
-                  {selectedCategory?.title}
-                </Box>
+                  <Image
+                    src={
+                      selectedCategory.imagePath
+                        ? `${BASE_URL}${selectedCategory.imagePath}`
+                        : freeShippingBanner
+                    }
+                    w="200px"
+                    h="202px"
+                    alt="categoryImage"
+                  />
+                  <Box
+                    fontSize="20px"
+                    fontWeight="600"
+                    background="linear-gradient(104deg, #5FD8FF -7%, #9969FF 42.06%, #FF4B4B 91.11%)"
+                    backgroundClip="text"
+                    maxW="200px"
+                    as={"p"}
+                    letterSpacing="-0.6px"
+                  >
+                    {selectedCategory?.name}
+                  </Box>
+                </Flex>
+                <Flex
+                  direction="column"
+                  flexWrap="wrap"
+                  maxH="280px"
+                  columnGap="40px"
+                  rowGap="8px"
+                  align="flex-start"
+                  pt='24px'
+                >
+                  {selectedCategory.children?.map((subCategory) => (
+                    <Box
+                      key={subCategory.id}
+                      fontSize="16px"
+                      color="#1D1D1D"
+                      cursor="pointer"
+                      maxW='350px'
+                      _hover={{
+                        color: "#9169F7",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {subCategory.name}
+                    </Box>
+                  ))}
+                </Flex>
               </Flex>
             ) : (
               <Image
