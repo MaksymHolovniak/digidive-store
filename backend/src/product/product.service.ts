@@ -31,13 +31,13 @@ export class ProductService {
 	}
 
 	async getAll(dto: GetAllProductDto = {}) {
-		const { sort, searchTerm, brand } = dto
+		const { sort, searchTerm, brand, categoryId } = dto
 
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
 		switch (sort) {
 			case EnumProductSort.Alphabetical:
-				prismaSort.push({ name: 'desc' })
+				prismaSort.push({ name: 'asc' })
 				break
 			case EnumProductSort.EXPENSIVE:
 				prismaSort.push({ price: 'desc' })
@@ -48,6 +48,28 @@ export class ProductService {
 			default:
 				prismaSort.push({ id: 'desc' })
 				break
+		}
+
+		let prismaCategoryFilter: Prisma.ProductWhereInput = {}
+
+		if (categoryId) {
+			const category = await this.prisma.category.findUnique({
+				where: { id: categoryId },
+				include: { children: true }
+			})
+
+			if (category) {
+				const categoryIds = [
+					category.id,
+					...category.children.map(child => child.id)
+				]
+
+				prismaCategoryFilter = {
+					categoryId: {
+						in: categoryIds
+					}
+				}
+			}
 		}
 
 		const prismaSearchTermFilter: Prisma.ProductWhereInput = searchTerm
@@ -88,10 +110,16 @@ export class ProductService {
 
 		const { perPage, skip } = this.pagination.getPagination(dto)
 
+		const whereFilters: Prisma.ProductWhereInput = {
+			AND: [
+				prismaSearchTermFilter,
+				prismaSearchBrandFilter,
+				prismaCategoryFilter
+			]
+		}
+
 		const products = await this.prisma.product.findMany({
-			where: {
-				AND: [prismaSearchTermFilter, prismaSearchBrandFilter]
-			},
+			where: whereFilters,
 			select: productGetReturnObject,
 			orderBy: prismaSort,
 			skip,
@@ -101,9 +129,7 @@ export class ProductService {
 		return {
 			products,
 			length: await this.prisma.product.count({
-				where: {
-					AND: [prismaSearchTermFilter, prismaSearchBrandFilter]
-				}
+				where: whereFilters
 			})
 		}
 	}
@@ -173,7 +199,11 @@ export class ProductService {
 		return product
 	}
 
-	async updateProduct(id: number, dto: UpdateProductDto, imagePath?: string | null) {
+	async updateProduct(
+		id: number,
+		dto: UpdateProductDto,
+		imagePath?: string | null
+	) {
 		const product = await this.byId(id)
 
 		if (imagePath && product.imagePath) {
