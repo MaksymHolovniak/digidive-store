@@ -27,7 +27,7 @@ const SimilarProductsSection = () => {
         </Flex>
         <Grid templateColumns="repeat(auto-fit, minmax(230px, 1fr))" gap="24px">
           {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </Grid>
       </Stack>

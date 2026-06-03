@@ -27,8 +27,11 @@ export class ProductController {
 	constructor(private readonly productService: ProductService) {}
 
 	@UsePipes(new ValidationPipe())
-	@Get(':categoryId')
-	async getAll(@Param('categoryId') categoryId: string,  @Query() queryDto: GetAllProductDto) {
+	@Get('by-category/:categoryId')
+	async getAll(
+		@Param('categoryId') categoryId: string,
+		@Query() queryDto: GetAllProductDto
+	) {
 		return this.productService.getAll(+categoryId, queryDto)
 	}
 

@@ -4,21 +4,19 @@ import AddToCartButton from "./AddToCartButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import FavoriteButton from "@/components/ui/FavoriteButton";
+import type { Product } from "@/types/product.types";
+import { BASE_URL } from "@/constants/api.constants";
 
 type ProductCardProps = {
-  id: number;
-  name: string;
-  price: number;
-  sale?: number;
-  description: string;
+  product: Product;
 };
 
-const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleNavigate = () => {
-    navigate(`/product/${id}`);
+    navigate(`/product/${product.id}`);
   };
 
   return (
@@ -36,11 +34,21 @@ const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) =
         cursor: "pointer",
       }}
     >
-      <Box w="100%" maxW="200px">
-        <Image w="100%" src={testProductItem} alt={name} />
+      <Box w="100%" maxW="200px" h="202px" overflow="hidden">
+        <Image
+          w="100%"
+          h="100%"
+          objectFit="contain"
+          src={
+            product.imagePath
+              ? `${BASE_URL}${product.imagePath}`
+              : testProductItem
+          }
+          alt={product.name}
+        />
       </Box>
       <Heading as="h3" fontSize="16px" fontWeight="300" lineHeight="110%">
-        {name}
+        {product.brand.name}
       </Heading>
       <Flex gap="8px" direction="column">
         <Text
@@ -52,19 +60,18 @@ const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) =
           letterSpacing="-0.48px"
           textAlign="center"
         >
-          {description}
+          {product.name}
         </Text>
-        <Flex fontSize="18px" align="center" justify="center" gap="8px" color="#464646">
-          {sale ? (
-            <>
-              <Text>${sale}</Text>
-              <Text as="del" fontSize="14px" color="#919191">
-                ${price}
-              </Text>
-            </>
-          ) : (
-            <>${price}</>
-          )}
+        <Flex
+          fontSize="18px"
+          align="center"
+          justify="center"
+          gap="8px"
+          color="#464646"
+        >
+          <Text fontSize="18px" color="#464646">
+            ${product.price}
+          </Text>
         </Flex>
         <Flex onClick={(e) => e.stopPropagation()} align="center" gap="24px">
           <AddToCartButton w="100%" />

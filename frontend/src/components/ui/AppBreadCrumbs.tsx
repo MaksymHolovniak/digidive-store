@@ -6,16 +6,24 @@ import ArrowRight from "../../assets/arrow-right.svg?react";
 type BreadcrumbsProps = {
   secondPage: string;
   secondPagePath: string;
-  thirdPage: string;
+  thirdPage?: string;
 };
 
-const AppBreadcrumbs = ({ secondPage, secondPagePath, thirdPage }: BreadcrumbsProps) => {
+const AppBreadcrumbs = ({
+  secondPage,
+  secondPagePath,
+  thirdPage,
+}: BreadcrumbsProps) => {
   return (
     <Box>
       <Breadcrumb.Root>
         <Breadcrumb.List fontSize="16px">
           <Breadcrumb.Item>
-            <Breadcrumb.Link asChild _hover={{ textDecoration: "none" }} textDecoration="underline">
+            <Breadcrumb.Link
+              asChild
+              _hover={{ textDecoration: "none" }}
+              textDecoration="underline"
+            >
               <Link to="/">
                 <Flex align="center" gap="6px">
                   <HomeIcon />
@@ -34,16 +42,30 @@ const AppBreadcrumbs = ({ secondPage, secondPagePath, thirdPage }: BreadcrumbsPr
             <ArrowRight />
           </Breadcrumb.Separator>
           <Breadcrumb.Item>
-            <Breadcrumb.Link asChild color="#919191" textDecoration="underline">
-              <Link to={secondPagePath}>{secondPage}</Link>
-            </Breadcrumb.Link>
+            {thirdPage ? (
+              <Breadcrumb.Link
+                asChild
+                color="#919191"
+                textDecoration="underline"
+              >
+                <Link to={secondPagePath}>{secondPage}</Link>
+              </Breadcrumb.Link>
+            ) : (
+              <Breadcrumb.CurrentLink>
+                {secondPage}
+              </Breadcrumb.CurrentLink>
+            )}
           </Breadcrumb.Item>
-          <Breadcrumb.Separator>
-            <ArrowRight />
-          </Breadcrumb.Separator>
-          <Breadcrumb.Item>
-            <Breadcrumb.CurrentLink>{thirdPage}</Breadcrumb.CurrentLink>
-          </Breadcrumb.Item>
+          {thirdPage && (
+            <>
+              <Breadcrumb.Separator>
+                <ArrowRight />
+              </Breadcrumb.Separator>
+              <Breadcrumb.Item>
+                <Breadcrumb.CurrentLink>{thirdPage}</Breadcrumb.CurrentLink>
+              </Breadcrumb.Item>
+            </>
+          )}
         </Breadcrumb.List>
       </Breadcrumb.Root>
     </Box>

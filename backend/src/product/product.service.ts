@@ -46,7 +46,7 @@ export class ProductService {
 				prismaSort.push({ price: 'asc' })
 				break
 			default:
-				prismaSort.push({ id: 'desc' })
+				prismaSort.push({ id: 'asc' })
 				break
 		}
 

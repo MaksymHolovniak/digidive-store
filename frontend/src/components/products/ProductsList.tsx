@@ -1,12 +1,26 @@
-import { Grid } from "@chakra-ui/react";
+import { Center, Grid, Text } from "@chakra-ui/react";
 import ProductCard from "../product/product-card/ProductCard";
-import products from "../../data/products.json";
+import type { Product } from "@/types/product.types";
 
-const ProductsList = () => {
+type ProductsListProps = {
+  products: Product[];
+}
+
+const ProductsList = ({ products }: ProductsListProps) => {
+  if (products.length === 0) {
+    return (
+      <Center py="40px">
+        <Text fontSize="18px" color="#1D1D1D">
+          No products found in this category.
+        </Text>
+      </Center>
+    );
+  }
+
   return (
     <Grid templateColumns="repeat(auto-fill, minmax(230px, 1fr))" gap="48px">
       {products.map((product) => (
-        <ProductCard key={product.id} {...product} />
+        <ProductCard key={product.id} product={product} />
       ))}
     </Grid>
   );
