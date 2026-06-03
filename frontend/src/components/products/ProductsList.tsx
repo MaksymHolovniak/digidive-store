@@ -11,7 +11,7 @@ const ProductsList = ({ products }: ProductsListProps) => {
     return (
       <Center py="40px">
         <Text fontSize="18px" color="#1D1D1D">
-          No products found in this category.
+          No products found.
         </Text>
       </Center>
     );

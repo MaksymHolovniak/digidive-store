@@ -1,21 +1,25 @@
+import { BASE_URL } from "@/constants/api.constants";
+import type { Category } from "@/types/category.types";
 import { Heading, Image, Stack } from "@chakra-ui/react";
 
-const FiltersHeader = () => {
+type FiltersHeaderProps = {
+  currentCategory: Category;
+};
+
+const FiltersHeader = ({ currentCategory }: FiltersHeaderProps) => {
   return (
     <Stack gap="12px" p="20px" mb="20px">
-      <Image
-        src={`http://localhost:4200/uploads/categories/1780496749552-386892379.jpg`}
-        alt="Security Cameras"
-      />
+      <Image src={`${BASE_URL}${currentCategory.imagePath}`} alt={currentCategory.name} />
       <Heading
         fontWeight="600"
         textAlign="center"
         fontSize="20px"
         background="linear-gradient(104deg, #5FD8FF -7%, #9969FF 42.06%, #FF4B4B 91.11%)"
         backgroundClip="text"
+        color="transparent"
         as="h1"
       >
-        Security Cameras
+        {currentCategory.name}
       </Heading>
     </Stack>
   );

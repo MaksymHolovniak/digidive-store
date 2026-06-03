@@ -24,4 +24,13 @@ export type GetProductsArgs = {
   sort?: string;
   searchTerm?: string;
   brand?: string;
+  minPrice?: number;
+  maxPrice?: number;
+};
+
+export type FilterState = {
+  searchTerm: string;
+  brand: string;
+  minPrice: string;
+  maxPrice: string;
 };

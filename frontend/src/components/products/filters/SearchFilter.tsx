@@ -1,7 +1,12 @@
 import { Accordion, Input, Span } from "@chakra-ui/react";
 import AccordionItemIndicator from "./AccordionItemIndicator";
 
-const SearchFilter = () => {
+type SearchFilterProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+const SearchFilter = ({ value, onChange }: SearchFilterProps) => {
   return (
     <Accordion.Item value="search-keyword">
       <Accordion.ItemTrigger p="18px 16px 18px 4px" fontWeight="600" cursor="pointer">
@@ -16,6 +21,8 @@ const SearchFilter = () => {
           w="100%"
           maxW="238px"
           fontSize="16px"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
         />
       </Accordion.ItemContent>
     </Accordion.Item>
