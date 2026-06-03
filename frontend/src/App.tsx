@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme.ts";
 import MainLayout from "./components/layouts/MainLayout";
 import { lazy } from "react";
+import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
 
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
@@ -23,10 +24,14 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
+
+            <Route element={<ProtectedRoute />}>
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+            </Route>
           </Route>
+
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="*" element={<NotFoundPage />} />

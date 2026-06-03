@@ -1,10 +1,5 @@
+import type { AuthLayoutProps } from "@/types/auth.types";
 import { Flex } from "@chakra-ui/react";
-import type { ReactNode } from "react";
-
-type AuthLayoutProps = {
-  children: ReactNode;
-  banner: ReactNode;
-};
 
 const AuthLayout = ({ children, banner }: AuthLayoutProps) => {
   return (
@@ -14,7 +9,7 @@ const AuthLayout = ({ children, banner }: AuthLayoutProps) => {
       align="center"
       justify="center"
     >
-      <Flex w="881px" maxH="621px" h="100%" borderRadius="16px" overflow="hidden">
+      <Flex w="881px" maxH="660px" h="100%" borderRadius="16px" overflow="hidden">
         {banner}
         <Flex align="center" direction="column" maxW="440px" w="100%" p="16px 60px" bg="#fff">
           {children}
