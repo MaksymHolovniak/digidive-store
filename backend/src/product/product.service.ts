@@ -31,7 +31,7 @@ export class ProductService {
 	}
 
 	async getAll(categoryId: number, dto: GetAllProductDto = {}) {
-		const { sort, searchTerm, brand } = dto
+		const { sort, searchTerm, brand, minPrice, maxPrice } = dto
 
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
@@ -108,13 +108,23 @@ export class ProductService {
 				}
 			: {}
 
+		const prismaPriceFilter: Prisma.ProductWhereInput = {}
+
+		if (minPrice !== undefined || maxPrice !== undefined) {
+			prismaPriceFilter.price = {
+				...(minPrice !== undefined ? { gte: minPrice } : {}),
+				...(maxPrice !== undefined ? { lte: maxPrice } : {})
+			}
+		}
+
 		const { perPage, skip } = this.pagination.getPagination(dto)
 
 		const whereFilters: Prisma.ProductWhereInput = {
 			AND: [
 				prismaSearchTermFilter,
 				prismaSearchBrandFilter,
-				prismaCategoryFilter
+				prismaCategoryFilter,
+				prismaPriceFilter
 			]
 		}
 
