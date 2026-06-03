@@ -18,7 +18,7 @@ const ProductCard = ({ id, name, description, price, sale }: ProductCardProps) =
   const [isFavorite, setIsFavorite] = useState(false);
 
   const handleNavigate = () => {
-    navigate(`/products/${id}`);
+    navigate(`/product/${id}`);
   };
 
   return (

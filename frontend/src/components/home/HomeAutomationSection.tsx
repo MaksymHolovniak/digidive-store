@@ -10,7 +10,7 @@ const HomeAutomationSection = () => {
   const navigate = useNavigate();
 
   const handleOnClick = () => {
-    navigate(`products/${AUTOMATION_SYSTEM_CATEGORY_ID}`);
+    navigate(`/products/${AUTOMATION_SYSTEM_CATEGORY_ID}`);
   };
 
   return (

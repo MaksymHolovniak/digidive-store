@@ -11,7 +11,7 @@ const HomeHero = () => {
   const navigate = useNavigate();
 
   const handleOnClick = () => {
-    navigate(`products/${SMART_CLEANING_CATEGORY_ID}`);
+    navigate(`/products/${SMART_CLEANING_CATEGORY_ID}`);
   };
 
   return (
