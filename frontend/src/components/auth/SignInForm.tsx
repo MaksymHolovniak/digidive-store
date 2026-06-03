@@ -1,4 +1,4 @@
-import { Box, Checkbox, Field} from "@chakra-ui/react";
+import { Box, Checkbox, Field } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
 import AppInput from "../ui/AppInput";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { setUser } from "@/store/slices/auth.slice";
 import type { AuthDto, FetchBaseQueryError } from "@/types/auth.types";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../ui/toaster";
 
 const SignInForm = () => {
   const dispatch = useDispatch();
@@ -35,10 +36,23 @@ const SignInForm = () => {
 
       const response = await login(formattedData).unwrap();
       dispatch(setUser(response.user));
+
+      toaster.create({
+        title: "Success",
+        description: "You have successfully logged in!",
+        type: "success",
+      });
+
       navigate("/");
     } catch (error) {
       const err = error as FetchBaseQueryError;
-      alert(err?.data?.message || "Authorization error");
+      const errorMessage = err.data?.message || "Authorization error";
+
+      toaster.create({
+        title: "Login Error",
+        description: errorMessage,
+        type: "error",
+      });
     }
   });
 

@@ -5,6 +5,7 @@ import theme from "./theme.ts";
 import MainLayout from "./components/layouts/MainLayout";
 import { lazy } from "react";
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
+import { Toaster } from "./components/ui/toaster.tsx";
 
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
@@ -36,6 +37,8 @@ const App = () => {
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+
+        <Toaster />
       </ChakraProvider>
     </BrowserRouter>
   );

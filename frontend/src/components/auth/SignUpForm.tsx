@@ -7,6 +7,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { setUser } from "@/store/slices/auth.slice";
 import type { FetchBaseQueryError, SignUpFormValues } from "@/types/auth.types";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../ui/toaster";
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
@@ -31,10 +32,22 @@ const SignUpForm = () => {
       const response = await registerUser({ email, password }).unwrap();
 
       dispatch(setUser(response.user));
+
+      toaster.create({
+        title: "Success",
+        description: "Your account has been successfully created!",
+        type: "success",
+      });
       navigate("/");
     } catch (error) {
       const err = error as FetchBaseQueryError;
-      alert(err.data?.message || "Error during registration");
+      const errorMessage = err.data?.message || "Authorization error";
+
+      toaster.create({
+        title: "Registration Error",
+        description: errorMessage,
+        type: "error",
+      });
     }
   });
 
