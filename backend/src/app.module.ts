@@ -10,14 +10,20 @@ import { BrandModule } from './brand/brand.module'
 import { CategoryModule } from './category/category.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
-import { CartModule } from './cart/cart.module';
-import { OrderModule } from './order/order.module';
+import { CartModule } from './cart/cart.module'
+import { OrderModule } from './order/order.module'
+import { ServerResponse } from 'http'
 
 @Module({
 	imports: [
 		ServeStaticModule.forRoot({
 			rootPath: join(process.cwd(), 'uploads'),
-			serveRoot: '/uploads'
+			serveRoot: '/uploads',
+			serveStaticOptions: {
+				setHeaders: (res: ServerResponse) => {
+					res.setHeader('Cache-Control', 'public, max-age=2592000, immutable')
+				}
+			}
 		}),
 		ConfigModule.forRoot(),
 		AuthModule,
@@ -27,7 +33,7 @@ import { OrderModule } from './order/order.module';
 		BrandModule,
 		CategoryModule,
 		CartModule,
-		OrderModule,
+		OrderModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
