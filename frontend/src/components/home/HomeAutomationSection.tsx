@@ -2,8 +2,17 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import AppContainer from "../ui/AppContainer";
 import homeAutomationBg from "../../assets/home-automation-bg.jpg";
 import AppButton from "../ui/AppButton";
+import { useNavigate } from "react-router-dom";
+
+const AUTOMATION_SYSTEM_CATEGORY_ID = 8;
 
 const HomeAutomationSection = () => {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    navigate(`products/${AUTOMATION_SYSTEM_CATEGORY_ID}`);
+  };
+
   return (
     <Box as="section">
       <AppContainer>
@@ -19,13 +28,25 @@ const HomeAutomationSection = () => {
           borderRadius="16px"
           color="white"
         >
-          <Heading fontSize="42px" lineHeight="110%" maxW="570px" textAlign="center" mb="16px">
+          <Heading
+            fontSize="42px"
+            lineHeight="110%"
+            maxW="570px"
+            textAlign="center"
+            mb="16px"
+          >
             Start your Smart Home adventure
           </Heading>
           <Text fontSize="20px" mb="64px">
             First steps with smart home automation
           </Text>
-          <AppButton fontSize="16px" w="200px" h="40px" borderRadius="8px">
+          <AppButton
+            fontSize="16px"
+            w="200px"
+            h="40px"
+            borderRadius="8px"
+            onClick={handleOnClick}
+          >
             Discover
           </AppButton>
         </Flex>

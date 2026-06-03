@@ -3,13 +3,22 @@ import homeHeroBg from "../../assets/home-hero-bg.jpg";
 import AppButton from "@/components/ui/AppButton";
 import { LuChevronRight } from "react-icons/lu";
 import AppContainer from "@/components/ui/AppContainer";
+import { useNavigate } from "react-router-dom";
+
+const SMART_CLEANING_CATEGORY_ID = 52;
 
 const HomeHero = () => {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    navigate(`products/${SMART_CLEANING_CATEGORY_ID}`);
+  };
+
   return (
     <Box
       as="section"
       bgImage={`url(${homeHeroBg})`}
-      bgPos='center'
+      bgPos="center"
       bgRepeat="no-repeat"
       bgSize="cover"
       color="white"
@@ -19,7 +28,13 @@ const HomeHero = () => {
         <Text fontWeight="600" mb="32px">
           Advanced Robot Vacuums for Everyday Comfort
         </Text>
-        <Heading fontSize="64px" lineHeight="106%" mb="20px" maxW="700px" as="h1">
+        <Heading
+          fontSize="64px"
+          lineHeight="106%"
+          mb="20px"
+          maxW="700px"
+          as="h1"
+        >
           <Span
             background="linear-gradient(131deg, #5fd8ff 0%, #9969ff 64.41%, #704fe5 100%)"
             backgroundClip="text"
@@ -31,7 +46,7 @@ const HomeHero = () => {
         <Text fontSize="20px" mb="32px">
           Top Picks <Span color="#EC5851">Available Now</Span>
         </Text>
-        <AppButton fontSize="16px" w="250px" h="50px">
+        <AppButton fontSize="16px" w="250px" h="50px" onClick={handleOnClick}>
           Explore Smart Cleaning <LuChevronRight />
         </AppButton>
       </AppContainer>

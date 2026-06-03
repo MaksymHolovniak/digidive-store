@@ -4,6 +4,7 @@ import freeShippingBanner from "./../../../assets/free-shipping-banner.jpg";
 import { useState } from "react";
 import { useGetCategoriesQuery } from "@/store/api/category.api";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "@/constants/api.constants";
 
 const HeaderProductsMenu = () => {
   const navigate = useNavigate();
@@ -11,7 +12,6 @@ const HeaderProductsMenu = () => {
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
   const { data: categories = [] } = useGetCategoriesQuery();
-  const BASE_URL = "http://localhost:4200";
 
   const handleOpen = () => {
     changeOpen(true);

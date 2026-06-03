@@ -6,8 +6,13 @@ import ProductsSorting from "@/components/products/sorting/ProductsSorting";
 import AppBreadcrumbs from "@/components/ui/AppBreadCrumbs";
 import AppContainer from "@/components/ui/AppContainer";
 import { Box, Flex } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 const ProductsPage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+
   return (
     <Box pt="20px" pb="96px">
       <ProductsHeroVideo />
