@@ -90,7 +90,7 @@ const ProductsPage = () => {
               }}
             />
             <Flex direction="column" gap="50px" maxW="1170px" w="100%">
-              <ProductsSorting />
+              <ProductsSorting totalItems={totalItems} />
 
               {isLoading || isFetching ? (
                 <PageLoader />

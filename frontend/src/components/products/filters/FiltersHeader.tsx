@@ -3,13 +3,13 @@ import type { Category } from "@/types/category.types";
 import { Heading, Image, Stack } from "@chakra-ui/react";
 
 type FiltersHeaderProps = {
-  currentCategory: Category;
+  currentCategory: Category | null;
 };
 
 const FiltersHeader = ({ currentCategory }: FiltersHeaderProps) => {
   return (
     <Stack gap="12px" p="20px" mb="20px">
-      <Image src={`${BASE_URL}${currentCategory.imagePath}`} alt={currentCategory.name} />
+      <Image src={`${BASE_URL}${currentCategory?.imagePath}`} alt={currentCategory?.name} />
       <Heading
         fontWeight="600"
         textAlign="center"
@@ -19,7 +19,7 @@ const FiltersHeader = ({ currentCategory }: FiltersHeaderProps) => {
         color="transparent"
         as="h1"
       >
-        {currentCategory.name}
+        {currentCategory?.name}
       </Heading>
     </Stack>
   );

@@ -2,12 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import ProductsSortPlacement from "./ProductsSortPlacement";
 import ProductsSortSelect from "./ProductsSortSelect";
 
-const ProductsSorting = () => {
+type ProductsSortingProps = {
+  totalItems: number;
+};
+
+const ProductsSorting = ({ totalItems }: ProductsSortingProps) => {
   return (
-    <Flex justify="space-between" align='center'>
+    <Flex justify="space-between" align="center">
       <ProductsSortPlacement />
       <Box color="#1D1D1D" h="21px">
-        297 products found
+        {totalItems} products found
       </Box>
       <ProductsSortSelect />
     </Flex>

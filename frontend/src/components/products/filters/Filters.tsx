@@ -9,7 +9,7 @@ import { useState } from "react";
 import type { Category } from "@/types/category.types";
 
 type FilterProps = {
-  currentCategory: Category;
+  currentCategory: Category | null;
   activeFilters: FilterState;
   onApplyFilters: (filters: FilterState) => void;
 };
