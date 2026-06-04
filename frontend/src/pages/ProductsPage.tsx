@@ -14,7 +14,7 @@ import { getBreadcrumbsData } from "@/utils/breadcrumbs.utils";
 import { getMainCategory } from "@/utils/category.utils";
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const initialFilters: FilterState = {
   searchTerm: "",
@@ -25,16 +25,29 @@ const initialFilters: FilterState = {
 
 const ProductsPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const urlSearchTerm = searchParams.get("search") || "";
 
   const [page, setPage] = useState(1);
   const [prevCategoryId, setPrevCategoryId] = useState(categoryId);
+
   const [activeFilters, setActiveFilters] = useState<FilterState>(initialFilters);
   const [sort, setSort] = useState<SortValue>("default");
   const [view, setView] = useState<GridViewType>("grid-2");
 
   const itemsPerPage = view === "grid-2" ? 8 : 12;
-
   const catalogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (urlSearchTerm) {
+      const newParams = new URLSearchParams(window.location.search);
+      if (newParams.has("search")) {
+        newParams.delete("search");
+        setSearchParams(newParams, { replace: true });
+      }
+    }
+  }, [urlSearchTerm, setSearchParams]);
 
   if (categoryId !== prevCategoryId) {
     setPrevCategoryId(categoryId);
@@ -55,24 +68,25 @@ const ProductsPage = () => {
     }
   }, [categoryId, page]);
 
+  const currentSearchTerm = urlSearchTerm || activeFilters.searchTerm;
+
   const { data, isLoading, isFetching } = useGetProductsQuery({
-    categoryId: Number(categoryId),
+    categoryId: categoryId ? Number(categoryId) : undefined,
     page,
     perPage: itemsPerPage,
     sort: sort === "default" ? undefined : sort,
-    searchTerm: activeFilters.searchTerm,
-    brand: activeFilters.brand,
+    searchTerm: currentSearchTerm || undefined,
+    brand: activeFilters.brand || undefined,
     minPrice: activeFilters.minPrice ? Number(activeFilters.minPrice) : undefined,
     maxPrice: activeFilters.maxPrice ? Number(activeFilters.maxPrice) : undefined,
   });
 
-  const { data: brands = [] } = useGetBrandsQuery()
-
+  const { data: brands = [] } = useGetBrandsQuery();
   const { data: categories = [] } = useGetCategoriesQuery();
 
-  const currentCategory = getMainCategory(categories, categoryId);
+  const currentCategory = categoryId ? getMainCategory(categories, categoryId) : null;
 
-  const { parentName, parentPath, childName } = getBreadcrumbsData(categories, categoryId);
+  const breadcrumbs = categoryId ? getBreadcrumbsData(categories, categoryId) : null;
 
   const totalItems = data?.length || 0;
 
@@ -81,16 +95,18 @@ const ProductsPage = () => {
       <ProductsHeroVideo />
       <AppContainer>
         <Flex ref={catalogRef} direction="column" gap="50px" scrollMarginTop="20px">
-          <AppBreadcrumbs
-            secondPage={parentName}
-            secondPagePath={parentPath}
-            thirdPage={childName}
-          />
+          {categoryId && breadcrumbs && (
+            <AppBreadcrumbs
+              secondPage={breadcrumbs.parentName}
+              secondPagePath={breadcrumbs.parentPath}
+              thirdPage={breadcrumbs.childName}
+            />
+          )}
           <Flex justifyContent="space-between">
             <Filters
               brands={brands}
               currentCategory={currentCategory}
-              activeFilters={activeFilters}
+              activeFilters={{ ...activeFilters, searchTerm: currentSearchTerm }}
               onApplyFilters={(filters) => {
                 setActiveFilters(filters);
                 setPage(1);

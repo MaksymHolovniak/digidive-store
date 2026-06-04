@@ -27,12 +27,14 @@ export class ProductController {
 	constructor(private readonly productService: ProductService) {}
 
 	@UsePipes(new ValidationPipe({ transform: true }))
-	@Get('by-category/:categoryId')
+	@Get(['by-category/:categoryId', 'all'])
 	async getAll(
-		@Param('categoryId') categoryId: string,
+		@Param('categoryId') categoryId: string | undefined,
 		@Query() queryDto: GetAllProductDto
 	) {
-		return this.productService.getAll(+categoryId, queryDto)
+		const parsedCategoryId =
+			categoryId && !isNaN(+categoryId) ? +categoryId : undefined
+		return this.productService.getAll(parsedCategoryId, queryDto)
 	}
 
 	@Get(':id')

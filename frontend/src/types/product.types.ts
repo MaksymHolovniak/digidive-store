@@ -28,7 +28,7 @@ export type FilterState = {
 };
 
 export type GetProductsArgs = {
-  categoryId: number;
+  categoryId?: number;
   page?: number;
   perPage?: number;
   sort?: Exclude<SortValue, "default">;

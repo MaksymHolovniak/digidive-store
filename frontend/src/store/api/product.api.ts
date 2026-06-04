@@ -1,7 +1,4 @@
-import type {
-  GetProductsArgs,
-  GetProductsResponse,
-} from "@/types/product.types";
+import type { GetProductsArgs, GetProductsResponse } from "@/types/product.types";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -11,7 +8,7 @@ export const productApi = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsResponse, GetProductsArgs>({
       query: ({ categoryId, page = 1, perPage = 9, ...rest }) => ({
-        url: `/product/by-category/${categoryId}`,
+        url: categoryId ? `/product/by-category/${categoryId}` : "/product/all",
         params: {
           page,
           perPage,
@@ -22,4 +19,4 @@ export const productApi = createApi({
   }),
 });
 
-export const { useGetProductsQuery } = productApi
+export const { useGetProductsQuery } = productApi;
