@@ -1,14 +1,14 @@
 import { Accordion, Checkbox, Flex, Span } from "@chakra-ui/react";
 import AccordionItemIndicator from "./AccordionItemIndicator";
+import type { Brand } from "@/types/product.types";
 
 type BrandsFilterProps = {
+  brands: Brand[];
   selectedValue: string;
   onChange: (value: string) => void;
 };
 
-const AVAILABLE_BRANDS = ["Xiaomi", "Roborock", "Samsung", "Wyze", "Dyson"];
-
-const BrandsFilter = ({ selectedValue, onChange }: BrandsFilterProps) => {
+const BrandsFilter = ({ brands, selectedValue, onChange }: BrandsFilterProps) => {
   return (
     <Accordion.Item value="featured-brands">
       <Accordion.ItemTrigger p="18px 16px 18px 4px" fontWeight="600" cursor="pointer">
@@ -17,18 +17,18 @@ const BrandsFilter = ({ selectedValue, onChange }: BrandsFilterProps) => {
       </Accordion.ItemTrigger>
       <Accordion.ItemContent p="0 4px 8px">
         <Flex flexDir="column" gap="4px">
-          {AVAILABLE_BRANDS.map((brand) => (
+          {brands.map((brand) => (
             <Checkbox.Root
-              key={brand}
+              key={brand.id}
               colorPalette="purple"
-              checked={selectedValue === brand}
+              checked={selectedValue === brand.name}
               onCheckedChange={(details) => {
-                onChange(details.checked ? brand : "");
+                onChange(details.checked ? brand.name : "");
               }}
             >
               <Checkbox.HiddenInput />
               <Checkbox.Control />
-              <Checkbox.Label cursor='pointer'>{brand}</Checkbox.Label>
+              <Checkbox.Label cursor="pointer">{brand.name}</Checkbox.Label>
             </Checkbox.Root>
           ))}
         </Flex>

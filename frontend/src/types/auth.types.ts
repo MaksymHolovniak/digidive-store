@@ -1,19 +1,21 @@
 import type { ReactNode } from "react";
 
+export type UserRole = "user" | "admin";
+
 export type FullUser = {
   id: number;
   email: string;
-  role: "user" | "admin";
-}
+  role: UserRole;
+};
 
 export type AuthDto = {
   email: string;
-  password?: string;
+  password: string;
   rememberMe?: boolean;
 };
 
 export type SignUpFormValues = AuthDto & {
-  confirmPassword?: string;
+  confirmPassword: string;
 };
 
 export type AuthLayoutProps = {
@@ -27,8 +29,10 @@ export type UserResponse = {
   refreshToken: string;
 };
 
-export type FetchBaseQueryError = {
+export type BackendErrorResponse = {
   data?: {
-    message?: string;
+    message?: string | string[];
+    error?: string;
+    statusCode?: number;
   };
 };

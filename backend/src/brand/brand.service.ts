@@ -4,11 +4,15 @@ import { BrandDto } from './brand.dto'
 
 @Injectable()
 export class BrandService {
-    constructor(private prisma: PrismaService) { }
-    
-    async getAll() {
-        return this.prisma.brand.findMany()
-    }
+	constructor(private prisma: PrismaService) {}
+
+	async getAll() {
+		return this.prisma.brand.findMany({
+			orderBy: {
+				name: 'asc'
+			}
+		})
+	}
 
 	async createBrand(dto: BrandDto) {
 		return this.prisma.brand.create({

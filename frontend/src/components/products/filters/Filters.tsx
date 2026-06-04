@@ -4,17 +4,18 @@ import BrandsFilter from "./BrandsFilter";
 import SearchFilter from "./SearchFilter";
 import PriceFilter from "./PriceFilter";
 import FiltersHeader from "./FiltersHeader";
-import type { FilterState } from "@/types/product.types";
+import type { Brand, FilterState } from "@/types/product.types";
 import { useState } from "react";
 import type { Category } from "@/types/category.types";
 
 type FilterProps = {
   currentCategory: Category | null;
+  brands: Brand[]
   activeFilters: FilterState;
   onApplyFilters: (filters: FilterState) => void;
 };
 
-const Filters = ({ currentCategory, activeFilters, onApplyFilters }: FilterProps) => {
+const Filters = ({ currentCategory, brands, activeFilters, onApplyFilters }: FilterProps) => {
   const [tempFilters, setTempFilters] = useState<FilterState>(activeFilters);
 
   const [prevActiveFilters, setPrevActiveFilters] = useState<FilterState>(activeFilters);
@@ -63,6 +64,7 @@ const Filters = ({ currentCategory, activeFilters, onApplyFilters }: FilterProps
           onChange={(val) => handleInputChange("searchTerm", val)}
         />
         <BrandsFilter
+          brands={brands}
           selectedValue={tempFilters.brand}
           onChange={(val) => handleInputChange("brand", val)}
         />

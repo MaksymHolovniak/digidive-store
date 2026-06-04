@@ -6,6 +6,7 @@ import ProductsSorting from "@/components/products/sorting/ProductsSorting";
 import AppBreadcrumbs from "@/components/ui/AppBreadCrumbs";
 import AppContainer from "@/components/ui/AppContainer";
 import PageLoader from "@/components/ui/PageLoader";
+import { useGetBrandsQuery } from "@/store/api/brand.api";
 import { useGetCategoriesQuery } from "@/store/api/category.api";
 import { useGetProductsQuery } from "@/store/api/product.api";
 import type { FilterState, GridViewType, SortValue } from "@/types/product.types";
@@ -65,6 +66,8 @@ const ProductsPage = () => {
     maxPrice: activeFilters.maxPrice ? Number(activeFilters.maxPrice) : undefined,
   });
 
+  const { data: brands = [] } = useGetBrandsQuery()
+
   const { data: categories = [] } = useGetCategoriesQuery();
 
   const currentCategory = getMainCategory(categories, categoryId);
@@ -85,6 +88,7 @@ const ProductsPage = () => {
           />
           <Flex justifyContent="space-between">
             <Filters
+              brands={brands}
               currentCategory={currentCategory}
               activeFilters={activeFilters}
               onApplyFilters={(filters) => {
