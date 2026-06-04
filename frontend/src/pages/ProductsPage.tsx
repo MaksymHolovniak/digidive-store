@@ -8,14 +8,12 @@ import AppContainer from "@/components/ui/AppContainer";
 import PageLoader from "@/components/ui/PageLoader";
 import { useGetCategoriesQuery } from "@/store/api/category.api";
 import { useGetProductsQuery } from "@/store/api/product.api";
-import type { FilterState, SortValue } from "@/types/product.types";
+import type { FilterState, GridViewType, SortValue } from "@/types/product.types";
 import { getBreadcrumbsData } from "@/utils/breadcrumbs.utils";
 import { getMainCategory } from "@/utils/category.utils";
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-
-const ITEMS_PER_PAGE = 8;
 
 const initialFilters: FilterState = {
   searchTerm: "",
@@ -31,6 +29,9 @@ const ProductsPage = () => {
   const [prevCategoryId, setPrevCategoryId] = useState(categoryId);
   const [activeFilters, setActiveFilters] = useState<FilterState>(initialFilters);
   const [sort, setSort] = useState<SortValue>("default");
+  const [view, setView] = useState<GridViewType>("grid-2");
+
+  const itemsPerPage = view === "grid-2" ? 8 : 12;
 
   const catalogRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +39,8 @@ const ProductsPage = () => {
     setPrevCategoryId(categoryId);
     setPage(1);
     setActiveFilters(initialFilters);
+    setSort("default");
+    setView("grid-2");
   }
 
   useEffect(() => {
@@ -54,7 +57,7 @@ const ProductsPage = () => {
   const { data, isLoading, isFetching } = useGetProductsQuery({
     categoryId: Number(categoryId),
     page,
-    perPage: ITEMS_PER_PAGE,
+    perPage: itemsPerPage,
     sort: sort === "default" ? undefined : sort,
     searchTerm: activeFilters.searchTerm,
     brand: activeFilters.brand,
@@ -97,6 +100,11 @@ const ProductsPage = () => {
                   setSort(newSort);
                   setPage(1);
                 }}
+                view={view}
+                onViewChange={(newView) => {
+                  setView(newView);
+                  setPage(1);
+                }}
               />
 
               {isLoading || isFetching ? (
@@ -105,11 +113,11 @@ const ProductsPage = () => {
                 <>
                   <ProductsList products={data?.products || []} />
 
-                  {totalItems > ITEMS_PER_PAGE && (
+                  {totalItems > itemsPerPage && (
                     <ProductsPagination
                       currentPage={page}
                       totalCount={totalItems}
-                      pageSize={ITEMS_PER_PAGE}
+                      pageSize={itemsPerPage}
                       onPageChange={setPage}
                     />
                   )}

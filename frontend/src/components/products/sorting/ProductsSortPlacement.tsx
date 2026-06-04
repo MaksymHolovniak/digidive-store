@@ -1,10 +1,14 @@
 import { Button, Flex } from "@chakra-ui/react";
 import Grid2Columns from "../../../assets/grid-2-columns.svg?react";
 import Grid3Columns from "../../../assets/grid-3-columns.svg?react";
-import { useState } from "react";
+import type { GridViewType } from "@/types/product.types";
 
-const ProductsSortPlacement = () => {
-  const [view, setView] = useState<"grid-2" | "grid-3">("grid-2");
+type ProductsSortPlacementProps = {
+  view: GridViewType;
+  onViewChange: (view: GridViewType) => void;
+};
+
+const ProductsSortPlacement = ({ view, onViewChange }: ProductsSortPlacementProps) => {
 
   const options = [
     { value: "grid-2", icon: Grid2Columns },
@@ -16,7 +20,7 @@ const ProductsSortPlacement = () => {
       {options.map(({ value, icon: Icon }) => (
         <Button
           key={value}
-          onClick={() => setView(value)}
+          onClick={() => onViewChange(value)}
           w="34px"
           minW="34px"
           h="34px"

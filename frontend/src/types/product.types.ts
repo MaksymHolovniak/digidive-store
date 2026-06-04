@@ -36,3 +36,5 @@ export type FilterState = {
 };
 
 export type SortValue = "cheaper" | "expensive" | "alphabetical" | "default";
+
+export type GridViewType = "grid-2" | "grid-3";
