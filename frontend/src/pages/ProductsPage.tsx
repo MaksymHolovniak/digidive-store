@@ -8,7 +8,7 @@ import AppContainer from "@/components/ui/AppContainer";
 import PageLoader from "@/components/ui/PageLoader";
 import { useGetCategoriesQuery } from "@/store/api/category.api";
 import { useGetProductsQuery } from "@/store/api/product.api";
-import type { FilterState } from "@/types/product.types";
+import type { FilterState, SortValue } from "@/types/product.types";
 import { getBreadcrumbsData } from "@/utils/breadcrumbs.utils";
 import { getMainCategory } from "@/utils/category.utils";
 import { Box, Flex } from "@chakra-ui/react";
@@ -29,8 +29,8 @@ const ProductsPage = () => {
 
   const [page, setPage] = useState(1);
   const [prevCategoryId, setPrevCategoryId] = useState(categoryId);
-
   const [activeFilters, setActiveFilters] = useState<FilterState>(initialFilters);
+  const [sort, setSort] = useState<SortValue>("default");
 
   const catalogRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +55,7 @@ const ProductsPage = () => {
     categoryId: Number(categoryId),
     page,
     perPage: ITEMS_PER_PAGE,
-    sort: undefined,
+    sort: sort === "default" ? undefined : sort,
     searchTerm: activeFilters.searchTerm,
     brand: activeFilters.brand,
     minPrice: activeFilters.minPrice ? Number(activeFilters.minPrice) : undefined,
@@ -90,7 +90,14 @@ const ProductsPage = () => {
               }}
             />
             <Flex direction="column" gap="50px" maxW="1170px" w="100%">
-              <ProductsSorting totalItems={totalItems} />
+              <ProductsSorting
+                totalItems={totalItems}
+                sortValue={sort}
+                onSortChange={(newSort) => {
+                  setSort(newSort);
+                  setPage(1);
+                }}
+              />
 
               {isLoading || isFetching ? (
                 <PageLoader />

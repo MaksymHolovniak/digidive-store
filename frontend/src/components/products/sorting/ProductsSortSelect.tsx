@@ -1,34 +1,40 @@
 import { Box, createListCollection, Flex, Select } from "@chakra-ui/react";
-import { useState } from "react";
 import ChevronDown from "../../../assets/chevron-down.svg?react";
 import ChevronUp from "../../../assets/chevron-up.svg?react";
+import type { SortValue } from "@/types/product.types";
 
-type SortValue = "default" | "price_desc" | "price_asc" | "alphabetical";
 
 type SortOption = {
   label: string;
   value: SortValue;
 };
 
+type ProductsSortSelectProps = {
+  value: SortValue;
+  onChange: (value: SortValue) => void
+}
+
 const options = createListCollection<SortOption>({
   items: [
     { label: "Default", value: "default" },
-    { label: "Price: High to Low", value: "price_desc" },
-    { label: "Price: Low to High", value: "price_asc" },
+    { label: "Price: Low to High", value: "cheaper" },
+    { label: "Price: High to Low", value: "expensive" },
     { label: "Alphabetical", value: "alphabetical" },
   ],
 });
 
-const ProductsSortSelect = () => {
-  const [value, setValue] = useState<SortValue[]>(["default"]);
-
+const ProductsSortSelect = ({value, onChange}: ProductsSortSelectProps) => {
   return (
     <Flex gap="16px" align="center">
       <Box color="#464646">Sort</Box>
       <Select.Root
         collection={options}
-        value={value}
-        onValueChange={(details) => setValue(details.value as SortValue[])}
+        value={[value]}
+        onValueChange={(details) => {
+          if (details.value?.[0]) {
+            onChange(details.value[0] as SortValue);
+          }
+        }}
         width="240px"
       >
         <Select.Trigger

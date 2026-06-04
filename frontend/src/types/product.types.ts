@@ -34,3 +34,5 @@ export type FilterState = {
   minPrice: string;
   maxPrice: string;
 };
+
+export type SortValue = "cheaper" | "expensive" | "alphabetical" | "default";
