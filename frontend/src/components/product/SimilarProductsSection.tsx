@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, IconButton, Span, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Span, Stack, Text } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import ProductCard from "@/components/product/product-card/ProductCard";
 import type { Product } from "@/types/product.types";

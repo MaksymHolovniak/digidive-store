@@ -13,11 +13,17 @@ const ProductPage = () => {
   const productId = Number(id);
 
   const [similarPage, setSimilarPage] = useState(1);
+
+  const [prevId, setPrevId] = useState(id);
   const SIMILAR_PER_PAGE = 5;
+
+  if (id !== prevId) {
+    setPrevId(id);
+    setSimilarPage(1);
+  }
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-    setSimilarPage(1);
   }, [id]);
 
   const {
