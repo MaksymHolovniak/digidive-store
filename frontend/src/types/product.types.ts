@@ -52,4 +52,4 @@ export type GetProductsArgs = {
   maxPrice?: number;
 };
 
-export type GetSimilarProductsArgs = { id: number; perPage?: number };
+export type GetSimilarProductsArgs = { id: number; perPage?: number; page?: number };

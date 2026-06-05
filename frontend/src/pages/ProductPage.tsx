@@ -3,7 +3,7 @@ import AppContainer from "@/components/ui/AppContainer";
 import { Box, Text } from "@chakra-ui/react";
 import ProductInfoSection from "@/components/product/ProductInfoSection";
 import SimilarProductsSection from "@/components/product/SimilarProductsSection";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery, useGetSimilarProductsQuery } from "@/store/api/product.api";
 import PageLoader from "@/components/ui/PageLoader";
@@ -12,9 +12,13 @@ const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const productId = Number(id);
 
+  const [similarPage, setSimilarPage] = useState(1);
+  const SIMILAR_PER_PAGE = 5;
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+    setSimilarPage(1);
+  }, [id]);
 
   const {
     data: product,
@@ -25,7 +29,7 @@ const ProductPage = () => {
   });
 
   const { data: similarProducts, isLoading: isSimilarLoading } = useGetSimilarProductsQuery(
-    { id: productId, perPage: 5 },
+    { id: productId, perPage: SIMILAR_PER_PAGE, page: similarPage },
     { skip: !productId },
   );
 
@@ -48,7 +52,14 @@ const ProductPage = () => {
       <AppContainer>
         <AppBreadcrumbs secondPage={categoryName} secondPagePath={categoryPath} thirdPage={product.name} />
         <ProductInfoSection product={product} />
-        <SimilarProductsSection products={similarProducts?.products || []} isLoading={isSimilarLoading} />
+        <SimilarProductsSection
+          products={similarProducts?.products || []}
+          totalCount={similarProducts?.length || 0}
+          currentPage={similarPage}
+          pageSize={SIMILAR_PER_PAGE}
+          onPageChange={setSimilarPage}
+          isLoading={isSimilarLoading}
+        />
       </AppContainer>
     </Box>
   );

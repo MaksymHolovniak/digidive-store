@@ -26,9 +26,9 @@ export const productApi = createApi({
     }),
 
     getSimilarProducts: builder.query<GetProductsResponse, GetSimilarProductsArgs>({
-      query: ({ id, perPage = 4 }) => ({
+      query: ({ id, page = 1, perPage = 4 }) => ({
         url: `/product/similar/${id}`,
-        params: { perPage },
+        params: { page, perPage },
       }),
     }),
   }),
