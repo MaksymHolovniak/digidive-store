@@ -16,23 +16,22 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
-const initialFilters: FilterState = {
-  searchTerm: "",
-  brand: "",
-  minPrice: "",
-  maxPrice: "",
-};
-
 const ProductsPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const urlSearchTerm = searchParams.get("search") || "";
+  const [activeFilters, setActiveFilters] = useState<FilterState>(() => {
+    const urlSearch = searchParams.get("search") || "";
+    return {
+      searchTerm: urlSearch,
+      brand: "",
+      minPrice: "",
+      maxPrice: "",
+    };
+  });
 
   const [page, setPage] = useState(1);
   const [prevCategoryId, setPrevCategoryId] = useState(categoryId);
-
-  const [activeFilters, setActiveFilters] = useState<FilterState>(initialFilters);
   const [sort, setSort] = useState<SortValue>("default");
   const [view, setView] = useState<GridViewType>("grid-2");
 
@@ -40,19 +39,17 @@ const ProductsPage = () => {
   const catalogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (urlSearchTerm) {
-      const newParams = new URLSearchParams(window.location.search);
-      if (newParams.has("search")) {
-        newParams.delete("search");
-        setSearchParams(newParams, { replace: true });
-      }
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("search")) {
+      url.searchParams.delete("search");
+      window.history.replaceState({}, "", url.pathname + url.search);
     }
-  }, [urlSearchTerm, setSearchParams]);
+  }, []);
 
   if (categoryId !== prevCategoryId) {
     setPrevCategoryId(categoryId);
     setPage(1);
-    setActiveFilters(initialFilters);
+    setActiveFilters({ searchTerm: "", brand: "", minPrice: "", maxPrice: "" });
     setSort("default");
     setView("grid-2");
   }
@@ -68,14 +65,12 @@ const ProductsPage = () => {
     }
   }, [categoryId, page]);
 
-  const currentSearchTerm = urlSearchTerm || activeFilters.searchTerm;
-
   const { data, isLoading, isFetching } = useGetProductsQuery({
     categoryId: categoryId ? Number(categoryId) : undefined,
     page,
     perPage: itemsPerPage,
     sort: sort === "default" ? undefined : sort,
-    searchTerm: currentSearchTerm || undefined,
+    searchTerm: activeFilters.searchTerm || undefined,
     brand: activeFilters.brand || undefined,
     minPrice: activeFilters.minPrice ? Number(activeFilters.minPrice) : undefined,
     maxPrice: activeFilters.maxPrice ? Number(activeFilters.maxPrice) : undefined,
@@ -85,9 +80,7 @@ const ProductsPage = () => {
   const { data: categories = [] } = useGetCategoriesQuery();
 
   const currentCategory = categoryId ? getMainCategory(categories, categoryId) : null;
-
   const breadcrumbs = categoryId ? getBreadcrumbsData(categories, categoryId) : null;
-
   const totalItems = data?.length || 0;
 
   return (
@@ -106,7 +99,7 @@ const ProductsPage = () => {
             <Filters
               brands={brands}
               currentCategory={currentCategory}
-              activeFilters={{ ...activeFilters, searchTerm: currentSearchTerm }}
+              activeFilters={activeFilters}
               onApplyFilters={(filters) => {
                 setActiveFilters(filters);
                 setPage(1);
