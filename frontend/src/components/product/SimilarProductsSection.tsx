@@ -1,9 +1,14 @@
 import { Box, Flex, Grid, IconButton, Span, Stack, Text } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import ProductCard from "@/components/product/product-card/ProductCard";
-import products from "../../data/similarProducts.json";
+import type { Product } from "@/types/product.types";
 
-const SimilarProductsSection = () => {
+type SimilarProductsSectionProps = {
+  products: Product[];
+  isLoading: boolean;
+};
+
+const SimilarProductsSection = ({ products, isLoading }: SimilarProductsSectionProps) => {
   return (
     <Box as="section">
       <Stack gap="40px">
@@ -25,11 +30,17 @@ const SimilarProductsSection = () => {
             </IconButton>
           </Flex>
         </Flex>
-        <Grid templateColumns="repeat(auto-fit, minmax(230px, 1fr))" gap="24px">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </Grid>
+        {isLoading ? (
+          <Text color="gray.400">Loading dynamic suggestions...</Text>
+        ) : products.length === 0 ? (
+          <Text color="gray.400">No similar products found in this category.</Text>
+        ) : (
+          <Grid templateColumns="repeat(auto-fit, minmax(230px, 1fr))" gap="24px">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </Grid>
+        )}
       </Stack>
     </Box>
   );

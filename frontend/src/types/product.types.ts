@@ -1,3 +1,5 @@
+import type { Category } from "./category.types";
+
 export type Brand = {
   id: number;
   name: string;
@@ -9,6 +11,18 @@ export type Product = {
   price: number;
   description: string;
   imagePath?: string;
+  brand: Brand;
+};
+
+export type CurrentProduct = {
+  id: number;
+  name: string;
+  imagePath: string;
+  description: string;
+  price: number;
+  stock: number;
+  warrantyMonths: number;
+  category: Category;
   brand: Brand;
 };
 
@@ -37,3 +51,5 @@ export type GetProductsArgs = {
   minPrice?: number;
   maxPrice?: number;
 };
+
+export type GetSimilarProductsArgs = { id: number; perPage?: number };

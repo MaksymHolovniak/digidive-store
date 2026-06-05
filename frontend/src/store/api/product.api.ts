@@ -1,4 +1,9 @@
-import type { GetProductsArgs, GetProductsResponse } from "@/types/product.types";
+import {
+  type CurrentProduct,
+  type GetProductsArgs,
+  type GetProductsResponse,
+  type GetSimilarProductsArgs,
+} from "@/types/product.types";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
@@ -16,7 +21,17 @@ export const productApi = createApi({
         },
       }),
     }),
+    getProductById: builder.query<CurrentProduct, number>({
+      query: (id) => `/product/${id}`,
+    }),
+
+    getSimilarProducts: builder.query<GetProductsResponse, GetSimilarProductsArgs>({
+      query: ({ id, perPage = 4 }) => ({
+        url: `/product/similar/${id}`,
+        params: { perPage },
+      }),
+    }),
   }),
 });
 
-export const { useGetProductsQuery } = productApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useGetSimilarProductsQuery } = productApi;
