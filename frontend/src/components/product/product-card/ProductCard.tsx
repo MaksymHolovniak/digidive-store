@@ -2,10 +2,10 @@ import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import testProductItem from "../../../assets/test-product-item.jpg";
 import AddToCartButton from "./AddToCartButton";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import FavoriteButton from "@/components/ui/FavoriteButton";
 import type { Product } from "@/types/product.types";
 import { BASE_URL } from "@/constants/api.constants";
+import { useGetProfileQuery, useToggleFavoriteMutation } from "@/store/api/user.api";
 
 type ProductCardProps = {
   product: Product;
@@ -13,10 +13,18 @@ type ProductCardProps = {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const navigate = useNavigate();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { data: profile } = useGetProfileQuery();
+  const [toggleFavorite] = useToggleFavoriteMutation();
+
+  const isFavorite = profile?.favorites.some((f) => f.product.id === product.id) || false;
 
   const handleNavigate = () => {
     navigate(`/product/${product.id}`);
+  };
+
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    await toggleFavorite(product.id).unwrap;
   };
 
   return (
@@ -39,11 +47,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           w="100%"
           h="100%"
           objectFit="contain"
-          src={
-            product.imagePath
-              ? `${BASE_URL}${product.imagePath}`
-              : testProductItem
-          }
+          src={product.imagePath ? `${BASE_URL}${product.imagePath}` : testProductItem}
           alt={product.name}
         />
       </Box>
@@ -62,13 +66,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           {product.name}
         </Text>
-        <Flex
-          fontSize="18px"
-          align="center"
-          justify="center"
-          gap="8px"
-          color="#464646"
-        >
+        <Flex fontSize="18px" align="center" justify="center" gap="8px" color="#464646">
           <Text fontSize="18px" color="#464646">
             ${product.price}
           </Text>
@@ -79,7 +77,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             as="button"
             _hover={{ color: "#9969FF" }}
             transition="color 0.3s"
-            onClick={() => setIsFavorite((prev) => !prev)}
+            onClick={handleFavoriteClick}
           >
             <FavoriteButton isActive={isFavorite} />
           </Box>
