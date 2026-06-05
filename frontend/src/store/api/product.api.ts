@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants/api.constants";
 import {
   type CurrentProduct,
   type GetProductsArgs,
@@ -9,7 +10,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const productApi = createApi({
   reducerPath: "productApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4200/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsResponse, GetProductsArgs>({
       query: ({ categoryId, page = 1, perPage = 9, ...rest }) => ({

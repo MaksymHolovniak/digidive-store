@@ -1,10 +1,11 @@
+import { API_URL } from "@/constants/api.constants";
 import type { AuthDto, UserResponse } from "@/types/auth.types";
 import { saveAuthData } from "@/utils/auth.helper";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4200/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   endpoints: (builder) => ({
     register: builder.mutation<UserResponse, AuthDto>({
       query: (body) => ({
