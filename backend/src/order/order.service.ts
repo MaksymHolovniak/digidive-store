@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException
+} from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { CreateOrderDto, UpdateOrderStatudDto } from './order.dto'
 import { productGetReturnObject } from '../product/return-product.object'
@@ -23,6 +27,14 @@ export class OrderService {
 		if (!user) throw new NotFoundException('User not found')
 		if (user.cart.length === 0) throw new NotFoundException('Cart is empty')
 
+		for (const item of user.cart) {
+			if (item.product.stock < item.quantity) {
+				throw new BadRequestException(
+					`Only ${item.product.stock} for product "${item.product.name}" available`
+				)
+			}
+		}
+
 		let itemsTotal = 0
 
 		const orderItems = user.cart.map(item => {
@@ -45,34 +57,45 @@ export class OrderService {
 
 		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(1))
 
-		const order = await this.prisma.order.create({
-			data: {
-				userId,
-				country: dto.country,
-				fullName: dto.fullName,
-				company: dto.company,
-				address: dto.address,
-				postCode: dto.postCode,
-				city: dto.city,
-				phone: dto.phone,
-				totalPrice,
-				deliveryFee,
-				items: {
-					create: orderItems
+		return await this.prisma.$transaction(async tx => {
+			for (const item of user.cart) {
+				await tx.product.update({
+					where: { id: item.productId },
+					data: {
+						stock: {
+							decrement: item.quantity
+						}
+					}
+				})
+			}
+
+			const order = await tx.order.create({
+				data: {
+					userId,
+					country: dto.country,
+					fullName: dto.fullName,
+					company: dto.company,
+					address: dto.address,
+					postCode: dto.postCode,
+					city: dto.city,
+					phone: dto.phone,
+					totalPrice,
+					deliveryFee,
+					items: {
+						create: orderItems
+					}
+				},
+				include: {
+					items: true
 				}
-			},
-			include: {
-				items: true
-			}
-		})
+			})
 
-		await this.prisma.cart.deleteMany({
-			where: {
-				userId
-			}
-		})
+			await tx.cart.deleteMany({
+				where: { userId }
+			})
 
-		return order
+			return order
+		})
 	}
 
 	async findAll() {
