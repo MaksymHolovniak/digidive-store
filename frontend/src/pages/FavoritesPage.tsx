@@ -21,7 +21,7 @@ const FavoritesPage = () => {
 
         {totalFavorites === 0 ? (
           <Text color="gray.500" fontSize="20px" textAlign="center" py="50px">
-            У вас ще немає улюблених товарів.
+            You don't have any favorite products yet.
           </Text>
         ) : (
           <Flex gap="80px" wrap="wrap" justify="flex-start">

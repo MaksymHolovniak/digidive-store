@@ -23,7 +23,18 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
 
   const isFavorite = profile?.favorites.some((f) => f.product.id === item.productId) || false;
 
+  const maxStock = item.product.stock;
+
   const handleQtyChange = async (newCount: number) => {
+    if (newCount > maxStock) {
+      toaster.create({
+        title: "Limit reached",
+        description: `Sorry, only ${maxStock} items available in stock.`,
+        type: "warning",
+      });
+      return;
+    }
+
     try {
       await updateQuantity({ productId: item.productId, quantity: newCount }).unwrap();
     } catch (error) {
@@ -90,6 +101,11 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
               <Box color="#919191">
                 <Text>Brand: {item.product.brand.name}</Text>
                 <Text>Guarantee: {item.product.warrantyMonths} months</Text>
+                {maxStock <= 5 && (
+                  <Text color="orange.500" fontWeight="500" fontSize="14px" mt="4px">
+                    Only {maxStock} left in stock!
+                  </Text>
+                )}
               </Box>
             </Box>
           </Flex>
@@ -116,7 +132,7 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
       </Table.Cell>
       <Table.Cell pt="20px">
         <Box w="140px">
-          <QuantitySelector count={item.quantity} onChange={handleQtyChange} />
+          <QuantitySelector count={item.quantity} max={maxStock} onChange={handleQtyChange} />
         </Box>
       </Table.Cell>
       <Table.Cell textAlign="end" fontSize="20px" fontWeight="600" pt="30px">

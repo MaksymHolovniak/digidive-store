@@ -8,6 +8,7 @@ import { BASE_URL } from "@/constants/api.constants";
 import { useGetProfileQuery, useToggleFavoriteMutation } from "@/store/api/user.api";
 import type { BackendErrorResponse } from "@/types/auth.types";
 import { toaster } from "@/components/ui/toaster";
+import AppButton from "@/components/ui/AppButton";
 
 type ProductCardProps = {
   product: Product;
@@ -19,6 +20,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [toggleFavorite] = useToggleFavoriteMutation();
 
   const isFavorite = profile?.favorites.some((f) => f.product.id === product.id) || false;
+
+  const isOutOfStock = product.stock === 0
 
   const handleNavigate = () => {
     navigate(`/product/${product.id}`);
@@ -53,7 +56,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
         cursor: "pointer",
       }}
     >
-      <Box w="100%" maxW="200px" h="202px" overflow="hidden">
+      <Box
+        w="100%"
+        maxW="200px"
+        h="202px"
+        overflow="hidden"
+        opacity={isOutOfStock ? 0.55 : 1}
+        transition="opacity 0.3s"
+      >
         <Image
           w="100%"
           h="100%"
@@ -83,7 +93,24 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </Text>
         </Flex>
         <Flex onClick={(e) => e.stopPropagation()} align="center" gap="24px">
-          <AddToCartButton productId={product.id} w="100%" />
+          {isOutOfStock ? (
+            <Box w="100%">
+              <AppButton
+                w="100%"
+                maxW="180px"
+                fontSize="16px"
+                bg="#F5F5F5"
+                color="#919191"
+                border="1px solid #D9D9D9"
+                disabled
+                _hover={{ bg: "#F5F5F5" }}
+              >
+                Out of Stock
+              </AppButton>
+            </Box>
+          ) : (
+            <AddToCartButton productId={product.id} w="100%" />
+          )}
           <Box as="button" _hover={{ color: "#9969FF" }} transition="color 0.3s" onClick={handleFavoriteClick}>
             <FavoriteButton isActive={isFavorite} />
           </Box>

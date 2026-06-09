@@ -25,6 +25,7 @@ export class UserService {
 								name: true,
 								imagePath: true,
 								price: true,
+								stock: true,
 								brand: {
 									select: {
 										name: true

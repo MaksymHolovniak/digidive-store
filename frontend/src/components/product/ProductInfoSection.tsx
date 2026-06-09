@@ -12,6 +12,7 @@ import { useGetProfileQuery, useToggleFavoriteMutation } from "@/store/api/user.
 import { useGetCartQuery, useUpdateQuantityMutation } from "@/store/api/cart.api";
 import type { BackendErrorResponse } from "@/types/auth.types";
 import { toaster } from "../ui/toaster";
+import AppButton from "../ui/AppButton";
 
 type ProductInfoSectionProps = {
   product: CurrentProduct;
@@ -32,7 +33,20 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
 
   const isFavorite = profile?.favorites.some((f) => f.product.id === product.id) || false;
 
+  const isOutOfStock = product.stock === 0;
+
   const handleQuantityChange = async (newCount: number) => {
+    if (isOutOfStock) return;
+
+    if (newCount > product.stock) {
+      toaster.create({
+        title: "Limit reached",
+        description: `Sorry, only ${product.stock} items available in stock.`,
+        type: "warning",
+      });
+      return;
+    }
+
     if (isInCart) {
       try {
         await updateQuantity({ productId: product.id, quantity: newCount }).unwrap();
@@ -64,7 +78,14 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
 
   return (
     <Flex justify="center" gap="50px" mt="40px" mb="100px" as="section">
-      <Image src={`${BASE_URL}${product.imagePath}`} alt={product.name} />
+      <Image
+        src={`${BASE_URL}${product.imagePath}`}
+        alt={product.name}
+        maxW="500px"
+        objectFit="contain"
+        opacity={isOutOfStock ? 0.6 : 1}
+        transition="opacity 0.3s"
+      />
       <Flex gap="30px" direction="column" pt="20px">
         <Heading as="h1" fontSize="26px" lineHeight="110%" maxW="500px">
           {product.name}
@@ -87,8 +108,31 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
             <Text>Guarantee {product.warrantyMonths} months</Text>
           </Flex>
         </Box>
-        <QuantitySelector count={count} onChange={handleQuantityChange} />
-        <AddToCartButton productId={product.id} quantity={count} w="250px" h="52px" />
+        {isOutOfStock ? (
+          <Flex direction="column" gap="15px">
+            <Box opacity={0.5} pointerEvents="none">
+              <QuantitySelector count={0} onChange={() => {}} />
+            </Box>
+            <AppButton
+              w="250px"
+              h="52px"
+              fontSize="18px"
+              bg="#F5F5F5"
+              color="#919191"
+              border="1px solid #D9D9D9"
+              disabled
+              _hover={{ bg: "#F5F5F5" }}
+            >
+              Out of Stock
+            </AppButton>
+          </Flex>
+        ) : (
+          <>
+            <QuantitySelector count={count} max={product.stock} onChange={handleQuantityChange} />
+            <AddToCartButton productId={product.id} quantity={count} w="250px" h="52px" />
+          </>
+        )}
+
         <Flex
           as="button"
           gap="8px"
@@ -98,7 +142,7 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
           transition="color 0.3s"
         >
           <FavoriteButton isActive={isFavorite} />
-          <Text>Add to Favorites</Text>
+          <Text>{isFavorite ? "In Favorites" : "Add to Favorites"}</Text>
         </Flex>
       </Flex>
     </Flex>

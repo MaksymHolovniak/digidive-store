@@ -35,6 +35,8 @@ export class ProductService {
 
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
+		prismaSort.push({ stock: 'desc' })
+
 		switch (sort) {
 			case EnumProductSort.Alphabetical:
 				prismaSort.push({ name: 'asc' })
@@ -46,7 +48,7 @@ export class ProductService {
 				prismaSort.push({ price: 'asc' })
 				break
 			default:
-				prismaSort.push({ id: 'asc' })
+				prismaSort.push({ id: 'desc' })
 				break
 		}
 
@@ -170,9 +172,10 @@ export class ProductService {
 					id: currentProduct.id
 				}
 			},
-			orderBy: {
-				price: 'desc'
-			},
+			orderBy: [
+				{stock: 'desc'},
+				{price: 'desc'}
+			],
 			select: productGetReturnObject,
 			skip,
 			take: perPage
