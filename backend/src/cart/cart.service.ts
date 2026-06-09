@@ -37,8 +37,8 @@ export class CartService {
 			itemsTotal += item.product.price.toNumber() * item.quantity
 		})
 
-		itemsTotal = Number(itemsTotal.toFixed(1))
-
+		itemsTotal = Number(itemsTotal.toFixed(2))
+		
 		const DELIVERY_FEE = 5
 		const FREE_DELIVERY_THRESHOLD = 150
 
@@ -47,8 +47,8 @@ export class CartService {
 				? DELIVERY_FEE
 				: 0
 
-		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(1))
-
+		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(2))
+		
 		return {
 			items,
 			itemsTotal,

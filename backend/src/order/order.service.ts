@@ -48,15 +48,15 @@ export class OrderService {
 			}
 		})
 
-		itemsTotal = Number(itemsTotal.toFixed(1))
+		itemsTotal = Number(itemsTotal.toFixed(2))
 
 		const DELIVERY_FEE = 5
 		const FREE_DELIVERY_THRESHOLD = 150
 
 		const deliveryFee = itemsTotal < FREE_DELIVERY_THRESHOLD ? DELIVERY_FEE : 0
 
-		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(1))
-
+		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(2))
+		
 		return await this.prisma.$transaction(async tx => {
 			for (const item of user.cart) {
 				await tx.product.update({
