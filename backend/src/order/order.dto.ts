@@ -1,5 +1,6 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator'
 import { OrderStatus } from '../../generated/prisma/enums'
+import { Transform } from 'class-transformer'
 
 export class CreateOrderDto {
 	@IsString()
@@ -10,6 +11,9 @@ export class CreateOrderDto {
 
 	@IsOptional()
 	@IsString()
+	@Transform(({ value }: { value: unknown }) =>
+		value === '' ? undefined : value
+	)
 	company?: string
 
 	@IsString()

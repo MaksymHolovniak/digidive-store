@@ -18,7 +18,7 @@ import { CreateOrderDto, UpdateOrderStatudDto } from './order.dto'
 export class OrderController {
 	constructor(private readonly orderService: OrderService) {}
 
-	@UsePipes(new ValidationPipe())
+	@UsePipes(new ValidationPipe({ transform: true }))
 	@HttpCode(201)
 	@Auth()
 	@Post()

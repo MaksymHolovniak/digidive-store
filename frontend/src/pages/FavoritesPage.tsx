@@ -1,10 +1,15 @@
 import ProductCard from "@/components/product/product-card/ProductCard";
+import AppButton from "@/components/ui/AppButton";
 import AppContainer from "@/components/ui/AppContainer";
 import PageLoader from "@/components/ui/PageLoader";
 import { useGetProfileQuery } from "@/store/api/user.api";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import arrowRight from "../assets/arrow-right.svg";
+import { useNavigate } from "react-router-dom";
+import { LuHeart } from "react-icons/lu";
 
 const FavoritesPage = () => {
+  const navigate = useNavigate()
   const { data: profile, isLoading } = useGetProfileQuery();
 
   if (isLoading) return <PageLoader />;
@@ -20,9 +25,26 @@ const FavoritesPage = () => {
         </Heading>
 
         {totalFavorites === 0 ? (
-          <Text color="gray.500" fontSize="20px" textAlign="center" py="50px">
-            You don't have any favorite products yet.
-          </Text>
+          <Flex justifyContent="center" direction="column" align="center" textAlign="center" gap="24px" py="120px">
+            <Box color="gray.300" mb="8px">
+              <LuHeart size={80} strokeWidth={1.5} />
+            </Box>
+            <Text color="#000" fontSize="24px">
+              You don't have any favorite products yet
+            </Text>
+            <AppButton
+              p="16px 32px"
+              h="52px"
+              fontSize="16px"
+              _hover={{
+                transform: "translateY(2px)",
+              }}
+              onClick={() => navigate("/products", { replace: true })}
+            >
+              Continue Shopping
+              <Image src={arrowRight} alt="Arrow Right" />
+            </AppButton>
+          </Flex>
         ) : (
           <Flex gap="80px" wrap="wrap" justify="flex-start">
             {favoritesProducts.map((product) => (

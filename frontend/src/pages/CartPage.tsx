@@ -1,12 +1,17 @@
 import AppContainer from "@/components/ui/AppContainer";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import CartHeader from "@/components/cart/CartHeader";
 import CartTable from "@/components/cart/CartTable";
 import CartSummary from "@/components/cart/CartSummary";
 import { useGetCartQuery } from "@/store/api/cart.api";
 import PageLoader from "@/components/ui/PageLoader";
+import AppButton from "@/components/ui/AppButton";
+import { useNavigate } from "react-router-dom";
+import arrowRight from '../assets/arrow-right.svg'
+import { LuShoppingBag } from "react-icons/lu";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const { data: cartData, isLoading, error } = useGetCartQuery();
 
   if (isLoading) return <PageLoader />;
@@ -14,9 +19,26 @@ const CartPage = () => {
   if (error || !cartData || cartData.items.length === 0) {
     return (
       <AppContainer>
-        <Text color="gray.500" textAlign="center" py="100px" fontSize="20px">
-          Your cart is empty.
-        </Text>
+        <Flex justifyContent="center" direction="column" align="center" textAlign="center" gap="24px" py="120px">
+          <Box color="gray.300" mb="8px">
+            <LuShoppingBag size={80} strokeWidth={1.5} />
+          </Box>
+          <Text color="#000" fontSize="24px">
+            Your cart is empty
+          </Text>
+          <AppButton
+            p="16px 32px"
+            h="52px"
+            fontSize="16px"
+            _hover={{
+              transform: "translateY(2px)",
+            }}
+            onClick={() => navigate("/products", { replace: true })}
+          >
+            Continue Shopping
+            <Image src={arrowRight} alt="Arrow Right" />
+          </AppButton>
+        </Flex>
       </AppContainer>
     );
   }
