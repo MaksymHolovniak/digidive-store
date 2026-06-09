@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "@/store/api/auth.api";
 import { useForm, useWatch } from "react-hook-form";
 import { setUser } from "@/store/slices/auth.slice";
-import type { FetchBaseQueryError, SignUpFormValues } from "@/types/auth.types";
+import type { BackendErrorResponse, SignUpFormValues } from "@/types/auth.types";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster";
 
@@ -40,7 +40,7 @@ const SignUpForm = () => {
       });
       navigate("/");
     } catch (error) {
-      const err = error as FetchBaseQueryError;
+      const err = error as BackendErrorResponse;
       const errorMessage = err.data?.message || "Authorization error";
 
       toaster.create({

@@ -6,6 +6,8 @@ import FavoriteButton from "@/components/ui/FavoriteButton";
 import type { Product } from "@/types/product.types";
 import { BASE_URL } from "@/constants/api.constants";
 import { useGetProfileQuery, useToggleFavoriteMutation } from "@/store/api/user.api";
+import type { BackendErrorResponse } from "@/types/auth.types";
+import { toaster } from "@/components/ui/toaster";
 
 type ProductCardProps = {
   product: Product;
@@ -23,8 +25,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   const handleFavoriteClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    await toggleFavorite(product.id).unwrap;
+    try {
+      e.stopPropagation();
+      await toggleFavorite(product.id).unwrap;
+    } catch (error) {
+      const err = error as BackendErrorResponse;
+      toaster.create({
+        title: "Error updating favorites",
+        description: err?.data?.message || "Something went wrong. Please try again.",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -72,13 +83,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </Text>
         </Flex>
         <Flex onClick={(e) => e.stopPropagation()} align="center" gap="24px">
-          <AddToCartButton w="100%" />
-          <Box
-            as="button"
-            _hover={{ color: "#9969FF" }}
-            transition="color 0.3s"
-            onClick={handleFavoriteClick}
-          >
+          <AddToCartButton productId={product.id} w="100%" />
+          <Box as="button" _hover={{ color: "#9969FF" }} transition="color 0.3s" onClick={handleFavoriteClick}>
             <FavoriteButton isActive={isFavorite} />
           </Box>
         </Flex>

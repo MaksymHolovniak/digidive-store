@@ -1,7 +1,12 @@
 import { Table } from "@chakra-ui/react";
 import CartItemRow from "./CartItemRow";
+import type { CartItem } from "@/types/cart.types";
 
-const CartTable = () => {
+type CartTableProps = {
+  items: CartItem[];
+};
+
+const CartTable = ({ items }: CartTableProps) => {
   return (
     <Table.Root size="sm">
       <Table.Header>
@@ -16,8 +21,9 @@ const CartTable = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        <CartItemRow />
-        <CartItemRow />
+        {items.map((item) => (
+          <CartItemRow key={item.id} item={item} />
+        ))}
       </Table.Body>
     </Table.Root>
   );

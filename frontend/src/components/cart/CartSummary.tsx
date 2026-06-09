@@ -2,7 +2,13 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
 import { useNavigate } from "react-router-dom";
 
-const CartSummary = () => {
+type CartSummaryProps = {
+  itemsTotal: number;
+  deliveryFee: number;
+  totalPrice: number;
+};
+
+const CartSummary = ({ itemsTotal, deliveryFee, totalPrice }: CartSummaryProps) => {
   const navigate = useNavigate();
 
   const handleOnClick = () => navigate("/checkout");
@@ -15,15 +21,15 @@ const CartSummary = () => {
       <Flex direction="column" gap="16px" mb="40px">
         <Flex fontSize="18px" align="center" fontWeight="600" justify="space-between">
           <Text>Subtotal</Text>
-          <Text>$ 127.98</Text>
+          <Text>$ {itemsTotal}</Text>
         </Flex>
         <Flex fontSize="16px" align="center" justify="space-between">
           <Text>Delivery costs</Text>
-          <Text>$ 0.00</Text>
+          <Text>{deliveryFee > 0 ? `$ ${deliveryFee}` : "Free"}</Text>
         </Flex>
         <Flex fontSize="20px" align="center" fontWeight="600" justify="space-between">
           <Text>Total</Text>
-          <Text>$ 127.98</Text>
+          <Text>$ {totalPrice}</Text>
         </Flex>
         <Flex direction="column" gap="8px" color="#919191">
           <Text>Free Delivery for order over $150.00 </Text>

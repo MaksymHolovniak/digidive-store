@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/store/api/auth.api";
 import { useForm } from "react-hook-form";
 import { setUser } from "@/store/slices/auth.slice";
-import type { AuthDto, FetchBaseQueryError } from "@/types/auth.types";
+import type { AuthDto, BackendErrorResponse } from "@/types/auth.types";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster";
 
@@ -45,7 +45,7 @@ const SignInForm = () => {
 
       navigate("/");
     } catch (error) {
-      const err = error as FetchBaseQueryError;
+      const err = error as BackendErrorResponse;
       const errorMessage = err.data?.message || "Authorization error";
 
       toaster.create({

@@ -53,3 +53,14 @@ export type GetProductsArgs = {
 };
 
 export type GetSimilarProductsArgs = { id: number; perPage?: number; page?: number };
+
+export type CartProduct = {
+  name: string;
+  imagePath: string;
+  price: string;
+  stock: number;
+  warrantyMonths: number;
+  brand: {
+    name: string;
+  };
+};

@@ -16,7 +16,12 @@ export class CartService {
 						imagePath: true,
 						price: true,
 						stock: true,
-						warrantyMonths: true
+						warrantyMonths: true,
+						brand: {
+							select: {
+								name: true
+							}
+						}
 					}
 				}
 			},
