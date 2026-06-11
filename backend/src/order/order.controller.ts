@@ -26,6 +26,13 @@ export class OrderController {
 		return this.orderService.createOrder(id, dto)
 	}
 
+	@HttpCode(200)
+	@Auth()
+	@Post('confirm')
+	confirmOrder(@CurrentUser('id') userId: number, @Body('orderId') orderId: number) {
+		return this.orderService.confirmOrder(orderId, userId)
+	}
+
 	@Auth('admin')
 	@Get()
 	findAll() {

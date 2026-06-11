@@ -7,10 +7,23 @@ import { PrismaService } from '../prisma/prisma.service'
 import { CreateOrderDto, UpdateOrderStatudDto } from './order.dto'
 import { productGetReturnObject } from '../product/return-product.object'
 import { userReturnObject } from '../user/return-user.object'
+import Stripe from 'stripe'
 
 @Injectable()
 export class OrderService {
-	constructor(private prisma: PrismaService) {}
+	private stripe: InstanceType<typeof Stripe>
+
+	constructor(private prisma: PrismaService) {
+		const stripeSecretKey = process.env.STRIPE_SECRET_KEY
+
+		if (!stripeSecretKey) {
+			throw new Error(
+				'STRIPE_SECRET_KEY is not defined in environment variables'
+			)
+		}
+
+		this.stripe = new Stripe(stripeSecretKey)
+	}
 
 	async createOrder(userId: number, dto: CreateOrderDto) {
 		const user = await this.prisma.user.findUnique({
@@ -57,44 +70,85 @@ export class OrderService {
 
 		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(2))
 
+		await this.prisma.order.deleteMany({
+			where: {
+				userId,
+				status: 'PENDING'
+			}
+		})
+
+		const order = await this.prisma.order.create({
+			data: {
+				userId,
+				country: dto.country,
+				fullName: dto.fullName,
+				company: dto.company,
+				address: dto.address,
+				postCode: dto.postCode,
+				city: dto.city,
+				phone: dto.phone,
+				totalPrice,
+				deliveryFee,
+				status: 'PENDING',
+				items: { create: orderItems }
+			}
+		})
+
+		const lineItems = user.cart.map(item => ({
+			price_data: {
+				currency: 'usd',
+				product_data: {
+					name: item.product.name
+				},
+				unit_amount: Math.round(item.product.price.toNumber() * 100)
+			},
+			quantity: item.quantity
+		}))
+
+		const session = await this.stripe.checkout.sessions.create({
+			payment_method_types: ['card'],
+			line_items: lineItems,
+			mode: 'payment',
+			success_url: `${process.env.CLIENT_URL}/payment/success?orderId=${order.id}`,
+			cancel_url: `${process.env.CLIENT_URL}/checkout`,
+			metadata: { orderId: order.id.toString(), userId: userId.toString() }
+		})
+
+		return { url: session.url }
+	}
+
+	async confirmOrder(orderId: number, userId: number) {
+		const order = await this.prisma.order.findUnique({
+			where: { id: orderId },
+			include: { items: { include: { product: true } } }
+		})
+
+		if (!order) throw new NotFoundException('Order not found')
+		if (order.status === 'PAID') return order
+
 		return await this.prisma.$transaction(async tx => {
-			for (const item of user.cart) {
+			for (const item of order.items) {
+				if (item.product.stock < item.quantity) {
+					throw new BadRequestException(
+						`Product ${item.product.name} is out of stock`
+					)
+				}
+
 				await tx.product.update({
 					where: { id: item.productId },
-					data: {
-						stock: {
-							decrement: item.quantity
-						}
-					}
+					data: { stock: { decrement: item.quantity } }
 				})
 			}
-
-			const order = await tx.order.create({
-				data: {
-					userId,
-					country: dto.country,
-					fullName: dto.fullName,
-					company: dto.company,
-					address: dto.address,
-					postCode: dto.postCode,
-					city: dto.city,
-					phone: dto.phone,
-					totalPrice,
-					deliveryFee,
-					items: {
-						create: orderItems
-					}
-				},
-				include: {
-					items: true
-				}
-			})
 
 			await tx.cart.deleteMany({
 				where: { userId }
 			})
 
-			return order
+			return await tx.order.update({
+				where: { id: orderId },
+				data: { status: 'PAID' },
+				include: { items: true }
+			})
 		})
 	}
 
