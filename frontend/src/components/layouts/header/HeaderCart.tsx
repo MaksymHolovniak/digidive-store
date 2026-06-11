@@ -1,8 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
 import CartIcon from "../../../assets/cart.svg?react";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "@/store/hooks";
+import { useGetCartQuery } from "@/store/api/cart.api";
 
 const HeaderCart = () => {
+  const isAuth = useAppSelector((state) => state.auth.isAuth);
+
+  const { data: cart } = useGetCartQuery(undefined, {
+    skip: !isAuth,
+  });
+
+  const totalItems = isAuth && cart ? cart.totalQuantity : 0;
+
   return (
     <Link to="/cart">
       <Flex
@@ -26,7 +36,9 @@ const HeaderCart = () => {
         </Box>
         <Box
           position="absolute"
-          textAlign="center"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
           bg="#FF4B4B"
           top="0"
           right="0"
@@ -34,7 +46,7 @@ const HeaderCart = () => {
           h="25px"
           borderRadius="50%"
         >
-          3
+          {totalItems}
         </Box>
       </Flex>
     </Link>

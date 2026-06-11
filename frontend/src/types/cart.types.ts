@@ -10,6 +10,7 @@ export type CartItem = {
 
 export type CartResponse = {
   items: CartItem[];
+  totalQuantity: number;
   itemsTotal: number;
   deliveryFee: number;
   totalPrice: number;

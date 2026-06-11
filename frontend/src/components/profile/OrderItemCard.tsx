@@ -82,8 +82,8 @@ const OrderItemCard = ({ order }: OrderItemCardProps) => {
       <Flex justify="space-between" align="center" mt="16px" fontSize="14px" wrap="wrap" gap="10px">
         <Box color="gray.500">
           Ship to:{" "}
-          <Text as="span" color="gray.700" fontWeight="500">
-            {order.city}, {order.address}
+          <Text as="span" color="gray.700" fontWeight="500" textTransform="capitalize">
+            {order.country}, {order.city}, {order.address}
           </Text>
         </Box>
         <Text fontWeight="600" fontSize="16px" color="#464646">

@@ -33,8 +33,11 @@ export class CartService {
 		})
 
 		let itemsTotal = 0
+		let totalQuantity = 0
+
 		items.forEach(item => {
 			itemsTotal += item.product.price.toNumber() * item.quantity
+			totalQuantity += item.quantity
 		})
 
 		itemsTotal = Number(itemsTotal.toFixed(2))
@@ -51,6 +54,7 @@ export class CartService {
 		
 		return {
 			items,
+			totalQuantity,
 			itemsTotal,
 			deliveryFee,
 			totalPrice
