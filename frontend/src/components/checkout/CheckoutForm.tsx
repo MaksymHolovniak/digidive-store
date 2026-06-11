@@ -1,16 +1,15 @@
 import { Box, Field, Flex, Heading, NativeSelect } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
 import AppInput from "../ui/AppInput";
-import { useNavigate } from "react-router-dom";
-import { useCreateOrderMutation, type CreateOrderRequest } from "@/store/api/order.api";
+import { useCreateOrderMutation } from "@/store/api/order.api";
 import { useForm } from "react-hook-form";
 import { toaster } from "../ui/toaster";
 import type { BackendErrorResponse } from "@/types/auth.types";
+import type { CreateOrderRequest } from "@/types/order.types";
 
 const CheckoutInput = ({ ...props }) => <AppInput h="54px" {...props} />;
 
 const CheckoutForm = () => {
-  const navigate = useNavigate();
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const {
@@ -31,14 +30,18 @@ const CheckoutForm = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createOrder(data).unwrap();
+      const response = await createOrder(data).unwrap();
       toaster.create({
-        title: "Order Placed Successfully!",
-        description: "Thank you for your purchase. Your order has been created",
-        type: "success",
+        title: "Order Created!",
+        description: "Redirecting to the secure payment page...",
+        type: "info",
       });
 
-      navigate("/");
+      if (response && response.url) {
+        window.location.assign(response.url);
+      } else {
+        throw new Error("Payment URL not found");
+      }
     } catch (error) {
       const err = error as BackendErrorResponse;
       const errorMessage = err.data?.message || "Something went wrong while placing your order.";
@@ -84,10 +87,7 @@ const CheckoutForm = () => {
             <Field.Label fontSize="16px" fontWeight="600">
               Full Name <Field.RequiredIndicator />
             </Field.Label>
-            <CheckoutInput
-              placeholder="Full name"
-              {...register("fullName", { required: "Full name is required" })}
-            />
+            <CheckoutInput placeholder="Full name" {...register("fullName", { required: "Full name is required" })} />
             <Field.ErrorText>{errors.fullName?.message}</Field.ErrorText>
           </Field.Root>
           <Field.Root invalid={!!errors.company}>

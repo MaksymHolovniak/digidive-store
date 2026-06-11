@@ -24,7 +24,7 @@ export type Order = {
   createdAt: string;
   totalPrice: string;
   deliveryFee: string;
-  status: "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+  status: "PENDING" | "PAID" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
   country: string;
   city: string;
   address: string;

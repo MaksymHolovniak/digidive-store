@@ -3,9 +3,17 @@ import { protectedApi } from "./protected.api";
 
 export const orderApi = protectedApi.injectEndpoints({
   endpoints: (builder) => ({
-    createOrder: builder.mutation<unknown, CreateOrderRequest>({
+    createOrder: builder.mutation<{ url: string }, CreateOrderRequest>({
       query: (body) => ({
         url: "/order",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Order"],
+    }),
+    confirmOrder: builder.mutation<unknown, { orderId: number }>({
+      query: (body) => ({
+        url: "/order/confirm",
         method: "POST",
         body,
       }),
@@ -18,4 +26,4 @@ export const orderApi = protectedApi.injectEndpoints({
   }),
 });
 
-export const { useCreateOrderMutation, useGetUserOrdersQuery } = orderApi;
+export const { useCreateOrderMutation, useGetUserOrdersQuery, useConfirmOrderMutation } = orderApi;
