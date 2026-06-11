@@ -47,7 +47,20 @@ export const authApi = createApi({
         } catch {}
       },
     }),
+    githubLogin: builder.mutation<UserResponse, { token: string }>({
+      query: (body) => ({
+        url: "/auth/github",
+        method: "POST",
+        body,
+      }),
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          saveAuthData(data, true);
+        } catch {}
+      },
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation, useGithubLoginMutation } = authApi;

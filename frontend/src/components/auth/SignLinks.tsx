@@ -1,13 +1,13 @@
 import { Flex, Image, AbsoluteCenter, Box, Separator, Text, Button } from "@chakra-ui/react";
 import google from "../../assets/google.svg";
-import facebook from "../../assets/facebook.svg";
 import github from "../../assets/github.svg";
 import { useAppDispatch } from "@/store/hooks";
-import { useNavigate } from "react-router-dom";
-import { useGoogleLoginMutation } from "@/store/api/auth.api";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useGithubLoginMutation, useGoogleLoginMutation } from "@/store/api/auth.api";
 import { useGoogleLogin } from "@react-oauth/google";
 import { setUser } from "@/store/slices/auth.slice";
 import { toaster } from "../ui/toaster";
+import { useEffect, useRef } from "react";
 
 type SignLinksProps = {
   variant?: "default" | "minimal";
@@ -16,7 +16,43 @@ type SignLinksProps = {
 const SignLinks = ({ variant = "default" }: SignLinksProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [googleLoginApi] = useGoogleLoginMutation();
+  const [githubLoginApi] = useGithubLoginMutation();
+  const isAuthProcessing = useRef(false);
+
+  useEffect(() => {
+    const code = searchParams.get("code");
+
+    if (!code || isAuthProcessing.current) return;
+
+    isAuthProcessing.current = true;
+
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    const handleGithubAuth = async () => {
+      try {
+        const response = await githubLoginApi({ token: code }).unwrap();
+        dispatch(setUser(response.user));
+        toaster.create({
+          title: "Success",
+          description: "Logged in via GitHub successfully!",
+          type: "success",
+        });
+        navigate("/");
+      } catch {
+        toaster.create({
+          title: "Auth Error",
+          description: "Failed to authenticate via GitHub",
+          type: "error",
+        });
+      } finally {
+        isAuthProcessing.current = false;
+      }
+    };
+
+    handleGithubAuth();
+  }, [searchParams, githubLoginApi, dispatch, navigate]);
 
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
@@ -48,6 +84,13 @@ const SignLinks = ({ variant = "default" }: SignLinksProps) => {
     },
   });
 
+  const handleGithubLogin = () => {
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+    const redirectUri = window.location.origin + window.location.pathname;
+
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user:email`;
+  };
+
   return (
     <>
       <Box position="relative" w="100%" mt="22px">
@@ -65,10 +108,7 @@ const SignLinks = ({ variant = "default" }: SignLinksProps) => {
         <Button variant="ghost" p="8px" onClick={() => handleGoogleLogin()}>
           <Image src={google} alt="Google" />
         </Button>
-        <Button variant="ghost" p="8px" disabled>
-          <Image src={facebook} alt="Facebook" />
-        </Button>
-        <Button variant="ghost" p="8px" disabled>
+        <Button variant="ghost" p="8px" onClick={handleGithubLogin}>
           <Image src={github} alt="GitHub" />
         </Button>
       </Flex>

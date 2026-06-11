@@ -11,6 +11,7 @@ import { RegisterDto } from './dto/register.dto'
 import { LoginDto } from './dto/login.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
 import { GoogleAuthDto } from './dto/google-auth.dto'
+import { GithubAuthDto } from './dto/github-auth.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -35,6 +36,13 @@ export class AuthController {
 	@Post('google')
 	async googleAuth(@Body() dto: GoogleAuthDto) {
 		return this.authService.googleAuth(dto)
+	}
+
+	@UsePipes(new ValidationPipe())
+	@HttpCode(200)
+	@Post('github')
+	async githubAuth(@Body() dto: GithubAuthDto) {
+		return this.authService.githubAuth(dto)
 	}
 
 	@UsePipes(new ValidationPipe())

@@ -31,7 +31,7 @@ const CartPage = () => {
             h="52px"
             fontSize="16px"
             _hover={{
-              transform: "translateY(2px)",
+              transform: "translateY(-2px)",
             }}
             onClick={() => navigate("/products", { replace: true })}
           >
