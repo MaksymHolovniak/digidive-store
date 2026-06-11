@@ -5,13 +5,12 @@ import UserIcon from "../../../assets/user.svg?react";
 import HeartIcon from "../../../assets/heart.svg?react";
 import LogoutIcon from "../../../assets/logout.svg?react";
 import HeaderActionItem from "./HeaderActionItem";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/store/hooks";
-import { logout } from "@/store/slices/auth.slice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { logoutAction } from "@/store/slices/auth.slice";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const HeaderActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,7 +18,7 @@ const HeaderActions = () => {
 
   useEffect(() => {
     if (location.pathname === "/" && location.state?.triggerLogout) {
-      dispatch(logout());
+      dispatch(logoutAction());
       navigate("/", { replace: true, state: {} });
     }
   }, [location, dispatch, navigate]);
@@ -30,7 +29,7 @@ const HeaderActions = () => {
     if (protectedRoutes.includes(location.pathname)) {
       navigate("/", { state: { triggerLogout: true } });
     } else {
-      dispatch(logout());
+      dispatch(logoutAction());
     }
   };
 

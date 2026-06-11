@@ -1,6 +1,12 @@
 import type { FullUser } from "@/types/auth.types";
 import { getUserFromStorage, removeAuthData } from "@/utils/auth.helper";
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { protectedApi } from "../api/protected.api";
+
+export const logoutAction = createAsyncThunk("auth/logoutAction", async (_, { dispatch }) => {
+  dispatch(logout());
+  dispatch(protectedApi.util.resetApiState());
+});
 
 type AuthState = {
   user: FullUser | null;
@@ -25,7 +31,6 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isAuth = false;
-
       removeAuthData();
     },
   },

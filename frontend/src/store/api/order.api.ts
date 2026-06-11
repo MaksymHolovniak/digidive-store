@@ -1,14 +1,5 @@
+import type { CreateOrderRequest, Order } from "@/types/order.types";
 import { protectedApi } from "./protected.api";
-
-export type CreateOrderRequest = {
-  country: string;
-  fullName: string;
-  company?: string;
-  city: string;
-  address: string;
-  postCode: string;
-  phone: string;
-};
 
 export const orderApi = protectedApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -18,9 +9,13 @@ export const orderApi = protectedApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Cart"],
+      invalidatesTags: ["Cart", "Order"],
+    }),
+    getUserOrders: builder.query<Order[], void>({
+      query: () => "/order/my",
+      providesTags: ["Order"],
     }),
   }),
 });
 
-export const { useCreateOrderMutation } = orderApi;
+export const { useCreateOrderMutation, useGetUserOrdersQuery } = orderApi;

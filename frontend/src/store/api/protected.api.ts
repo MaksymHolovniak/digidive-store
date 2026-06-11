@@ -64,6 +64,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const protectedApi = createApi({
   reducerPath: "protectedApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["UserProfile", "Cart"],
+  tagTypes: ["UserProfile", "Cart", "Order"],
   endpoints: () => ({}),
 });
