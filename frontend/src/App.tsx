@@ -12,6 +12,7 @@ const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -26,13 +27,14 @@ const App = () => {
 
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:categoryId" element={<ProductsPage />} />
-            
+
             <Route path="/product/:id" element={<ProductPage />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/cart" element={<CartPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>
 

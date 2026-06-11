@@ -56,7 +56,7 @@ export class OrderService {
 		const deliveryFee = itemsTotal < FREE_DELIVERY_THRESHOLD ? DELIVERY_FEE : 0
 
 		const totalPrice = Number((itemsTotal + deliveryFee).toFixed(2))
-		
+
 		return await this.prisma.$transaction(async tx => {
 			for (const item of user.cart) {
 				await tx.product.update({
@@ -113,6 +113,23 @@ export class OrderService {
 				}
 			},
 			orderBy: { createdAt: 'desc' }
+		})
+	}
+
+	async findUserOrders(userId: number) {
+		return this.prisma.order.findMany({
+			where: {
+				userId
+			},
+			include: {
+				items: {
+					include: {
+						product: {
+							select: productGetReturnObject
+						}
+					}
+				}
+			}
 		})
 	}
 

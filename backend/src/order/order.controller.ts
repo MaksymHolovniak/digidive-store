@@ -33,6 +33,12 @@ export class OrderController {
 	}
 
 	@Auth()
+	@Get('my')
+	findUserOrders(@CurrentUser('id') id: number) {
+		return this.orderService.findUserOrders(id)
+	}
+
+	@Auth()
 	@Get(':id')
 	findOne(@Param('id') id: string) {
 		return this.orderService.findOne(+id)

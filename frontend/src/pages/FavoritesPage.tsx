@@ -25,7 +25,7 @@ const FavoritesPage = () => {
         </Heading>
 
         {totalFavorites === 0 ? (
-          <Flex justifyContent="center" direction="column" align="center" textAlign="center" gap="24px" py="120px">
+          <Flex justifyContent="center" direction="column" align="center" textAlign="center" gap="24px" py="100px">
             <Box color="gray.300" mb="8px">
               <LuHeart size={80} strokeWidth={1.5} />
             </Box>
