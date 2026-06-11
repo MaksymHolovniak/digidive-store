@@ -28,13 +28,26 @@ export const authApi = createApi({
       }),
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
-            const { data } = await queryFulfilled;
-            
+          const { data } = await queryFulfilled;
+
           saveAuthData(data, arg.rememberMe);
+        } catch {}
+      },
+    }),
+    googleLogin: builder.mutation<UserResponse, { token: string }>({
+      query: (body) => ({
+        url: "/auth/google",
+        method: "POST",
+        body,
+      }),
+      async onQueryStarted(_, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          saveAuthData(data, true);
         } catch {}
       },
     }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGoogleLoginMutation } = authApi;

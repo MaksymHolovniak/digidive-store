@@ -533,6 +533,11 @@
   resolved "https://registry.yarnpkg.com/@pandacss/is-valid-prop/-/is-valid-prop-1.11.1.tgz#10f298a15af58b499eed6841c07c0d7ee37c53a7"
   integrity sha512-tvfThJmSw88Lgk5qVYzVckZ2FY8T376mGvP1cWUC5SR58AYm82ZKEFciDbGOQKcyN70rF9qqJBB5JVWgJo3JmA==
 
+"@react-oauth/google@^0.13.5":
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/@react-oauth/google/-/google-0.13.5.tgz#78fba5f0051cdde055079f83e41eff167d56c326"
+  integrity sha512-xQWri2s/3nNekZJ4uuov2aAfQYu83bN3864KcFqw2pK1nNbFurQIjPFDXhWaKH3IjYJ2r/9yyIIpsn5lMqrheQ==
+
 "@reduxjs/toolkit@^2.12.0":
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-2.12.0.tgz#e62787503a38561e04bb8f39e29ca8db689590f9"
