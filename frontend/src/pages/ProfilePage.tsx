@@ -1,7 +1,7 @@
 import AppContainer from "@/components/ui/AppContainer";
 import PageLoader from "@/components/ui/PageLoader";
 import { useGetProfileQuery } from "@/store/api/user.api";
-import { Box, Flex, Heading, Grid } from "@chakra-ui/react";
+import { Box, Heading, Grid, Accordion } from "@chakra-ui/react";
 import { useGetUserOrdersQuery } from "@/store/api/order.api";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import EmptyOrders from "@/components/profile/EmptyOrders";
@@ -30,11 +30,11 @@ const ProfilePage = () => {
             {!orders || orders.length === 0 ? (
               <EmptyOrders />
             ) : (
-              <Flex direction="column" gap="24px">
+              <Accordion.Root collapsible defaultValue={[]} spaceY="16px">
                 {orders.map((order) => (
                   <OrderItemCard key={order.id} order={order} />
                 ))}
-              </Flex>
+              </Accordion.Root>
             )}
           </Box>
         </Grid>
