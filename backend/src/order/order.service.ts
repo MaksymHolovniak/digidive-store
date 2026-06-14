@@ -105,6 +105,17 @@ export class OrderService {
 			quantity: item.quantity
 		}))
 
+		if (deliveryFee > 0) {
+			lineItems.push({
+				price_data: {
+					currency: 'usd',
+					product_data: { name: 'Delivery Fee' },
+					unit_amount: deliveryFee * 100
+				},
+				quantity: 1
+			})
+		}
+
 		const session = await this.stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
 			line_items: lineItems,
@@ -173,7 +184,10 @@ export class OrderService {
 	async findUserOrders(userId: number) {
 		return this.prisma.order.findMany({
 			where: {
-				userId
+				userId,
+				NOT: {
+					status: 'PENDING'
+				}
 			},
 			include: {
 				items: {

@@ -29,7 +29,10 @@ export class OrderController {
 	@HttpCode(200)
 	@Auth()
 	@Post('confirm')
-	confirmOrder(@CurrentUser('id') userId: number, @Body('orderId') orderId: number) {
+	confirmOrder(
+		@CurrentUser('id') userId: number,
+		@Body('orderId') orderId: number
+	) {
 		return this.orderService.confirmOrder(orderId, userId)
 	}
 

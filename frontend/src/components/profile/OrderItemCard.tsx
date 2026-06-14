@@ -10,6 +10,7 @@ type OrderItemCardProps = {
 };
 
 const OrderItemCard = ({ order }: OrderItemCardProps) => {
+
   return (
     <Accordion.Item
       value={String(order.id)}

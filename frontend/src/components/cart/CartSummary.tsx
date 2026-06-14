@@ -38,7 +38,15 @@ const CartSummary = ({ itemsTotal, deliveryFee, totalPrice }: CartSummaryProps) 
         </Flex>
       </Flex>
       <Flex justify="center">
-        <AppButton w="200px" h="52px" fontSize="20px" onClick={handleOnClick}>
+        <AppButton
+          w="200px"
+          h="52px"
+          fontSize="20px"
+          _hover={{
+            transform: "translateY(-2px)",
+          }}
+          onClick={handleOnClick}
+        >
           Checkout
         </AppButton>
       </Flex>

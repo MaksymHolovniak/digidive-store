@@ -150,8 +150,18 @@ const CheckoutForm = () => {
         </Flex>
       </Flex>
       <Flex justify="center">
-        <AppButton type="submit" w="200px" h="52px" fontSize="20px" loading={isLoading} disabled={isLoading}>
-          Confirm payment
+        <AppButton
+          type="submit"
+          w="200px"
+          h="52px"
+          fontSize="18px"
+          _hover={{
+            transform: "translateY(-2px)",
+          }}
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          Proceed to Payment
         </AppButton>
       </Flex>
     </Box>

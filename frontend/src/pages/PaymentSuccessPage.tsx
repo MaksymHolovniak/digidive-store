@@ -60,10 +60,19 @@ const PaymentSuccessPage = () => {
                   Thank You for Your Purchase!
                 </Heading>
                 <Text color="gray.600" maxW="500px">
-                  Payment confirmed successfully. Your order **#{orderId}** has been placed and is being prepared for
+                  Payment confirmed successfully. Your order #{orderId} has been placed and is being prepared for
                   delivery.
                 </Text>
-                <AppButton mt="20px" w="220px" h="50px" onClick={() => navigate("/")}>
+                <AppButton
+                  mt="20px"
+                  w="220px"
+                  h="50px"
+                  fontSize="16px"
+                  _hover={{
+                    transform: "translateY(-2px)",
+                  }}
+                  onClick={() => navigate("/")}
+                >
                   Continue Shopping
                 </AppButton>
               </>
