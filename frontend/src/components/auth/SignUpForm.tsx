@@ -1,16 +1,16 @@
 import { Box, Field } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
 import AppInput from "../ui/AppInput";
-import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "@/store/api/auth.api";
 import { useForm, useWatch } from "react-hook-form";
 import { setUser } from "@/store/slices/auth.slice";
 import type { BackendErrorResponse, SignUpFormValues } from "@/types/auth.types";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster";
+import { useAppDispatch } from "@/store/hooks";
 
 const SignUpForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
 

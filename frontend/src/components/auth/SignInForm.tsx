@@ -1,16 +1,16 @@
 import { Box, Checkbox, Field } from "@chakra-ui/react";
 import AppButton from "../ui/AppButton";
 import AppInput from "../ui/AppInput";
-import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/store/api/auth.api";
 import { useForm } from "react-hook-form";
 import { setUser } from "@/store/slices/auth.slice";
 import type { AuthDto, BackendErrorResponse } from "@/types/auth.types";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../ui/toaster";
+import { useAppDispatch } from "@/store/hooks";
 
 const SignInForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
 

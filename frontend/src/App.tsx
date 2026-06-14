@@ -6,6 +6,8 @@ import MainLayout from "./components/layouts/MainLayout";
 import { lazy } from "react";
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
+import AdminRoute from "./components/auth/AdminRoute.tsx";
+import AdminPage from "./pages/AdminPage.tsx";
 
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
@@ -38,6 +40,10 @@ const App = () => {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/payment/success" element={<PaymentSuccessPage />} />
             </Route>
+          </Route>
+
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
 
           <Route path="/sign-in" element={<SignInPage />} />
