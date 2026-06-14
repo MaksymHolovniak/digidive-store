@@ -7,7 +7,7 @@ import { lazy } from "react";
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
 import AdminRoute from "./components/auth/AdminRoute.tsx";
-import AdminPage from "./pages/AdminPage.tsx";
+import AdminLayout from "./components/layouts/AdminLayout.tsx";
 
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
@@ -16,6 +16,7 @@ const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage.tsx"));
+const AdminBrandsPage = lazy(() => import("./pages/AdminBrandsPage.tsx"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -43,7 +44,9 @@ const App = () => {
           </Route>
 
           <Route element={<AdminRoute />}>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route element={<AdminLayout />}>
+              <Route path="/admin/brands" element={<AdminBrandsPage />} />
+            </Route>
           </Route>
 
           <Route path="/sign-in" element={<SignInPage />} />
