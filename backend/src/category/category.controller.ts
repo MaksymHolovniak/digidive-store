@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	Patch,
@@ -70,5 +71,11 @@ export class CategoryController {
 		const imagePath = file ? `/uploads/categories/${file.filename}` : undefined
 
 		return this.categoryService.updateCategory(+id, dto, imagePath)
+	}
+
+	@Auth('admin')
+	@Delete(':id')
+	async deleteCategory(@Param('id') id: string) {
+		return this.categoryService.deleteCategory(+id)
 	}
 }

@@ -70,7 +70,8 @@ export class CategoryService {
 
 	async updateCategory(id: number, dto: UpdateCategoryDto, imagePath?: string) {
 		const category = await this.prisma.category.findUnique({
-			where: { id }
+			where: { id },
+			include: { children: true }
 		})
 
 		if (!category) {
@@ -80,9 +81,21 @@ export class CategoryService {
 
 		const parentIdInput = this.normalizeParentId(dto.parentId)
 
+		if (parentIdInput === id) {
+			if (imagePath) await this.deleteLocalFile(imagePath)
+			throw new BadRequestException('A category cannot be its own parent')
+		}
+
 		const finalParentId =
 			parentIdInput !== undefined ? parentIdInput : category.parentId
 		const isSubcategory = finalParentId !== null
+
+		if (isSubcategory && category.children.length > 0) {
+			await this.prisma.category.updateMany({
+				where: { parentId: id },
+				data: { parentId: null }
+			})
+		}
 
 		if (isSubcategory && imagePath) {
 			await this.deleteLocalFile(imagePath)
@@ -108,6 +121,35 @@ export class CategoryService {
 						? { imagePath }
 						: {})
 			}
+		})
+	}
+
+	async deleteCategory(id: number) {
+		const category = await this.prisma.category.findUnique({
+			where: { id },
+			include: { children: true }
+		})
+
+		if (!category) throw new NotFoundException('Category not found')
+
+		if (category.imagePath) {
+			await this.deleteLocalFile(category.imagePath)
+		}
+
+		for (const child of category.children) {
+			if (child.imagePath) {
+				await this.deleteLocalFile(child.imagePath)
+			}
+		}
+
+		return this.prisma.$transaction(async tx => {
+			await tx.category.deleteMany({
+				where: { parentId: id }
+			})
+
+			return tx.category.delete({
+				where: { id }
+			})
 		})
 	}
 }
