@@ -27,6 +27,7 @@ const CategoryForm = ({ editingCategory, onCancelEdit, categories }: CategoryFor
     handleSubmit,
     reset,
     setValue,
+    clearErrors,
     control,
     formState: { errors },
   } = useForm<CategoryFormValues>({ defaultValues: { name: "", parentId: "null", image: null } });
@@ -42,10 +43,11 @@ const CategoryForm = ({ editingCategory, onCancelEdit, categories }: CategoryFor
     if (editingCategory) {
       setValue("name", editingCategory.name);
       setValue("parentId", editingCategory.parentId ? String(editingCategory.parentId) : "null");
+      clearErrors()
     } else {
       reset();
     }
-  }, [editingCategory, setValue, reset]);
+  }, [editingCategory, setValue, reset, clearErrors]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -123,12 +125,13 @@ const CategoryForm = ({ editingCategory, onCancelEdit, categories }: CategoryFor
               <Input
                 type="file"
                 accept="image/*"
-                {...register("image")}
+                {...register("image", { required: "Image is required" })}
                 p="8px"
                 bg="#F8F9FA"
                 h="44px"
                 borderRadius="8px"
               />
+              <Field.ErrorText>{errors.image?.message}</Field.ErrorText>
             </Field.Root>
           )}
 

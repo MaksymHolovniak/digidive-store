@@ -32,6 +32,11 @@ export type GetProductsResponse = {
   length: number;
 };
 
+export type GetAdminProductsResponse = {
+  products: CurrentProduct[];
+  length: number;
+};
+
 export type SortValue = "cheaper" | "expensive" | "alphabetical" | "default";
 export type GridViewType = "grid-2" | "grid-3";
 

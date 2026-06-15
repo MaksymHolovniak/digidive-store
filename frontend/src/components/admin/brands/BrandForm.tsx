@@ -24,16 +24,18 @@ const BrandForm = ({ editingBrand, onCancelEdit }: BrandFormProps) => {
     handleSubmit,
     reset,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<BrandFormValues>();
 
   useEffect(() => {
     if (editingBrand) {
       setValue("name", editingBrand.name);
+      clearErrors();
     } else {
       reset();
     }
-  }, [editingBrand, setValue, reset]);
+  }, [editingBrand, setValue, reset, clearErrors]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

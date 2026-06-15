@@ -1,16 +1,13 @@
-import { API_URL } from "@/constants/api.constants";
 import {
   type CurrentProduct,
+  type GetAdminProductsResponse,
   type GetProductsArgs,
   type GetProductsResponse,
   type GetSimilarProductsArgs,
 } from "@/types/product.types";
-import { fetchBaseQuery } from "@reduxjs/toolkit/query";
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { protectedApi } from "./protected.api";
 
-export const productApi = createApi({
-  reducerPath: "productApi",
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+export const productApi = protectedApi.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsResponse, GetProductsArgs>({
       query: ({ categoryId, page = 1, perPage = 9, ...rest }) => ({
@@ -32,7 +29,45 @@ export const productApi = createApi({
         params: { page, perPage },
       }),
     }),
+    getAdminProducts: builder.query<GetAdminProductsResponse, GetProductsArgs>({
+      query: ({ page = 1, perPage = 10, searchTerm }) => ({
+        url: "/product/admin/all",
+        params: { page, perPage, searchTerm },
+      }),
+      providesTags: ["Products"],
+    }),
+    createProduct: builder.mutation<CurrentProduct, FormData>({
+      query: (formData) => ({
+        url: "/product",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    updateProduct: builder.mutation<CurrentProduct, { id: number; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `/product/${id}`,
+        method: "PATCH",
+        body: formData,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    deleteProduct: builder.mutation<{ id: number }, number>({
+      query: (id) => ({
+        url: `/product/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Products"],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useGetSimilarProductsQuery } = productApi;
+export const {
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useGetSimilarProductsQuery,
+  useGetAdminProductsQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+} = productApi;

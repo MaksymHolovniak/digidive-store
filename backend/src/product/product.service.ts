@@ -30,6 +30,55 @@ export class ProductService {
 		}
 	}
 
+	async getAdminAll(dto: GetAllProductDto = {}) {
+		const { sort, searchTerm } = dto
+		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
+
+		prismaSort.push({ stock: 'desc' })
+
+		switch (sort) {
+			case EnumProductSort.Alphabetical:
+				prismaSort.push({ name: 'asc' })
+				break
+			case EnumProductSort.EXPENSIVE:
+				prismaSort.push({ price: 'desc' })
+				break
+			case EnumProductSort.CHEAPER:
+				prismaSort.push({ price: 'asc' })
+				break
+			default:
+				prismaSort.push({ id: 'desc' })
+				break
+		}
+
+		const prismaSearchTermFilter: Prisma.ProductWhereInput = searchTerm
+			? {
+					OR: [
+						{ name: { contains: searchTerm } },
+						{ brand: { name: { contains: searchTerm } } },
+						{ category: { name: { contains: searchTerm } } }
+					]
+				}
+			: {}
+
+		const { perPage, skip } = this.pagination.getPagination(dto)
+
+		const products = await this.prisma.product.findMany({
+			where: prismaSearchTermFilter,
+			select: productReturnObject,
+			orderBy: prismaSort,
+			skip,
+			take: perPage
+		})
+
+		return {
+			products,
+			length: await this.prisma.product.count({
+				where: prismaSearchTermFilter
+			})
+		}
+	}
+
 	async getAll(categoryId: number | undefined, dto: GetAllProductDto = {}) {
 		const { sort, searchTerm, brand, minPrice, maxPrice } = dto
 
@@ -172,10 +221,7 @@ export class ProductService {
 					id: currentProduct.id
 				}
 			},
-			orderBy: [
-				{stock: 'desc'},
-				{price: 'desc'}
-			],
+			orderBy: [{ stock: 'desc' }, { price: 'desc' }],
 			select: productGetReturnObject,
 			skip,
 			take: perPage
@@ -228,7 +274,7 @@ export class ProductService {
 			data: {
 				name: dto.name,
 				description: dto.description,
-				imagePath: imagePath || undefined,
+				imagePath: imagePath !== undefined ? imagePath || '' : undefined,
 				price: dto.price,
 				stock: dto.stock,
 				warrantyMonths: dto.warrantyMonths ? +dto.warrantyMonths : undefined,
