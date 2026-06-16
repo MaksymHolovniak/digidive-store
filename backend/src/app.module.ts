@@ -13,6 +13,7 @@ import { join } from 'path'
 import { CartModule } from './cart/cart.module'
 import { OrderModule } from './order/order.module'
 import { ServerResponse } from 'http'
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
 	imports: [
@@ -33,7 +34,8 @@ import { ServerResponse } from 'http'
 		BrandModule,
 		CategoryModule,
 		CartModule,
-		OrderModule
+		OrderModule,
+		StatisticsModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
