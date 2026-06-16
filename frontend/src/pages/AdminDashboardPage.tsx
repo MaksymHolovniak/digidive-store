@@ -1,10 +1,10 @@
 import MetricCard from "@/components/admin/statistics/MetricCard";
 import PageLoader from "@/components/ui/PageLoader";
 import { useGetStatisticsQuery } from "@/store/api/statistics.api";
+import { STATUS_HEX_COLORS } from "@/utils/order.helper";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import {
   CartesianGrid,
-  Cell,
   Legend,
   Line,
   LineChart,
@@ -16,13 +16,18 @@ import {
   YAxis,
 } from "recharts";
 
-const STATUS_CHART_COLORS = ["#DD6B20", "#319795", "#3182CE", "#805AD5", "#38A169", "#E53E3E"];
 const ANALYTICS_CARD_COLORS = ["#9969FF", "#3182CE", "#38A169", "#DD6B20"];
 
 const AdminDashboardPage = () => {
   const { data, isLoading } = useGetStatisticsQuery();
 
   if (isLoading) return <PageLoader />;
+
+  const coloredOrdersDistribution =
+    data?.ordersDistribution.map((item) => ({
+      ...item,
+      fill: STATUS_HEX_COLORS[item.name as keyof typeof STATUS_HEX_COLORS] || "#718096",
+    })) || [];
 
   return (
     <Stack gap="32px" width="full">
@@ -77,18 +82,14 @@ const AdminDashboardPage = () => {
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
               <Pie
-                data={data?.ordersDistribution}
+                data={coloredOrdersDistribution}
                 cx="50%"
                 cy="45%"
                 innerRadius={60}
                 outerRadius={85}
                 paddingAngle={4}
                 dataKey="value"
-              >
-                {data?.ordersDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={STATUS_CHART_COLORS[index % STATUS_CHART_COLORS.length]} />
-                ))}
-              </Pie>
+              />
               <Tooltip />
               <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: "12px" }} />
             </PieChart>
