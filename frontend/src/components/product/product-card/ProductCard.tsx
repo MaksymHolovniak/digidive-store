@@ -9,6 +9,7 @@ import { useGetProfileQuery, useToggleFavoriteMutation } from "@/store/api/user.
 import type { BackendErrorResponse } from "@/types/auth.types";
 import { toaster } from "@/components/ui/toaster";
 import AppButton from "@/components/ui/AppButton";
+import { useAppSelector } from "@/store/hooks";
 
 type ProductCardProps = {
   product: Product;
@@ -16,21 +17,34 @@ type ProductCardProps = {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const navigate = useNavigate();
-  const { data: profile } = useGetProfileQuery();
+
+  const { isAuth } = useAppSelector((state) => state.auth);
+
+  const { data: profile } = useGetProfileQuery(undefined, { skip: !isAuth });
   const [toggleFavorite] = useToggleFavoriteMutation();
 
   const isFavorite = profile?.favorites.some((f) => f.product.id === product.id) || false;
 
-  const isOutOfStock = product.stock === 0
+  const isOutOfStock = product.stock === 0;
 
   const handleNavigate = () => {
     navigate(`/product/${product.id}`);
   };
 
   const handleFavoriteClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isAuth) {
+      toaster.create({
+        title: "Authorization required",
+        description: "Please sign in to add products to your favorites",
+        type: "warning",
+      });
+      navigate("/sign-in");
+      return;
+    }
+
     try {
-      e.stopPropagation();
-      await toggleFavorite(product.id).unwrap;
+      await toggleFavorite(product.id).unwrap();
     } catch (error) {
       const err = error as BackendErrorResponse;
       toaster.create({

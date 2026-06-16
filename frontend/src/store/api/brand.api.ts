@@ -1,12 +1,18 @@
 import type { Brand } from "@/types/product.types";
 import { protectedApi } from "./protected.api";
+import { publicApi } from "./public.api";
 
-export const brandApi = protectedApi.injectEndpoints({
+export const publicBrandApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
     getBrands: builder.query<Brand[], void>({
       query: () => "/brand",
       providesTags: ["Brands"],
     }),
+  }),
+});
+
+export const adminBrandApi = protectedApi.injectEndpoints({
+  endpoints: (builder) => ({
     createBrand: builder.mutation<Brand, { name: string }>({
       query: (body) => ({
         url: "/brand",
@@ -33,4 +39,6 @@ export const brandApi = protectedApi.injectEndpoints({
   }),
 });
 
-export const { useGetBrandsQuery, useCreateBrandMutation, useUpdateBrandMutation, useDeleteBrandMutation } = brandApi;
+export const { useGetBrandsQuery } = publicBrandApi;
+
+export const { useCreateBrandMutation, useUpdateBrandMutation, useDeleteBrandMutation } = adminBrandApi;

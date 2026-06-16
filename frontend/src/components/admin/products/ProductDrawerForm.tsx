@@ -5,7 +5,7 @@ import { useCreateProductMutation, useUpdateProductMutation } from "@/store/api/
 import type { Category } from "@/types/category.types";
 import type { CurrentProduct } from "@/types/product.types";
 import { Button, Drawer, Field, Flex, Input, NativeSelect, Stack, Textarea } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { LuCheck, LuPlus } from "react-icons/lu";
 
@@ -27,6 +27,7 @@ type ProductDrawerFormProps = {
 };
 
 const ProductDrawerForm = ({ product, isOpen, onClose }: ProductDrawerFormProps) => {
+  const cancelBtnRef = useRef<HTMLButtonElement>(null);
   const { data: brands } = useGetBrandsQuery();
   const { data: categories } = useGetCategoriesQuery();
 
@@ -60,6 +61,7 @@ const ProductDrawerForm = ({ product, isOpen, onClose }: ProductDrawerFormProps)
       setValue("warrantyMonths", String(product.warrantyMonths || 0));
       setValue("brandId", String(product.brand?.id || ""));
       setValue("categoryId", String(product.category?.id || ""));
+      setValue("image", null);
     } else {
       reset();
     }
@@ -105,7 +107,7 @@ const ProductDrawerForm = ({ product, isOpen, onClose }: ProductDrawerFormProps)
   });
 
   return (
-    <Drawer.Root open={isOpen} onOpenChange={onClose} size="md">
+    <Drawer.Root open={isOpen} onOpenChange={onClose} size="md" initialFocusEl={() => cancelBtnRef.current}>
       <Drawer.Backdrop />
       <Drawer.Positioner>
         <Drawer.Content bg="white" h="full" p="6" boxShadow="xl">
@@ -222,7 +224,7 @@ const ProductDrawerForm = ({ product, isOpen, onClose }: ProductDrawerFormProps)
                   <Input
                     type="file"
                     accept="image/*"
-                    {...register("image", { required: "Image is required" })}
+                    {...register("image", { required: product ? false : "Image is required" })}
                     p="8px"
                     bg="#F8F9FA"
                     h="44px"
@@ -236,7 +238,7 @@ const ProductDrawerForm = ({ product, isOpen, onClose }: ProductDrawerFormProps)
 
           <Drawer.Footer borderTop="1px solid #E2E8F0" pt="4">
             <Flex gap="3" w="full">
-              <Button variant="outline" onClick={onClose} h="44px" borderRadius="8px" flex="1">
+              <Button ref={cancelBtnRef} variant="outline" onClick={onClose} h="44px" borderRadius="8px" flex="1">
                 Cancel
               </Button>
               <Button

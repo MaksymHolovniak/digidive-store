@@ -13,14 +13,19 @@ import { useGetCartQuery, useUpdateQuantityMutation } from "@/store/api/cart.api
 import type { BackendErrorResponse } from "@/types/auth.types";
 import { toaster } from "../ui/toaster";
 import AppButton from "../ui/AppButton";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "@/store/hooks";
 
 type ProductInfoSectionProps = {
   product: CurrentProduct;
 };
 
 const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
-  const { data: profile } = useGetProfileQuery();
-  const { data: cartData } = useGetCartQuery();
+  const navigate = useNavigate();
+  const { isAuth } = useAppSelector((state) => state.auth);
+
+  const { data: profile } = useGetProfileQuery(undefined, { skip: !isAuth });
+  const { data: cartData } = useGetCartQuery(undefined, { skip: !isAuth });
   const [toggleFavorite] = useToggleFavoriteMutation();
   const [updateQuantity] = useUpdateQuantityMutation();
 
@@ -37,6 +42,11 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
 
   const handleQuantityChange = async (newCount: number) => {
     if (isOutOfStock) return;
+
+    if (!isAuth) {
+      setLocalCount(newCount);
+      return;
+    }
 
     if (newCount > product.stock) {
       toaster.create({
@@ -64,6 +74,16 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
   };
 
   const handleToggleFavorite = async () => {
+    if (!isAuth) {
+      toaster.create({
+        title: "Authorization required",
+        description: "Please sign in to add products to your favorites",
+        type: "warning",
+      });
+      navigate("/sign-in");
+      return;
+    }
+
     try {
       await toggleFavorite(product.id).unwrap();
     } catch (error) {

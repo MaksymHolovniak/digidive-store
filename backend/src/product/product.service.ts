@@ -1,9 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { PaginationService } from '../pagination/pagination.service'
-import { EnumProductSort, GetAllProductDto } from './dto/get-all.product.dto'
+import { EnumProductSort, GetAdminProductsDto, GetAllProductDto } from './dto/get-all.product.dto'
 import { Prisma } from '../../generated/prisma/client'
 import {
+	productAdminReturnObject,
 	productGetReturnObject,
 	productReturnObject
 } from './return-product.object'
@@ -30,8 +31,8 @@ export class ProductService {
 		}
 	}
 
-	async getAdminAll(dto: GetAllProductDto = {}) {
-		const { sort, searchTerm } = dto
+	async getAdminAll(dto: GetAdminProductsDto = {}) {
+		const { sort, searchTerm, showArchived } = dto
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
 		prismaSort.push({ stock: 'desc' })
@@ -61,11 +62,20 @@ export class ProductService {
 				}
 			: {}
 
+		const prismaArchiveFilter: Prisma.ProductWhereInput = showArchived === 'true' ? {} : { isDeleted: false }
+		
+		const whereFilters: Prisma.ProductWhereInput = {
+			AND: [
+				prismaSearchTermFilter,
+				prismaArchiveFilter
+			]
+		}
+		
 		const { perPage, skip } = this.pagination.getPagination(dto)
 
 		const products = await this.prisma.product.findMany({
-			where: prismaSearchTermFilter,
-			select: productReturnObject,
+			where: whereFilters,
+			select: productAdminReturnObject,
 			orderBy: prismaSort,
 			skip,
 			take: perPage
@@ -74,7 +84,7 @@ export class ProductService {
 		return {
 			products,
 			length: await this.prisma.product.count({
-				where: prismaSearchTermFilter
+				where: whereFilters
 			})
 		}
 	}
@@ -172,6 +182,7 @@ export class ProductService {
 
 		const whereFilters: Prisma.ProductWhereInput = {
 			AND: [
+				{ isDeleted: false },
 				prismaSearchTermFilter,
 				prismaSearchBrandFilter,
 				prismaCategoryFilter,
@@ -217,6 +228,7 @@ export class ProductService {
 		const products = await this.prisma.product.findMany({
 			where: {
 				categoryId: currentProduct.categoryId,
+				isDeleted: false,
 				NOT: {
 					id: currentProduct.id
 				}
@@ -232,6 +244,7 @@ export class ProductService {
 			length: await this.prisma.product.count({
 				where: {
 					categoryId: currentProduct.categoryId,
+					isDeleted: false,
 					NOT: {
 						id: currentProduct.id
 					}
@@ -285,14 +298,11 @@ export class ProductService {
 	}
 
 	async deleteProduct(id: number) {
-		const product = await this.byId(id)
-
-		if (product.imagePath) {
-			await this.deleteLocalFile(product.imagePath)
-		}
-
-		return this.prisma.product.delete({
-			where: { id }
+		return this.prisma.product.update({
+			where: { id },
+			data: {
+				isDeleted: true
+			}
 		})
 	}
 }

@@ -14,7 +14,7 @@ import {
 	ValidationPipe
 } from '@nestjs/common'
 import { ProductService } from './product.service'
-import { GetAllProductDto } from './dto/get-all.product.dto'
+import { GetAdminProductsDto, GetAllProductDto } from './dto/get-all.product.dto'
 import { PaginationDto } from '../pagination/pagination.dto'
 import { Auth } from '../auth/decorators/auth.decorator'
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto'
@@ -29,7 +29,7 @@ export class ProductController {
 	@UsePipes(new ValidationPipe({ transform: true }))
 	@Auth('admin')
 	@Get('admin/all')
-	async getAdminAll(@Query() queryDto: GetAllProductDto) {
+	async getAdminAll(@Query() queryDto: GetAdminProductsDto) {
 		return this.productService.getAdminAll(queryDto)
 	}
 

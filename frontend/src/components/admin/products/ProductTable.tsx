@@ -2,18 +2,18 @@ import ProductsPagination from "@/components/products/ProductsPagination";
 import { toaster } from "@/components/ui/toaster";
 import { BASE_URL } from "@/constants/api.constants";
 import { useDeleteProductMutation } from "@/store/api/product.api";
-import type { CurrentProduct } from "@/types/product.types";
+import type { AdminProduct } from "@/types/product.types";
 import { Badge, Button, Flex, IconButton, Image, Table, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { LuPencil, LuTrash2, LuX } from "react-icons/lu";
+import { LuArchive, LuPencil, LuTrash2, LuX } from "react-icons/lu";
 
 type ProductTableProps = {
-  products: CurrentProduct[] | undefined;
+  products: AdminProduct[] | undefined;
   totalCount: number;
   currentPage: number;
   pageSize: number;
   onPageChange: (page: number) => void;
-  onEditClick: (product: CurrentProduct) => void;
+  onEditClick: (product: AdminProduct) => void;
 };
 
 const ProductTable = ({
@@ -63,7 +63,12 @@ const ProductTable = ({
         </Table.Header>
         <Table.Body>
           {products?.map((prod) => (
-            <Table.Row key={prod.id} _hover={{ bg: "#FAF9F6" }} transition="background 0.2s">
+            <Table.Row
+              key={prod.id}
+              opacity={prod.isDeleted ? 0.55 : 1}
+              _hover={{ bg: "#FAF9F6" }}
+              transition="background 0.2s"
+            >
               <Table.Cell p="16px 24px" fontWeight="500" color="gray.400">
                 {prod.id}
               </Table.Cell>
@@ -80,7 +85,14 @@ const ProductTable = ({
 
               <Table.Cell p="16px 24px" fontWeight="500" color="#464646">
                 <Flex direction="column">
-                  <Text fontWeight="600">{prod.name}</Text>
+                  <Flex align="center" gap="2">
+                    <Text fontWeight="600">{prod.name}</Text>
+                    {prod.isDeleted && (
+                      <Badge colorPalette="red" variant="surface" size="sm">
+                        Archived
+                      </Badge>
+                    )}
+                  </Flex>
                   <Text fontSize="12px" color="gray.400">
                     {prod.brand.name}
                   </Text>
@@ -125,12 +137,33 @@ const ProductTable = ({
                     </Flex>
                   ) : (
                     <>
-                      <IconButton variant="ghost" colorPalette="blue" size="sm" onClick={() => onEditClick(prod)}>
+                      <IconButton
+                        variant="ghost"
+                        colorPalette={prod.isDeleted ? "gray" : "blue"}
+                        size="sm"
+                        disabled={prod.isDeleted}
+                        cursor={prod.isDeleted ? "not-allowed" : "pointer"}
+                        title={prod.isDeleted ? "Cannot edit archived product" : "Edit product"}
+                        onClick={() => onEditClick(prod)}
+                      >
                         <LuPencil size={16} />
                       </IconButton>
-                      <IconButton variant="ghost" colorPalette="red" size="sm" onClick={() => setDeletingId(prod.id)}>
-                        <LuTrash2 size={16} />
-                      </IconButton>
+                      {prod.isDeleted ? (
+                        <IconButton
+                          variant="ghost"
+                          colorPalette="gray"
+                          size="sm"
+                          disabled
+                          cursor="not-allowed"
+                          title="Product is already archived"
+                        >
+                          <LuArchive size={16} />
+                        </IconButton>
+                      ) : (
+                        <IconButton variant="ghost" colorPalette="red" size="sm" onClick={() => setDeletingId(prod.id)}>
+                          <LuTrash2 size={16} />
+                        </IconButton>
+                      )}
                     </>
                   )}
                 </Flex>

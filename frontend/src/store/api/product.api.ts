@@ -1,13 +1,15 @@
 import {
   type CurrentProduct,
+  type GetAdminProductsArgs,
   type GetAdminProductsResponse,
   type GetProductsArgs,
   type GetProductsResponse,
   type GetSimilarProductsArgs,
 } from "@/types/product.types";
 import { protectedApi } from "./protected.api";
+import { publicApi } from "./public.api";
 
-export const productApi = protectedApi.injectEndpoints({
+export const publicProductApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsResponse, GetProductsArgs>({
       query: ({ categoryId, page = 1, perPage = 9, ...rest }) => ({
@@ -18,9 +20,11 @@ export const productApi = protectedApi.injectEndpoints({
           ...rest,
         },
       }),
+      providesTags: ["Products"],
     }),
     getProductById: builder.query<CurrentProduct, number>({
       query: (id) => `/product/${id}`,
+      providesTags: (_, __, id) => [{ type: "Products", id }],
     }),
 
     getSimilarProducts: builder.query<GetProductsResponse, GetSimilarProductsArgs>({
@@ -28,11 +32,17 @@ export const productApi = protectedApi.injectEndpoints({
         url: `/product/similar/${id}`,
         params: { page, perPage },
       }),
+      providesTags: ["Products"],
     }),
-    getAdminProducts: builder.query<GetAdminProductsResponse, GetProductsArgs>({
-      query: ({ page = 1, perPage = 10, searchTerm }) => ({
+  }),
+});
+
+export const adminProductApi = protectedApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getAdminProducts: builder.query<GetAdminProductsResponse, GetAdminProductsArgs>({
+      query: ({ page = 1, perPage = 10, searchTerm, showArchived }) => ({
         url: "/product/admin/all",
-        params: { page, perPage, searchTerm },
+        params: { page, perPage, searchTerm, showArchived },
       }),
       providesTags: ["Products"],
     }),
@@ -62,12 +72,11 @@ export const productApi = protectedApi.injectEndpoints({
   }),
 });
 
+export const { useGetProductsQuery, useGetProductByIdQuery, useGetSimilarProductsQuery } = publicProductApi;
+
 export const {
-  useGetProductsQuery,
-  useGetProductByIdQuery,
-  useGetSimilarProductsQuery,
   useGetAdminProductsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-} = productApi;
+} = adminProductApi;

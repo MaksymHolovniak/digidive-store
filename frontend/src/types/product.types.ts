@@ -27,13 +27,17 @@ export type CurrentProduct = {
   brand: Brand;
 };
 
+export type AdminProduct = CurrentProduct & {
+  isDeleted: boolean;
+};
+
 export type GetProductsResponse = {
   products: Product[];
   length: number;
 };
 
 export type GetAdminProductsResponse = {
-  products: CurrentProduct[];
+  products: AdminProduct[];
   length: number;
 };
 
@@ -56,6 +60,13 @@ export type GetProductsArgs = {
   brand?: string;
   minPrice?: number;
   maxPrice?: number;
+};
+
+export type GetAdminProductsArgs = {
+  page?: number;
+  perPage?: number;
+  searchTerm?: string;
+  showArchived?: boolean;
 };
 
 export type GetSimilarProductsArgs = { id: number; perPage?: number; page?: number };

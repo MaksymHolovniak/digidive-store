@@ -22,10 +22,16 @@ export class GetAllProductDto extends PaginationDto {
 	brand?: string
 
 	@IsOptional()
-	@Transform(({ value }) => +value) 
+	@Transform(({ value }) => +value)
 	minPrice?: number
 
 	@IsOptional()
-	@Transform(({ value }) => +value) 
+	@Transform(({ value }) => +value)
 	maxPrice?: number
+}
+
+export class GetAdminProductsDto extends GetAllProductDto {
+	@IsOptional()
+	@IsString()
+	showArchived?: string
 }

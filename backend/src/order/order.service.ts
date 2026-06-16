@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { CreateOrderDto, UpdateOrderStatudDto } from './order.dto'
-import { productGetReturnObject } from '../product/return-product.object'
+import { productGetReturnObject, productOrderReturnObject } from '../product/return-product.object'
 import { userReturnObject } from '../user/return-user.object'
 import Stripe from 'stripe'
 
@@ -193,7 +193,7 @@ export class OrderService {
 				items: {
 					include: {
 						product: {
-							select: productGetReturnObject
+							select: productOrderReturnObject
 						}
 					}
 				}

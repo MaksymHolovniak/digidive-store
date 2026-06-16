@@ -1,12 +1,18 @@
 import type { Category } from "@/types/category.types";
 import { protectedApi } from "./protected.api";
+import { publicApi } from "./public.api";
 
-export const categoryApi = protectedApi.injectEndpoints({
+export const publicCategoryApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query<Category[], void>({
       query: () => "/category",
       providesTags: ["Categories"],
     }),
+  }),
+});
+
+export const adminCategoryApi = protectedApi.injectEndpoints({
+  endpoints: (builder) => ({
     createCategory: builder.mutation<Category, FormData>({
       query: (formData) => ({
         url: "/category",
@@ -33,9 +39,6 @@ export const categoryApi = protectedApi.injectEndpoints({
   }),
 });
 
-export const {
-  useGetCategoriesQuery,
-  useCreateCategoryMutation,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
-} = categoryApi;
+export const { useGetCategoriesQuery } = publicCategoryApi;
+
+export const { useCreateCategoryMutation, useUpdateCategoryMutation, useDeleteCategoryMutation } = adminCategoryApi;
