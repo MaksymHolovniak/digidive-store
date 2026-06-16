@@ -23,7 +23,25 @@ export const orderApi = protectedApi.injectEndpoints({
       query: () => "/order/my",
       providesTags: ["Order"],
     }),
+    getAdminOrders: builder.query<Order[], void>({
+      query: () => "/order",
+      providesTags: ["Order"],
+    }),
+    updateOrderStatus: builder.mutation<Order, { id: number; status: string }>({
+      query: ({ id, status }) => ({
+        url: `/order/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetUserOrdersQuery, useConfirmOrderMutation } = orderApi;
+export const {
+  useCreateOrderMutation,
+  useGetUserOrdersQuery,
+  useConfirmOrderMutation,
+  useGetAdminOrdersQuery,
+  useUpdateOrderStatusMutation,
+} = orderApi;

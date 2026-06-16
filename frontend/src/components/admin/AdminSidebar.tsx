@@ -1,5 +1,5 @@
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import { LuArrowLeft, LuBox, LuFolder, LuTags } from "react-icons/lu";
+import { LuArrowLeft, LuBox, LuFolder, LuShoppingCart, LuTags } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import AdminSidebarItem from "./AdminSidebarItem";
 
@@ -7,6 +7,7 @@ const menuItems = [
   { name: "Brands", path: "/admin/brands", icon: LuTags },
   { name: "Categories", path: "/admin/categories", icon: LuFolder },
   { name: "Products", path: "/admin/products", icon: LuBox },
+  { name: "Orders", path: "/admin/orders", icon: LuShoppingCart },
 ];
 
 const AdminSidebar = () => {

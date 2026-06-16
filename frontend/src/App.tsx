@@ -19,6 +19,7 @@ const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage.tsx"));
 const AdminBrandsPage = lazy(() => import("./pages/AdminBrandsPage.tsx"));
 const AdminCategoriesPage = lazy(() => import("./pages/AdminCategoriesPage.tsx"));
 const AdminProductsPage = lazy(() => import("./pages/AdminProductsPage.tsx"));
+const AdminOrdersPage = lazy(() => import("./pages/AdminOrdersPage.tsx"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
@@ -50,6 +51,7 @@ const App = () => {
               <Route path="/admin/brands" element={<AdminBrandsPage />} />
               <Route path="/admin/categories" element={<AdminCategoriesPage />} />
               <Route path="/admin/products" element={<AdminProductsPage />} />
+              <Route path="/admin/orders" element={<AdminOrdersPage />} />
             </Route>
           </Route>
 

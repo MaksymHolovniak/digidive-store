@@ -18,3 +18,22 @@ export const getStatusColor = (status: Order["status"]): string => {
       return "gray";
   }
 };
+
+export const getStatusHexColor = (status: Order["status"]): string => {
+  switch (status) {
+    case "PENDING":
+      return "#DD6B20";
+    case "PAID":
+      return "#319795"; 
+    case "PROCESSING":
+      return "#3182CE";
+    case "SHIPPED":
+      return "#805AD5"; 
+    case "DELIVERED":
+      return "#38A169"; 
+    case "CANCELLED":
+      return "#E53E3E"; 
+    default:
+      return "#4A5568"; 
+  }
+};

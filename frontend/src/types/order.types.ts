@@ -1,3 +1,5 @@
+import type { UserOrder } from "./user.types";
+
 export type CreateOrderRequest = {
   country: string;
   fullName: string;
@@ -33,4 +35,5 @@ export type Order = {
   company?: string;
   fullName: string;
   items: OrderItem[];
+  user: UserOrder;
 };
