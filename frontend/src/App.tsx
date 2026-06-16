@@ -16,6 +16,7 @@ const FavoritesPage = lazy(() => import("./pages/FavoritesPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage.tsx"));
+const AdminDashboardPage = lazy(() => import("./pages/AdminDashboardPage.tsx"));
 const AdminBrandsPage = lazy(() => import("./pages/AdminBrandsPage.tsx"));
 const AdminCategoriesPage = lazy(() => import("./pages/AdminCategoriesPage.tsx"));
 const AdminProductsPage = lazy(() => import("./pages/AdminProductsPage.tsx"));
@@ -48,6 +49,7 @@ const App = () => {
 
           <Route element={<AdminRoute />}>
             <Route element={<AdminLayout />}>
+              <Route path="/admin" element={<AdminDashboardPage />} />
               <Route path="/admin/brands" element={<AdminBrandsPage />} />
               <Route path="/admin/categories" element={<AdminCategoriesPage />} />
               <Route path="/admin/products" element={<AdminProductsPage />} />

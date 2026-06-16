@@ -10,7 +10,7 @@ type AdminSidebarItemProps = {
 
 const AdminSidebarItem = ({ name, path, icon: Icon }: AdminSidebarItemProps) => {
   return (
-    <NavLink to={path} style={{ textDecoration: "none" }}>
+    <NavLink to={path} end style={{ textDecoration: "none" }}>
       {({ isActive }) => (
         <Flex
           align="center"
