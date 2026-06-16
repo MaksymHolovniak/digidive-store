@@ -1,10 +1,11 @@
 import { toaster } from "@/components/ui/toaster";
 import { useCreateBrandMutation, useUpdateBrandMutation } from "@/store/api/brand.api";
 import type { Brand } from "@/types/product.types";
-import { Box, Button, Field, Flex, Heading, Input, Stack } from "@chakra-ui/react";
+import { Button, Field, Flex, Input, Stack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LuCheck, LuPlus, LuX } from "react-icons/lu";
+import AdminFormWrapper from "../shared/AdminFormWrapper";
 
 type BrandFormValues = {
   name: string;
@@ -54,17 +55,7 @@ const BrandForm = ({ editingBrand, onCancelEdit }: BrandFormProps) => {
   });
 
   return (
-    <Box
-      bg="white"
-      p="30px"
-      borderRadius="16px"
-      border="1px solid #E2E8F0"
-      w={{ base: "100%", lg: "360px" }}
-      boxShadow="0 2px 12px rgba(0,0,0,0.01)"
-    >
-      <Heading size="md" mb="20px" color="#464646">
-        {editingBrand ? "Edit Brand" : "Create New Brand"}
-      </Heading>
+    <AdminFormWrapper title={editingBrand ? "Edit Brand" : "Create New Brand"}>
       <form onSubmit={onSubmit}>
         <Stack gap="5" align="flex-start">
           <Field.Root invalid={!!errors.name}>
@@ -104,7 +95,7 @@ const BrandForm = ({ editingBrand, onCancelEdit }: BrandFormProps) => {
           </Flex>
         </Stack>
       </form>
-    </Box>
+    </AdminFormWrapper>
   );
 };
 

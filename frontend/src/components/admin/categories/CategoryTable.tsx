@@ -1,10 +1,11 @@
 import { toaster } from "@/components/ui/toaster";
 import { useDeleteCategoryMutation } from "@/store/api/category.api";
 import type { Category } from "@/types/category.types";
-import { Button, Flex, IconButton, Table, Text, Image, Badge, Pagination, ButtonGroup } from "@chakra-ui/react";
+import { Flex, IconButton, Table, Text, Image, Badge, Pagination, ButtonGroup } from "@chakra-ui/react";
 import { useState } from "react";
-import { LuPencil, LuTrash2, LuX, LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { LuPencil, LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { API_URL } from "@/constants/api.constants";
+import DeleteActionCell from "../shared/DeleteActionCell";
 
 type CategoryTableProps = {
   categories: Category[] | undefined;
@@ -12,17 +13,15 @@ type CategoryTableProps = {
 };
 
 const CategoryTable = ({ categories, onEditClick }: CategoryTableProps) => {
-  const [deletingCatId, setDeletingCatId] = useState<number | null>(null);
   const [deleteCategory] = useDeleteCategoryMutation();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10; 
+  const pageSize = 10;
 
   const handleDeleteClick = async (id: number) => {
     try {
       await deleteCategory(id).unwrap();
       toaster.create({ title: "Success", description: "Category deleted successfully", type: "success" });
-      setDeletingCatId(null);
     } catch {
       toaster.create({ title: "Error", description: "This category cannot be deleted", type: "error" });
     }
@@ -106,55 +105,16 @@ const CategoryTable = ({ categories, onEditClick }: CategoryTableProps) => {
 
               <Table.Cell p="16px 24px" textAlign="end">
                 <Flex justify="flex-end" gap="2" align="center" h="32px">
-                  {deletingCatId === cat.id ? (
-                    <Flex gap="2" align="center">
-                      <Text fontSize="12px" color="red.500" fontWeight="600" mr="1">
-                        Are you sure?
-                      </Text>
-                      <Button
-                        size="sm"
-                        h="28px"
-                        bg="red.500"
-                        color="white"
-                        _hover={{ bg: "red.600" }}
-                        onClick={() => handleDeleteClick(cat.id)}
-                      >
-                        Delete
-                      </Button>
-                      <IconButton
-                        variant="outline"
-                        size="sm"
-                        h="28px"
-                        w="28px"
-                        color="gray.600"
-                        onClick={() => setDeletingCatId(null)}
-                        aria-label="Cancel delete"
-                      >
-                        <LuX size={14} />
-                      </IconButton>
-                    </Flex>
-                  ) : (
-                    <>
-                      <IconButton
-                        variant="ghost"
-                        colorPalette="blue"
-                        size="sm"
-                        onClick={() => onEditClick(cat)}
-                        aria-label="Edit category"
-                      >
-                        <LuPencil size={16} />
-                      </IconButton>
-                      <IconButton
-                        variant="ghost"
-                        colorPalette="red"
-                        size="sm"
-                        onClick={() => setDeletingCatId(cat.id)}
-                        aria-label="Delete category"
-                      >
-                        <LuTrash2 size={16} />
-                      </IconButton>
-                    </>
-                  )}
+                  <IconButton
+                    variant="ghost"
+                    colorPalette="blue"
+                    size="sm"
+                    onClick={() => onEditClick(cat)}
+                    aria-label="Edit category"
+                  >
+                    <LuPencil size={16} />
+                  </IconButton>
+                  <DeleteActionCell elementId={cat.id} onDelete={handleDeleteClick} />
                 </Flex>
               </Table.Cell>
             </Table.Row>

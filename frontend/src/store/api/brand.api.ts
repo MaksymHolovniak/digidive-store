@@ -20,6 +20,12 @@ export const adminBrandApi = protectedApi.injectEndpoints({
         body,
       }),
       invalidatesTags: ["Brands"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicBrandApi.util.invalidateTags(["Brands"]));
+        } catch {}
+      },
     }),
     updateBrand: builder.mutation<Brand, { id: number; name: string }>({
       query: ({ id, ...body }) => ({
@@ -28,6 +34,12 @@ export const adminBrandApi = protectedApi.injectEndpoints({
         body,
       }),
       invalidatesTags: ["Brands"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicBrandApi.util.invalidateTags(["Brands"]));
+        } catch {}
+      },
     }),
     deleteBrand: builder.mutation<{ id: number }, number>({
       query: (id) => ({
@@ -35,6 +47,12 @@ export const adminBrandApi = protectedApi.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: ["Brands"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicBrandApi.util.invalidateTags(["Brands"]));
+        } catch {}
+      },
     }),
   }),
 });

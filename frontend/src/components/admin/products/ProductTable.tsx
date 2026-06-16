@@ -3,9 +3,9 @@ import { toaster } from "@/components/ui/toaster";
 import { BASE_URL } from "@/constants/api.constants";
 import { useDeleteProductMutation } from "@/store/api/product.api";
 import type { AdminProduct } from "@/types/product.types";
-import { Badge, Button, Flex, IconButton, Image, Table, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { LuArchive, LuPencil, LuTrash2, LuX } from "react-icons/lu";
+import { Badge, Flex, IconButton, Image, Table, Text } from "@chakra-ui/react";
+import { LuPencil } from "react-icons/lu";
+import DeleteActionCell from "../shared/DeleteActionCell";
 
 type ProductTableProps = {
   products: AdminProduct[] | undefined;
@@ -24,14 +24,12 @@ const ProductTable = ({
   onPageChange,
   onEditClick,
 }: ProductTableProps) => {
-  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [deleteProduct] = useDeleteProductMutation();
 
   const handleDelete = async (id: number) => {
     try {
       await deleteProduct(id).unwrap();
       toaster.create({ title: "Success", description: "Product removed successfully", type: "success" });
-      setDeletingId(null);
     } catch {
       toaster.create({ title: "Error", description: "Failed to delete product", type: "error" });
     }
@@ -116,56 +114,16 @@ const ProductTable = ({
 
               <Table.Cell p="16px 24px" textAlign="end">
                 <Flex justify="flex-end" gap="2" align="center" h="32px">
-                  {deletingId === prod.id ? (
-                    <Flex gap="2" align="center">
-                      <Text fontSize="12px" color="red.500" fontWeight="600">
-                        Are you sure?
-                      </Text>
-                      <Button
-                        size="sm"
-                        h="28px"
-                        bg="red.500"
-                        color="white"
-                        _hover={{ bg: "red.600" }}
-                        onClick={() => handleDelete(prod.id)}
-                      >
-                        Delete
-                      </Button>
-                      <IconButton variant="outline" size="sm" h="28px" w="28px" onClick={() => setDeletingId(null)}>
-                        <LuX size={14} />
-                      </IconButton>
-                    </Flex>
-                  ) : (
-                    <>
-                      <IconButton
-                        variant="ghost"
-                        colorPalette={prod.isDeleted ? "gray" : "blue"}
-                        size="sm"
-                        disabled={prod.isDeleted}
-                        cursor={prod.isDeleted ? "not-allowed" : "pointer"}
-                        title={prod.isDeleted ? "Cannot edit archived product" : "Edit product"}
-                        onClick={() => onEditClick(prod)}
-                      >
-                        <LuPencil size={16} />
-                      </IconButton>
-                      {prod.isDeleted ? (
-                        <IconButton
-                          variant="ghost"
-                          colorPalette="gray"
-                          size="sm"
-                          disabled
-                          cursor="not-allowed"
-                          title="Product is already archived"
-                        >
-                          <LuArchive size={16} />
-                        </IconButton>
-                      ) : (
-                        <IconButton variant="ghost" colorPalette="red" size="sm" onClick={() => setDeletingId(prod.id)}>
-                          <LuTrash2 size={16} />
-                        </IconButton>
-                      )}
-                    </>
-                  )}
+                  <IconButton
+                    variant="ghost"
+                    colorPalette="blue"
+                    size="sm"
+                    disabled={prod.isDeleted}
+                    onClick={() => onEditClick(prod)}
+                  >
+                    <LuPencil size={16} />
+                  </IconButton>
+                  <DeleteActionCell elementId={prod.id} onDelete={handleDelete} isArchived={prod.isDeleted} />
                 </Flex>
               </Table.Cell>
             </Table.Row>

@@ -20,6 +20,12 @@ export const adminCategoryApi = protectedApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: ["Categories"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicCategoryApi.util.invalidateTags(["Categories"]));
+        } catch {}
+      },
     }),
     updateCategory: builder.mutation<Category, { id: number; formData: FormData }>({
       query: ({ id, formData }) => ({
@@ -28,6 +34,12 @@ export const adminCategoryApi = protectedApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: ["Categories"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicCategoryApi.util.invalidateTags(["Categories"]));
+        } catch {}
+      },
     }),
     deleteCategory: builder.mutation<{ id: number }, number>({
       query: (id) => ({
@@ -35,6 +47,12 @@ export const adminCategoryApi = protectedApi.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: ["Categories"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicCategoryApi.util.invalidateTags(["Categories"]));
+        } catch {}
+      },
     }),
   }),
 });
