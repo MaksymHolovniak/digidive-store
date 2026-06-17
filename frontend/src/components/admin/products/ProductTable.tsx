@@ -1,7 +1,7 @@
 import ProductsPagination from "@/components/products/ProductsPagination";
 import { toaster } from "@/components/ui/toaster";
 import { BASE_URL } from "@/constants/api.constants";
-import { useDeleteProductMutation } from "@/store/api/product.api";
+import { useToggleProductArchiveMutation } from "@/store/api/product.api";
 import type { AdminProduct } from "@/types/product.types";
 import { Badge, Flex, IconButton, Image, Table, Text } from "@chakra-ui/react";
 import { LuPencil } from "react-icons/lu";
@@ -24,16 +24,27 @@ const ProductTable = ({
   onPageChange,
   onEditClick,
 }: ProductTableProps) => {
-  const [deleteProduct] = useDeleteProductMutation();
+  const [toggleProductArchive] = useToggleProductArchiveMutation();
 
-  const handleDelete = async (id: number) => {
+  const handleToggleArchive = async (prod: AdminProduct) => {
     try {
-      await deleteProduct(id).unwrap();
-      toaster.create({ title: "Success", description: "Product removed successfully", type: "success" });
+      await toggleProductArchive(prod.id).unwrap();
+      const textDescription = prod.isActive ? "Product restored successfully" : "Product archived successfully";
+
+      toaster.create({
+        title: "Success",
+        description: textDescription,
+        type: "success",
+      });
     } catch {
-      toaster.create({ title: "Error", description: "Failed to delete product", type: "error" });
+      toaster.create({
+        title: "Error",
+        description: "Failed to update product status",
+        type: "error",
+      });
     }
   };
+
   return (
     <Flex direction="column" gap="4">
       <Table.Root size="md" variant="line" striped={false}>
@@ -63,7 +74,7 @@ const ProductTable = ({
           {products?.map((prod) => (
             <Table.Row
               key={prod.id}
-              opacity={prod.isDeleted ? 0.55 : 1}
+              bg={prod.isActive ? "#F5F5F5" : "transparent"}
               _hover={{ bg: "#FAF9F6" }}
               transition="background 0.2s"
             >
@@ -85,7 +96,7 @@ const ProductTable = ({
                 <Flex direction="column">
                   <Flex align="center" gap="2">
                     <Text fontWeight="600">{prod.name}</Text>
-                    {prod.isDeleted && (
+                    {prod.isActive && (
                       <Badge colorPalette="red" variant="surface" size="sm">
                         Archived
                       </Badge>
@@ -118,12 +129,16 @@ const ProductTable = ({
                     variant="ghost"
                     colorPalette="blue"
                     size="sm"
-                    disabled={prod.isDeleted}
                     onClick={() => onEditClick(prod)}
                   >
                     <LuPencil size={16} />
                   </IconButton>
-                  <DeleteActionCell elementId={prod.id} onDelete={handleDelete} isArchived={prod.isDeleted} />
+                  <DeleteActionCell
+                    elementId={prod.id}
+                    onDelete={() => handleToggleArchive(prod)}
+                    isArchived={prod.isActive}
+                    variant="archive"
+                  />
                 </Flex>
               </Table.Cell>
             </Table.Row>

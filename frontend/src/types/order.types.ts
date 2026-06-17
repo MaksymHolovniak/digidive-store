@@ -18,7 +18,7 @@ export type OrderItem = {
     id: number;
     name: string;
     imagePath: string;
-    isDeleted?: boolean;
+    isActive?: boolean;
   };
 };
 

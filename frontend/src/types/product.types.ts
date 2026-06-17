@@ -28,7 +28,7 @@ export type CurrentProduct = {
 };
 
 export type AdminProduct = CurrentProduct & {
-  isDeleted: boolean;
+  isActive: boolean;
 };
 
 export type GetProductsResponse = {

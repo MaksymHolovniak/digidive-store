@@ -1,4 +1,5 @@
 import {
+  type AdminProduct,
   type CurrentProduct,
   type GetAdminProductsArgs,
   type GetAdminProductsResponse,
@@ -8,6 +9,7 @@ import {
 } from "@/types/product.types";
 import { protectedApi } from "./protected.api";
 import { publicApi } from "./public.api";
+import { orderApi } from "./order.api";
 
 export const publicProductApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -62,12 +64,19 @@ export const adminProductApi = protectedApi.injectEndpoints({
       }),
       invalidatesTags: ["Products"],
     }),
-    deleteProduct: builder.mutation<{ id: number }, number>({
+    toggleProductArchive: builder.mutation<AdminProduct, number>({
       query: (id) => ({
-        url: `/product/${id}`,
-        method: "DELETE",
+        url: `/product/${id}/archive`,
+        method: "PATCH",
       }),
       invalidatesTags: ["Products"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicProductApi.util.invalidateTags(["Products"]));
+          dispatch(orderApi.util.invalidateTags(["Order"]));
+        } catch {}
+      },
     }),
   }),
 });
@@ -78,5 +87,5 @@ export const {
   useGetAdminProductsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
-  useDeleteProductMutation,
+  useToggleProductArchiveMutation,
 } = adminProductApi;

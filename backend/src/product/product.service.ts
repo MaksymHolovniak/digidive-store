@@ -1,7 +1,11 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { PaginationService } from '../pagination/pagination.service'
-import { EnumProductSort, GetAdminProductsDto, GetAllProductDto } from './dto/get-all.product.dto'
+import {
+	EnumProductSort,
+	GetAdminProductsDto,
+	GetAllProductDto
+} from './dto/get-all.product.dto'
 import { Prisma } from '../../generated/prisma/client'
 import {
 	productAdminReturnObject,
@@ -62,15 +66,13 @@ export class ProductService {
 				}
 			: {}
 
-		const prismaArchiveFilter: Prisma.ProductWhereInput = showArchived === 'true' ? {} : { isDeleted: false }
-		
+		const prismaArchiveFilter: Prisma.ProductWhereInput =
+			showArchived === 'true' ? {} : { isActive: false }
+
 		const whereFilters: Prisma.ProductWhereInput = {
-			AND: [
-				prismaSearchTermFilter,
-				prismaArchiveFilter
-			]
+			AND: [prismaSearchTermFilter, prismaArchiveFilter]
 		}
-		
+
 		const { perPage, skip } = this.pagination.getPagination(dto)
 
 		const products = await this.prisma.product.findMany({
@@ -182,7 +184,7 @@ export class ProductService {
 
 		const whereFilters: Prisma.ProductWhereInput = {
 			AND: [
-				{ isDeleted: false },
+				{ isActive: false },
 				prismaSearchTermFilter,
 				prismaSearchBrandFilter,
 				prismaCategoryFilter,
@@ -228,7 +230,7 @@ export class ProductService {
 		const products = await this.prisma.product.findMany({
 			where: {
 				categoryId: currentProduct.categoryId,
-				isDeleted: false,
+				isActive: false,
 				NOT: {
 					id: currentProduct.id
 				}
@@ -244,7 +246,7 @@ export class ProductService {
 			length: await this.prisma.product.count({
 				where: {
 					categoryId: currentProduct.categoryId,
-					isDeleted: false,
+					isActive: false,
 					NOT: {
 						id: currentProduct.id
 					}
@@ -297,12 +299,19 @@ export class ProductService {
 		})
 	}
 
-	async deleteProduct(id: number) {
+	async toggleProductArchive(id: number) {
+		const product = await this.prisma.product.findUnique({
+			where: { id }
+		})
+
+		if (!product) throw new NotFoundException('Product not found')
+
 		return this.prisma.product.update({
 			where: { id },
 			data: {
-				isDeleted: true
-			}
+				isActive: !product.isActive
+			},
+			select: productAdminReturnObject
 		})
 	}
 }

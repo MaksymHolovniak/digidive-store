@@ -35,7 +35,7 @@ export const productOrderReturnObject: Prisma.ProductSelect = {
 	name: true,
 	imagePath: true,
 	price: true,
-	isDeleted: true,
+	isActive: true,
 	brand: {
 		select: brandReturnObject
 	}
@@ -49,7 +49,7 @@ export const productAdminReturnObject: Prisma.ProductSelect = {
 	price: true,
 	stock: true,
 	warrantyMonths: true,
-	isDeleted: true,
+	isActive: true,
 	category: {
 		select: categoryReturnObject
 	},

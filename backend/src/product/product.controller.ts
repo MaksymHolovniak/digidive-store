@@ -1,7 +1,6 @@
 import {
 	Body,
 	Controller,
-	Delete,
 	Get,
 	HttpCode,
 	Param,
@@ -101,8 +100,8 @@ export class ProductController {
 	}
 
 	@Auth('admin')
-	@Delete(':id')
-	async deleteProduct(@Param('id') id: string) {
-		return this.productService.deleteProduct(+id)
+	@Patch(':id/archive')
+	async toggleProductArchive(@Param('id') id: string) {
+		return this.productService.toggleProductArchive(+id)
 	}
 }

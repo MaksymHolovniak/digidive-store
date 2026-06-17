@@ -46,7 +46,7 @@ model Product {
   warrantyMonths Int @default(0) @map("warranty_months")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  isDeleted Boolean  @default(false)
+  isActive Boolean  @default(false)
 
   categoryId Int @map("category_id")
   category Category @relation(fields: [categoryId], references: [id])

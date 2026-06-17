@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants/api.constants";
-import type { OrderItem } from "@/types/order.types"; // Переконайся, що тип OrderItem імпортується правильно
+import type { OrderItem } from "@/types/order.types";
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -8,7 +8,7 @@ type OrderProductItemProps = {
 };
 
 const OrderProductItem = ({ item }: OrderProductItemProps) => {
-  const isProductArchived = !!item.product.isDeleted;
+  const isProductArchived = !!item.product.isActive;
   const cardContent = (
     <Flex
       align="center"
