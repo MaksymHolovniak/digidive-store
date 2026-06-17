@@ -4,8 +4,11 @@ import { publicApi } from "./public.api";
 
 export const publicBrandApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
-    getBrands: builder.query<Brand[], void>({
-      query: () => "/brand",
+    getBrands: builder.query<Brand[], number | undefined>({
+      query: (categoryId) => ({
+        url: "/brand",
+        params: categoryId ? { categoryId } : {},
+      }),
       providesTags: ["Brands"],
     }),
   }),

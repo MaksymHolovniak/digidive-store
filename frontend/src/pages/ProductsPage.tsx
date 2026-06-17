@@ -76,7 +76,7 @@ const ProductsPage = () => {
     maxPrice: activeFilters.maxPrice ? Number(activeFilters.maxPrice) : undefined,
   });
 
-  const { data: brands = [] } = useGetBrandsQuery();
+  const { data: brands = [] } = useGetBrandsQuery(categoryId ? Number(categoryId) : undefined);
   const { data: categories = [] } = useGetCategoriesQuery();
 
   const currentCategory = categoryId ? getMainCategory(categories, categoryId) : null;

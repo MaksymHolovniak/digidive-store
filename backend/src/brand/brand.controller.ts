@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BrandService } from './brand.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { BrandDto } from './brand.dto';
@@ -8,8 +8,9 @@ export class BrandController {
   constructor(private readonly brandService: BrandService) { }
   
   @Get()
-  async getAll() {
-    return this.brandService.getAll()
+  async getAll(@Query('categoryId') categoryId: string) {
+    const parsedId = categoryId && !isNaN(+categoryId) ? +categoryId : undefined
+    return this.brandService.getAll(parsedId)
   }
 
   @UsePipes(new ValidationPipe())

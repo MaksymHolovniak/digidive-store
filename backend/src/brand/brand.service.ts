@@ -6,8 +6,29 @@ import { BrandDto } from './brand.dto'
 export class BrandService {
 	constructor(private prisma: PrismaService) {}
 
-	async getAll() {
+	async getAll(categoryId?: number) {
 		return this.prisma.brand.findMany({
+			where: categoryId
+				? {
+						products: {
+							some: {
+								isActive: true,
+								OR: [
+									{ categoryId: categoryId },
+									{
+										category: {
+											parentId: categoryId ? Number(categoryId) : undefined
+										}
+									}
+								]
+							}
+						}
+					}
+				: {
+						products: {
+							some: { isActive: true }
+						}
+					},
 			orderBy: {
 				name: 'asc'
 			}
