@@ -11,6 +11,7 @@ import { protectedApi } from "./protected.api";
 import { publicApi } from "./public.api";
 import { orderApi } from "./order.api";
 import { cartApi } from "./cart.api";
+import { userApi } from "./user.api";
 
 export const publicProductApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -56,6 +57,12 @@ export const adminProductApi = protectedApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: ["Products"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicProductApi.util.invalidateTags(["Products"]));
+        } catch {}
+      },
     }),
     updateProduct: builder.mutation<CurrentProduct, { id: number; formData: FormData }>({
       query: ({ id, formData }) => ({
@@ -64,6 +71,14 @@ export const adminProductApi = protectedApi.injectEndpoints({
         body: formData,
       }),
       invalidatesTags: ["Products"],
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(publicProductApi.util.invalidateTags(["Products", { type: "Products", id }]));
+          dispatch(cartApi.util.invalidateTags(["Cart"]));
+          dispatch(userApi.util.invalidateTags(["UserProfile"]));
+        } catch {}
+      },
     }),
     toggleProductArchive: builder.mutation<AdminProduct, number>({
       query: (id) => ({
