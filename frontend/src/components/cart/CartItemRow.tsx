@@ -1,7 +1,6 @@
-import { Box, Button, Flex, Heading, Image, Table, Text } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex, Heading, Image, Table, Text } from "@chakra-ui/react";
 import RemoveIcon from "../../assets/trash.svg?react";
 import QuantitySelector from "@/components/ui/QuantitySelector";
-import { Link } from "react-router-dom";
 import FavoriteButton from "../ui/FavoriteButton";
 import type { CartItem } from "@/types/cart.types";
 import { useRemoveFromCartMutation, useUpdateQuantityMutation } from "@/store/api/cart.api";
@@ -9,6 +8,7 @@ import { BASE_URL } from "@/constants/api.constants";
 import { useGetProfileQuery, useToggleFavoriteMutation } from "@/store/api/user.api";
 import type { BackendErrorResponse } from "@/types/auth.types";
 import { toaster } from "../ui/toaster";
+import ConditionalLink from "../ui/ConditionalLink";
 
 type CartItemRowProps = {
   item: CartItem;
@@ -25,7 +25,10 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
 
   const maxStock = item.product.stock;
 
+  const isAvailable = item.product.isActive;
+
   const handleQtyChange = async (newCount: number) => {
+    if (!isAvailable) return;
     if (newCount > maxStock) {
       toaster.create({
         title: "Limit reached",
@@ -79,12 +82,12 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
     }
   };
 
-  const itemPriceTotal = Number((+item.product.price * item.quantity).toFixed(2));
+  const itemPriceTotal = isAvailable ? Number((+item.product.price * item.quantity).toFixed(2)) : 0;
 
   return (
-    <Table.Row verticalAlign="top">
+    <Table.Row verticalAlign="top" bg={!isAvailable ? "#FFF5F5" : "transparent"} opacity={!isAvailable ? 0.7 : 1}>
       <Table.Cell pt="20px">
-        <Link to={`/product/${item.productId}`}>
+        <ConditionalLink condition={isAvailable} to={`/product/${item.productId}`}>
           <Flex gap="30px" mb="8px" _hover={{ cursor: "pointer" }}>
             <Image
               src={`${BASE_URL}${item.product.imagePath}`}
@@ -95,9 +98,16 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
               _hover={{ cursor: "pointer" }}
             />
             <Box>
-              <Heading as="h2" fontSize="18px" lineHeight="130%" mb="6px" maxW="500px">
-                {item.product.name}
-              </Heading>
+              <Flex align="center" gap="3" mb="6px">
+                <Heading as="h2" fontSize="18px" lineHeight="130%" maxW="500px">
+                  {item.product.name}
+                </Heading>
+                {!isAvailable && (
+                  <Badge colorPalette="red" variant="solid" size="md">
+                    Not Available
+                  </Badge>
+                )}
+              </Flex>
               <Box color="#919191">
                 <Text>Brand: {item.product.brand.name}</Text>
                 <Text>Guarantee: {item.product.warrantyMonths} months</Text>
@@ -109,8 +119,8 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
               </Box>
             </Box>
           </Flex>
-        </Link>
-        <Button onClick={handleRemove} bg="#FFF" color="#000">
+        </ConditionalLink>
+        <Button onClick={handleRemove} bg="transparent" color="#000">
           <Flex
             align="center"
             fontSize="16px"
@@ -123,8 +133,14 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
             <Text>Remove</Text>
           </Flex>
         </Button>
-        <Button onClick={handleToggleFavorite} bg="#FFF" color="#000">
-          <Flex gap="8px" align="center" _hover={{ color: "#9969FF" }} transition="color 0.3s">
+        <Button
+          onClick={handleToggleFavorite}
+          bg="transparent"
+          _hover={{ color: "#9969FF" }}
+          disabled={!isAvailable}
+          color="#000"
+        >
+          <Flex gap="8px" align="center" transition="color 0.3s">
             <FavoriteButton isActive={isFavorite} />
             <Text>{isFavorite ? "In Favorites" : "Add to Favorites"}</Text>
           </Flex>
@@ -132,7 +148,7 @@ const CartItemRow = ({ item }: CartItemRowProps) => {
       </Table.Cell>
       <Table.Cell pt="20px">
         <Box w="140px">
-          <QuantitySelector count={item.quantity} max={maxStock} onChange={handleQtyChange} />
+          <QuantitySelector count={item.quantity} max={maxStock} onChange={handleQtyChange} disabled={!isAvailable} />
         </Box>
       </Table.Cell>
       <Table.Cell textAlign="end" fontSize="20px" fontWeight="600" pt="30px">

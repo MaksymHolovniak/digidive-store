@@ -29,7 +29,8 @@ const ProductTable = ({
   const handleToggleArchive = async (prod: AdminProduct) => {
     try {
       await toggleProductArchive(prod.id).unwrap();
-      const textDescription = prod.isActive ? "Product restored successfully" : "Product archived successfully";
+
+      const textDescription = prod.isActive ? "Product archived successfully" : "Product restored successfully";
 
       toaster.create({
         title: "Success",
@@ -74,8 +75,8 @@ const ProductTable = ({
           {products?.map((prod) => (
             <Table.Row
               key={prod.id}
-              bg={prod.isActive ? "#F5F5F5" : "transparent"}
-              _hover={{ bg: "#FAF9F6" }}
+              bg={prod.isActive ? "transparent" : "#F5F5F5"}
+              _hover={prod.isActive ? { bg: "#FAF9F6" } : { bg: "#EDEDED" }}
               transition="background 0.2s"
             >
               <Table.Cell p="16px 24px" fontWeight="500" color="gray.400">
@@ -89,6 +90,7 @@ const ProductTable = ({
                   boxSize="40px"
                   objectFit="cover"
                   borderRadius="6px"
+                  filter={!prod.isActive ? "grayscale(40%)" : "none"}
                 />
               </Table.Cell>
 
@@ -96,7 +98,7 @@ const ProductTable = ({
                 <Flex direction="column">
                   <Flex align="center" gap="2">
                     <Text fontWeight="600">{prod.name}</Text>
-                    {prod.isActive && (
+                    {!prod.isActive && (
                       <Badge colorPalette="red" variant="surface" size="sm">
                         Archived
                       </Badge>
@@ -127,16 +129,20 @@ const ProductTable = ({
                 <Flex justify="flex-end" gap="2" align="center" h="32px">
                   <IconButton
                     variant="ghost"
-                    colorPalette="blue"
+                    colorPalette={!prod.isActive ? "gray" : "blue"}
                     size="sm"
+                    disabled={!prod.isActive}
+                    cursor={!prod.isActive ? "not-allowed" : "pointer"}
+                    title={!prod.isActive ? "Cannot edit archived product" : "Edit product"}
                     onClick={() => onEditClick(prod)}
                   >
                     <LuPencil size={16} />
                   </IconButton>
+
                   <DeleteActionCell
                     elementId={prod.id}
                     onDelete={() => handleToggleArchive(prod)}
-                    isArchived={prod.isActive}
+                    isArchived={!prod.isActive}
                     variant="archive"
                   />
                 </Flex>

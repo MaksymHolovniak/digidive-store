@@ -12,6 +12,7 @@ export type Product = {
   stock: number;
   description: string;
   imagePath?: string;
+  isActive: boolean;
   brand: Brand;
 };
 
@@ -77,6 +78,7 @@ export type CartProduct = {
   price: string;
   stock: number;
   warrantyMonths: number;
+  isActive: boolean;
   brand: {
     name: string;
   };

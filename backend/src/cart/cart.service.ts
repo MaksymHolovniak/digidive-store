@@ -17,6 +17,7 @@ export class CartService {
 						price: true,
 						stock: true,
 						warrantyMonths: true,
+						isActive: true,
 						brand: {
 							select: {
 								name: true
@@ -36,8 +37,10 @@ export class CartService {
 		let totalQuantity = 0
 
 		items.forEach(item => {
-			itemsTotal += item.product.price.toNumber() * item.quantity
-			totalQuantity += item.quantity
+			if (item.product.isActive) {
+				itemsTotal += item.product.price.toNumber() * item.quantity
+				totalQuantity += item.quantity
+			}
 		})
 
 		itemsTotal = Number(itemsTotal.toFixed(2))
@@ -45,8 +48,10 @@ export class CartService {
 		const DELIVERY_FEE = 5
 		const FREE_DELIVERY_THRESHOLD = 150
 
+		const activeItemsCount = items.filter(i => i.product.isActive).length
+
 		const deliveryFee =
-			items.length > 0 && itemsTotal < FREE_DELIVERY_THRESHOLD
+			activeItemsCount > 0 && itemsTotal < FREE_DELIVERY_THRESHOLD
 				? DELIVERY_FEE
 				: 0
 
@@ -68,7 +73,8 @@ export class CartService {
 			where: { id: productId }
 		})
 
-		if (!product) throw new NotFoundException('Product not found')
+		if (!product || !product.isActive)
+			throw new NotFoundException('Product not found or unavailable')
 
 		const existing = await this.prisma.cart.findUnique({
 			where: {

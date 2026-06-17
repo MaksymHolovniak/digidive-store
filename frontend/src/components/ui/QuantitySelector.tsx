@@ -5,19 +5,22 @@ type QuantitySelectorProps = {
   count: number;
   max?: number;
   onChange: (newCount: number) => void;
+  disabled?: boolean;
 };
 
-const QuantitySelector = ({ count, onChange, max }: QuantitySelectorProps) => {
- const handleDecrease = () => {
-   if (count > 1) {
-     onChange(count - 1);
-   }
- };
+const QuantitySelector = ({ count, onChange, max, disabled = false }: QuantitySelectorProps) => {
+  const handleDecrease = () => {
+    if (disabled) return;
+    if (count > 1) {
+      onChange(count - 1);
+    }
+  };
 
   const handleIncrease = () => {
-   if (max !== undefined && count >= max) return;
-   onChange(count + 1);
- };
+    if (disabled) return;
+    if (max !== undefined && count >= max) return;
+    onChange(count + 1);
+  };
 
   return (
     <Flex align="center" gap="15px">
@@ -28,7 +31,8 @@ const QuantitySelector = ({ count, onChange, max }: QuantitySelectorProps) => {
         color="#000"
         borderColor="#1D1D1D"
         onClick={handleDecrease}
-        disabled={count === 1}
+        disabled={disabled || count === 1}
+        cursor={disabled ? "not-allowed" : "pointer"}
       >
         <LuMinus />
       </IconButton>

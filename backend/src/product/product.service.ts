@@ -67,7 +67,7 @@ export class ProductService {
 			: {}
 
 		const prismaArchiveFilter: Prisma.ProductWhereInput =
-			showArchived === 'true' ? {} : { isActive: false }
+			showArchived === 'true' ? { isActive: false } : { isActive: true }
 
 		const whereFilters: Prisma.ProductWhereInput = {
 			AND: [prismaSearchTermFilter, prismaArchiveFilter]
@@ -184,7 +184,7 @@ export class ProductService {
 
 		const whereFilters: Prisma.ProductWhereInput = {
 			AND: [
-				{ isActive: false },
+				{ isActive: true },
 				prismaSearchTermFilter,
 				prismaSearchBrandFilter,
 				prismaCategoryFilter,
@@ -230,7 +230,7 @@ export class ProductService {
 		const products = await this.prisma.product.findMany({
 			where: {
 				categoryId: currentProduct.categoryId,
-				isActive: false,
+				isActive: true,
 				NOT: {
 					id: currentProduct.id
 				}
@@ -246,7 +246,7 @@ export class ProductService {
 			length: await this.prisma.product.count({
 				where: {
 					categoryId: currentProduct.categoryId,
-					isActive: false,
+					isActive: true,
 					NOT: {
 						id: currentProduct.id
 					}

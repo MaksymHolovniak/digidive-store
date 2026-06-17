@@ -6,9 +6,10 @@ type CartSummaryProps = {
   itemsTotal: number;
   deliveryFee: number;
   totalPrice: number;
+  isDisabled: boolean;
 };
 
-const CartSummary = ({ itemsTotal, deliveryFee, totalPrice }: CartSummaryProps) => {
+const CartSummary = ({ itemsTotal, deliveryFee, totalPrice, isDisabled }: CartSummaryProps) => {
   const navigate = useNavigate();
 
   const handleOnClick = () => navigate("/checkout");
@@ -37,7 +38,7 @@ const CartSummary = ({ itemsTotal, deliveryFee, totalPrice }: CartSummaryProps) 
           <Text>Secure payments</Text>
         </Flex>
       </Flex>
-      <Flex justify="center">
+      <Flex justify="center" direction="column" align="center" gap="12px">
         <AppButton
           w="200px"
           h="52px"
@@ -45,10 +46,16 @@ const CartSummary = ({ itemsTotal, deliveryFee, totalPrice }: CartSummaryProps) 
           _hover={{
             transform: "translateY(-2px)",
           }}
+          disabled={isDisabled}
           onClick={handleOnClick}
         >
           Checkout
         </AppButton>
+        {isDisabled && (
+          <Text color="red.500" fontSize="13px" fontWeight="500" textAlign="center" maxW="260px">
+            Please remove unavailable products from your cart to complete the checkout
+          </Text>
+        )}
       </Flex>
     </Box>
   );

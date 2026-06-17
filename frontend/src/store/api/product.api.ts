@@ -10,6 +10,7 @@ import {
 import { protectedApi } from "./protected.api";
 import { publicApi } from "./public.api";
 import { orderApi } from "./order.api";
+import { cartApi } from "./cart.api";
 
 export const publicProductApi = publicApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -75,6 +76,7 @@ export const adminProductApi = protectedApi.injectEndpoints({
           await queryFulfilled;
           dispatch(publicProductApi.util.invalidateTags(["Products"]));
           dispatch(orderApi.util.invalidateTags(["Order"]));
+          dispatch(cartApi.util.invalidateTags(["Cart"]));
         } catch {}
       },
     }),

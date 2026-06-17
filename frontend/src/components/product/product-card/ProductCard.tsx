@@ -27,7 +27,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const isOutOfStock = product.stock === 0;
 
+  const isAvailable = product.isActive !== false;
+
   const handleNavigate = () => {
+    if (!isAvailable) return;
     navigate(`/product/${product.id}`);
   };
 
@@ -65,10 +68,15 @@ const ProductCard = ({ product }: ProductCardProps) => {
       gap="24px"
       transition="0.3s"
       onClick={handleNavigate}
-      _hover={{
-        transform: "translateY(-4px)",
-        cursor: "pointer",
-      }}
+      _hover={
+        isAvailable
+          ? {
+              transform: "translateY(-4px)",
+              cursor: "pointer",
+            }
+          : { cursor: "not-allowed" }
+      }
+      opacity={!isAvailable ? 0.6 : 1}
     >
       <Box
         w="100%"
@@ -107,7 +115,23 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </Text>
         </Flex>
         <Flex onClick={(e) => e.stopPropagation()} align="center" gap="24px">
-          {isOutOfStock ? (
+          {!isAvailable ? (
+            <Box w="100%">
+              <AppButton
+                w="100%"
+                maxW="180px"
+                fontSize="16px"
+                bg="#FFF5F5"
+                color="red.500"
+                border="1px solid #E53E3E"
+                disabled
+                _hover={{ bg: "#FFF5F5" }}
+                style={{ cursor: "not-allowed" }}
+              >
+                Unavailable
+              </AppButton>
+            </Box>
+          ) : isOutOfStock ? (
             <Box w="100%">
               <AppButton
                 w="100%"
@@ -125,7 +149,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           ) : (
             <AddToCartButton productId={product.id} w="100%" />
           )}
-          <Box as="button" _hover={{ color: "#9969FF" }} transition="color 0.3s" onClick={handleFavoriteClick}>
+          <Box as="button"  _hover={{ color: "#9969FF" }} transition="color 0.3s" onClick={handleFavoriteClick}>
             <FavoriteButton isActive={isFavorite} />
           </Box>
         </Flex>

@@ -43,6 +43,8 @@ const CartPage = () => {
     );
   }
 
+  const hasUnavailableItems = cartData.items.some((item) => !item.product.isActive);
+
   return (
     <Box pt="60px" pb="140px">
       <AppContainer>
@@ -57,6 +59,7 @@ const CartPage = () => {
             itemsTotal={cartData.itemsTotal}
             deliveryFee={cartData.deliveryFee}
             totalPrice={cartData.totalPrice}
+            isDisabled={hasUnavailableItems}
           />
         </Flex>
       </AppContainer>
