@@ -97,7 +97,7 @@ const ProductInfoSection = ({ product }: ProductInfoSectionProps) => {
   };
 
   return (
-    <Flex justify="center" gap="50px" mt="40px" mb="100px" as="section">
+    <Flex justify="center" gap="150px" mt="40px" mb="100px" as="section">
       <Image
         src={`${BASE_URL}${product.imagePath}`}
         alt={product.name}

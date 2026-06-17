@@ -39,8 +39,6 @@ export class ProductService {
 		const { sort, searchTerm, showArchived } = dto
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
-		prismaSort.push({ stock: 'desc' })
-
 		switch (sort) {
 			case EnumProductSort.Alphabetical:
 				prismaSort.push({ name: 'asc' })
@@ -55,6 +53,8 @@ export class ProductService {
 				prismaSort.push({ id: 'desc' })
 				break
 		}
+
+		prismaSort.push({ stock: 'desc' })
 
 		const prismaSearchTermFilter: Prisma.ProductWhereInput = searchTerm
 			? {
@@ -96,8 +96,6 @@ export class ProductService {
 
 		const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
-		prismaSort.push({ stock: 'desc' })
-
 		switch (sort) {
 			case EnumProductSort.Alphabetical:
 				prismaSort.push({ name: 'asc' })
@@ -112,6 +110,8 @@ export class ProductService {
 				prismaSort.push({ id: 'desc' })
 				break
 		}
+
+		prismaSort.push({ stock: 'desc' })
 
 		let prismaCategoryFilter: Prisma.ProductWhereInput = {}
 
